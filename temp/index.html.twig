@@ -5,13 +5,15 @@
 {% block body %}
     <h1>StatisticaRete index</h1>
 
-    <table class="table">
+    <table id="statistics" class="table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Valore</th>
                 <th>Data</th>
-                <th>Actions</th>
+                <th>Nome_valore</th>
+                <th>Elemento_rete</th>
+                <th>actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,21 +22,24 @@
                 <td>{{ statistica_rete.id }}</td>
                 <td>{{ statistica_rete.valore }}</td>
                 <td>{{ statistica_rete.data ? statistica_rete.data|date('Y-m-d') : '' }}</td>
-                <td>{{ statistica_rete.networkElement.nome }}</td>
+                <td>{{ statistica_rete.nomeValore }}</td>
+                <td>{{ statistica_rete.elementoRete }}</td>
                 <td>
                     <a class="btn btn-secondary" href="{{ path('statistica_rete_show', {'id': statistica_rete.id}) }}">show</a>
                     <a class="btn btn-primary" href="{{ path('statistica_rete_edit', {'id': statistica_rete.id}) }}">edit</a>
                     <a class="btn btn-danger" data-id="{{statistica_rete.id}}" href="#">delete</a>
-
-{#                    <a href="{{ path('statistica_rete_show', {'id': statistica_rete.id}) }}">show</a>
-                    <a href="{{ path('statistica_rete_edit', {'id': statistica_rete.id}) }}">edit</a> #}
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+
+    <a class="btn btn-outline-primary" href="{{ path('statistica_rete_new') }}">Create new</a>
+{% endblock %}
+{% block javascripts %}
+<script src="/js/main.js"></script>
 {% endblock %}

@@ -10,7 +10,8 @@
             <tr>
                 <th>Id</th>
                 <th>Nome</th>
-                <th>Capacit</th>
+                <th>Capacity</th>
+                <th>CapacityType</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,8 +19,9 @@
         {% for network_element in network_elements %}
             <tr>
                 <td>{{ network_element.id }}</td>
-                <td>{{ network_element.Nome }}</td>
-                <td>{{ network_element.Capacit }}</td>
+                <td>{{ network_element.nome }}</td>
+                <td>{{ network_element.capacity }}</td>
+                <td>{{ network_element.capacityType }}</td>
                 <td>
                     <a href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
                     <a href="{{ path('network_element_edit', {'id': network_element.id}) }}">edit</a>

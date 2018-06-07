@@ -20,14 +20,19 @@
                 <td>{{ statistica_rete.data ? statistica_rete.data|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>Network Element</th>
-                <td>{{ statistica_rete.networkElement.nome }}</td>
+                <th>Nome_valore</th>
+                <td>{{ statistica_rete.nomeValore }}</td>
+            </tr>
+            <tr>
+                <th>Elemento_rete</th>
+                <td>{{ statistica_rete.elementoRete }}</td>
             </tr>
         </tbody>
     </table>
 
-
-    <a class="btn btn-primary" href="{{ path('statistica_rete_edit', {'id': statistica_rete.id}) }}">edit</a>
-    <a class="btn btn-danger" data-id="{{statistica_rete.id}}" href="#">delete</a>
     <a href="{{ path('statistica_rete_index') }}">back to list</a>
+
+    <a href="{{ path('statistica_rete_edit', {'id': statistica_rete.id}) }}">edit</a>
+
+    {{ include('statistica_rete/_delete_form.html.twig') }}
 {% endblock %}

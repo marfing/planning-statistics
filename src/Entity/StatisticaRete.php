@@ -27,14 +27,10 @@ class StatisticaRete
     private $data;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\NetworkElement", inversedBy="statisticheRete")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $nome_valore;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $elemento_rete;
+    private $networkElement;
 
     
     public function getId()
@@ -66,26 +62,14 @@ class StatisticaRete
         return $this;
     }
 
-    public function getNomeValore(): ?string
+    public function getNetworkElement(): ?NetworkElement
     {
-        return $this->nome_valore;
+        return $this->networkElement;
     }
 
-    public function setNomeValore(string $nome_valore): self
+    public function setNetworkElement(?NetworkElement $networkElement): self
     {
-        $this->nome_valore = $nome_valore;
-
-        return $this;
-    }
-
-    public function getElementoRete(): ?string
-    {
-        return $this->elemento_rete;
-    }
-
-    public function setElementoRete(string $elemento_rete): self
-    {
-        $this->elemento_rete = $elemento_rete;
+        $this->networkElement = $networkElement;
 
         return $this;
     }

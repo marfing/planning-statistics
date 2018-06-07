@@ -9,10 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 /**
  * @Route("/statistica/rete")
@@ -33,27 +29,7 @@ class StatisticaReteController extends Controller
     public function new(Request $request): Response
     {
         $statisticaRete = new StatisticaRete();
-
-        $form = $this->createFormBuilder($statisticaRete)
-            ->add('valore', IntegerType::class, array(
-                'attr' => array('class' => 'form-control'),
-                'required' => true))
-            ->add('nome_valore', ChoiceType::class, array(
-                'choices' => array(
-                    'Max Calls' => 'calls',
-                    'Max Users' => 'users'),
-                'attr' => array(
-                    'class' => 'form-control')))
-            ->add('data', DateType::class, array(
-                'widget' => 'choice',
-                'attr' => array(
-                    'class' => 'form-control')))
-            ->add('elemento_rete', TextType::class, array(
-                'attr' => array(
-                    'class' => 'form-control'
-                )
-            ))->getForm();
-
+        $form = $this->createForm(StatisticaReteType::class, $statisticaRete);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -79,30 +55,11 @@ class StatisticaReteController extends Controller
     }
 
     /**
-     * @Route("/edit/{id}", name="statistica_rete_edit", methods="GET|POST")
+     * @Route("/{id}/edit", name="statistica_rete_edit", methods="GET|POST")
      */
     public function edit(Request $request, StatisticaRete $statisticaRete): Response
     {
-        $form = $this->createFormBuilder($statisticaRete)
-            ->add('valore', IntegerType::class, array(
-                'attr' => array('class' => 'form-control'),
-                'required' => true))
-            ->add('nome_valore', ChoiceType::class, array(
-                'choices' => array(
-                    'Max Calls' => 'calls',
-                    'Max Users' => 'users'),
-                'attr' => array(
-                    'class' => 'form-control')))
-            ->add('data', DateType::class, array(
-                'widget' => 'choice',
-                'attr' => array(
-                    'class' => 'form-control')))
-            ->add('elemento_rete', TextType::class, array(
-                'attr' => array(
-                    'class' => 'form-control'
-                )
-            ))->getForm();
-            
+        $form = $this->createForm(StatisticaReteType::class, $statisticaRete);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -118,17 +75,16 @@ class StatisticaReteController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="statistica_rete_delete", methods="DELETE")
+     * @Route("/{id}", name="statistica_rete_delete", methods="DELETE")
      */
-    public function delete($id): Response
+    public function delete(Request $request, StatisticaRete $statisticaRete): Response
     {
-        dump($id);
+        if ($this->isCsrfTokenValid('delete'.$statisticaRete->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($statisticaRete);
+            $em->flush();
+        }
 
-        $statisticaRete = $this->getDoctrine()->getRepository(StatisticaRete::class)->find($id);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($statisticaRete);
-        $entityManager->flush();
-        
-        return new Response();
+        return $this->redirectToRoute('statistica_rete_index');
     }
 }

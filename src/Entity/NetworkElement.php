@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,12 +21,27 @@ class NetworkElement
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Nome;
+    private $nome;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $Capacit;
+    private $capacity;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\StatisticaRete", mappedBy="networkElement", orphanRemoval=true)
+     */
+    private $statisticheRete;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $CapacityType;
+
+    public function __construct()
+    {
+        $this->statisticheRete = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -33,24 +50,71 @@ class NetworkElement
 
     public function getNome(): ?string
     {
-        return $this->Nome;
+        return $this->nome;
     }
 
-    public function setNome(string $Nome): self
+    public function setNome(string $nome): self
     {
-        $this->Nome = $Nome;
+        $this->nome = $nome;
 
         return $this;
     }
 
-    public function getCapacit(): ?int
+    public function getCapacity(): ?int
     {
-        return $this->Capacit;
+        return $this->capacity;
     }
 
-    public function setCapacit(int $Capacit): self
+    public function setCapacity(int $capacity): self
     {
-        $this->Capacit = $Capacit;
+        $this->capacity = $capacity;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|StatisticaRete[]
+     */
+    public function getStatisticheRete(): Collection
+    {
+        return $this->statisticheRete;
+    }
+
+    public function addStatisticheRete(StatisticaRete $statisticheRete): self
+    {
+        if (!$this->statisticheRete->contains($statisticheRete)) {
+            $this->statisticheRete[] = $statisticheRete;
+            $statisticheRete->setNetworkElement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStatisticheRete(StatisticaRete $statisticheRete): self
+    {
+        if ($this->statisticheRete->contains($statisticheRete)) {
+            $this->statisticheRete->removeElement($statisticheRete);
+            // set the owning side to null (unless already changed)
+            if ($statisticheRete->getNetworkElement() === $this) {
+                $statisticheRete->setNetworkElement(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function _toString(){
+        return $this->Nome;
+    }
+
+    public function getCapacityType(): ?string
+    {
+        return $this->CapacityType;
+    }
+
+    public function setCapacityType(string $CapacityType): self
+    {
+        $this->CapacityType = $CapacityType;
 
         return $this;
     }
