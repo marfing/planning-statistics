@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}StatisticaRete{% endblock %}
+
+{% block body %}
+    <h1>StatisticaRete</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ statistica_rete.id }}</td>
+            </tr>
+            <tr>
+                <th>Valore</th>
+                <td>{{ statistica_rete.valore }}</td>
+            </tr>
+            <tr>
+                <th>Data</th>
+                <td>{{ statistica_rete.data ? statistica_rete.data|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Nome_valore</th>
+                <td>{{ statistica_rete.nomeValore }}</td>
+            </tr>
+            <tr>
+                <th>Elemento_rete</th>
+                <td>{{ statistica_rete.elementoRete }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('statistica_rete_index') }}">back to list</a>
+
+    <a href="{{ path('statistica_rete_edit', {'id': statistica_rete.id}) }}">edit</a>
+
+    {{ include('statistica_rete/_delete_form.html.twig') }}
+{% endblock %}

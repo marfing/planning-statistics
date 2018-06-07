@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block body %}
+
+
+<div class="example-wrapper">
+    <h1>Architettura sito</h1>
+</div>
+<div class="row">
+    <div class="col-sm">
+        <table class="table">
+            <thead>
+                <tr><th>Network Element</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Name</td></tr>
+                <tr><td>Capacity</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm">
+        <table class="table">
+            <thead>
+                <tr><th>Statistica rete</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Valore</td></tr>
+                <tr><td>Data</td></tr>
+                <tr><td>Nome_valore</td></tr>
+                <tr><td>Elemento_rete(Network Element)</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

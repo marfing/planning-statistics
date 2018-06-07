@@ -1,0 +1,5 @@
+<form method="post" action="{{ path('network_element_delete', {'id': network_element.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ network_element.id) }}">
+    <button class="btn">Delete</button>
+</form>

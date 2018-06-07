@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New NetworkElement{% endblock %}
+
+{% block body %}
+    <h1>Create new NetworkElement</h1>
+
+    {{ include('network_element/_form.html.twig') }}
+
+    <a href="{{ path('network_element_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifica StatisticaRete{% endblock %}
+
+{% block body %}
+    <h1>Modifica StatisticaRete</h1>
+
+    {{ include('statistica_rete/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('statistica_rete_index') }}">back to list</a>
+
+ {#   {{ include('statistica_rete/_delete_form.html.twig') }} #}
+{% endblock %}

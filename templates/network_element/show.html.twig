@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NetworkElement{% endblock %}
+
+{% block body %}
+    <h1>NetworkElement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ network_element.id }}</td>
+            </tr>
+            <tr>
+                <th>Nome</th>
+                <td>{{ network_element.Nome }}</td>
+            </tr>
+            <tr>
+                <th>Capacit</th>
+                <td>{{ network_element.Capacit }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('network_element_index') }}">back to list</a>
+
+    <a href="{{ path('network_element_edit', {'id': network_element.id}) }}">edit</a>
+
+    {{ include('network_element/_delete_form.html.twig') }}
+{% endblock %}

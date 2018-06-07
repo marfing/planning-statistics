@@ -36,11 +36,7 @@ class StatisticaRete
      */
     private $elemento_rete;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $capacit;
-
+    
     public function getId()
     {
         return $this->id;
@@ -90,18 +86,6 @@ class StatisticaRete
     public function setElementoRete(string $elemento_rete): self
     {
         $this->elemento_rete = $elemento_rete;
-
-        return $this;
-    }
-
-    public function getCapacit(): ?int
-    {
-        return $this->capacit;
-    }
-
-    public function setCapacit(?int $capacit): self
-    {
-        $this->capacit = $capacit;
 
         return $this;
     }

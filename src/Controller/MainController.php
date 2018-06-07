@@ -22,6 +22,7 @@ class MainController extends Controller{
      */
     public function graph()
     {
+        
         return $this->render('/graph/graph.html.twig');
     }
 }
