@@ -102,4 +102,19 @@ class NetworkElementController extends Controller
         $entityManager->flush();
         return new Response();
     }
+
+    /**
+     * @Route("/graph/{id}", name="network_element_graph", methods="GET")
+     */
+    public function graph($id)
+    {
+        $networkElement = $this->getDoctrine()
+        ->getRepository(NetworkElement::class)
+        ->find($id);
+
+        $statistics = $networkElement->getStatisticheRete();   
+
+        return $this->render('/graph/graph.html.twig');
+    }
+
 }

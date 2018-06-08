@@ -16,14 +16,5 @@ class MainController extends Controller{
     {
         return $this->render('/home/home.html.twig');
     }
-
-     /**
-     * @Route("/graph", name="graph", methods="GET")
-     */
-    public function graph()
-    {
-        
-        return $this->render('/graph/graph.html.twig');
-    }
 }
 
