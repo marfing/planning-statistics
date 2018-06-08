@@ -1,4 +1,9 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+        <div class="class row">
+        <div class="class col-sm-offset col-sm-10">
+            <button name='save' type='submit' value='save' class='btn btn-primary'>{{ button_label|default('Save') }}</button>
+            <button name='cancel' type='submit' value='cancel' class='btn btn-cancel' formnovalidate='formnovalidate'>Cancel</button>
+        </div>
+    </div>
 {{ form_end(form) }}

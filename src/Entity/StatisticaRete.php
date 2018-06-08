@@ -22,7 +22,7 @@ class StatisticaRete
     private $valore;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", unique=true)
      */
     private $data;
 

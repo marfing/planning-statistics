@@ -8,14 +8,14 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20180605093702 extends AbstractMigration
+final class Version20180608142400 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE statistica_rete (id INT AUTO_INCREMENT NOT NULL, valore INT NOT NULL, data DATE NOT NULL, nome_valore VARCHAR(255) NOT NULL, elemento_rete VARCHAR(255) NOT NULL, capacit INT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_A9001337ADF3F363 ON statistica_rete (data)');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +23,7 @@ final class Version20180605093702 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE statistica_rete');
+        $this->addSql('CREATE UNIQUE INDEX nome ON network_element (nome)');
+        $this->addSql('DROP INDEX UNIQ_A9001337ADF3F363 ON statistica_rete');
     }
 }

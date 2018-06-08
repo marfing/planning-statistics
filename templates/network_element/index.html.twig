@@ -5,7 +5,7 @@
 {% block body %}
     <h1>NetworkElement index</h1>
 
-    <table class="table">
+    <table id="netelements" class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -23,8 +23,9 @@
                 <td>{{ network_element.capacity }}</td>
                 <td>{{ network_element.capacityType }}</td>
                 <td>
-                    <a href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
-                    <a href="{{ path('network_element_edit', {'id': network_element.id}) }}">edit</a>
+                    <a class="btn btn-secondary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
+                    <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">edit</a>
+                    <a class="btn btn-danger" data-id="{{network_element.id}}" href="#">delete</a>
                 </td>
             </tr>
         {% else %}
@@ -34,6 +35,8 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('network_element_new') }}">Create new</a>
+    <a class="btn btn-outline-primary" href="{{ path('network_element_new')}}" class="nav-link">New Network Element</a>
+{% endblock %}
+{% block javascripts %}
+<script src="/js/main.js"></script>
 {% endblock %}

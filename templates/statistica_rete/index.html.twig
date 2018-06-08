@@ -5,7 +5,7 @@
 {% block body %}
     <h1>StatisticaRete index</h1>
 
-    <table class="table">
+    <table id="statistics" class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -37,4 +37,8 @@
         {% endfor %}
         </tbody>
     </table>
+    <a class="btn btn-outline-primary" href="{{ path('statistica_rete_new')}}" class="nav-link">New Statistic</a>
+{% endblock %}
+{% block javascripts %}
+<script src="/js/main.js"></script>
 {% endblock %}

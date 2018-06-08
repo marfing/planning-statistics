@@ -32,11 +32,13 @@ class StatisticaReteController extends Controller
         $form = $this->createForm(StatisticaReteType::class, $statisticaRete);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($statisticaRete);
-            $em->flush();
-
+        if ($form->isSubmitted()){
+            if($request->request->get('save') && $form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($statisticaRete);
+                $em->flush();
+                return $this->redirectToRoute('statistica_rete_index');
+            }//l'alternativa può solo essere il cancel
             return $this->redirectToRoute('statistica_rete_index');
         }
 
@@ -62,10 +64,12 @@ class StatisticaReteController extends Controller
         $form = $this->createForm(StatisticaReteType::class, $statisticaRete);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('statistica_rete_edit', ['id' => $statisticaRete->getId()]);
+        if ($form->isSubmitted()){
+            if($request->request->get('save') && $form->isValid()){
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('statistica_rete_edit', ['id' => $statisticaRete->getId()]);
+            }//l'alternativa può solo essere il cancel
+            return $this->redirectToRoute('statistica_rete_index');
         }
 
         return $this->render('statistica_rete/edit.html.twig', [
@@ -84,7 +88,18 @@ class StatisticaReteController extends Controller
             $em->remove($statisticaRete);
             $em->flush();
         }
-
         return $this->redirectToRoute('statistica_rete_index');
+    }
+
+    /**
+     * @Route("/delete/{id}", name="statistica_rete_mydelete", methods="DELETE")
+     */
+    public function mydelete($id): Response
+    {
+        $statisticaRete = $this->getDoctrine()->getRepository(StatisticaRete::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($statisticaRete);
+        $entityManager->flush();
+        return new Response();
     }
 }

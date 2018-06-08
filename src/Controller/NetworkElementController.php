@@ -32,11 +32,13 @@ class NetworkElementController extends Controller
         $form = $this->createForm(NetworkElementType::class, $networkElement);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($networkElement);
-            $em->flush();
-
+        if ($form->isSubmitted()){
+            if($request->request->get('save') && $form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($networkElement);
+                $em->flush();
+                return $this->redirectToRoute('network_element_index');
+            } //l'alternativa può solo essere il cancel
             return $this->redirectToRoute('network_element_index');
         }
 
@@ -62,10 +64,12 @@ class NetworkElementController extends Controller
         $form = $this->createForm(NetworkElementType::class, $networkElement);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('network_element_edit', ['id' => $networkElement->getId()]);
+        if ($form->isSubmitted()){
+            if($request->request->get('save') && $form->isValid()){
+                $this->getDoctrine()->getManager()->flush();
+                return $this->redirectToRoute('network_element_edit', ['id' => $networkElement->getId()]);
+            }//l'alternativa può solo essere il cancel
+            return $this->redirectToRoute('network_element_index');
         }
 
         return $this->render('network_element/edit.html.twig', [
@@ -84,7 +88,18 @@ class NetworkElementController extends Controller
             $em->remove($networkElement);
             $em->flush();
         }
-
         return $this->redirectToRoute('network_element_index');
+    }
+
+    /**
+     * @Route("/delete/{id}", name="network_element_mydelete", methods="DELETE")
+     */
+    public function mydelete($id): Response
+    {
+        $networkElement = $this->getDoctrine()->getRepository(NetworkElement::class)->find($id);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($networkElement);
+        $entityManager->flush();
+        return new Response();
     }
 }
