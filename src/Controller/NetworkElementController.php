@@ -114,7 +114,10 @@ class NetworkElementController extends Controller
 
         $statistics = $networkElement->getStatisticheRete();   
 
-        return $this->render('/graph/graph.html.twig');
+        return $this->render('/graph/graph.html.twig',[
+            'statistics' => $statistics,
+            'element' => $networkElement,
+        ]); 
     }
 
 }

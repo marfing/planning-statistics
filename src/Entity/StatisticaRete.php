@@ -22,7 +22,7 @@ class StatisticaRete
     private $valore;
 
     /**
-     * @ORM\Column(type="date", unique=true)
+     * @ORM\Column(type="date", unique=false)
      */
     private $data;
 
@@ -53,6 +53,11 @@ class StatisticaRete
     public function getData(): ?\DateTimeInterface
     {
         return $this->data;
+    }
+
+    public function getDataAsString()
+    {
+        return $this->data->format('d/m/Y');
     }
 
     public function setData(\DateTimeInterface $data): self

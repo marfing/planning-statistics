@@ -30,6 +30,7 @@ class NetworkElement
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\StatisticaRete", mappedBy="networkElement", orphanRemoval=true)
+     * @ORM\OrderBy({"data"="ASC"})
      */
     private $statisticheRete;
 
