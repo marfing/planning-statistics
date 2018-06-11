@@ -67,7 +67,7 @@ class NetworkElementController extends Controller
         if ($form->isSubmitted()){
             if($request->request->get('save') && $form->isValid()){
                 $this->getDoctrine()->getManager()->flush();
-                return $this->redirectToRoute('network_element_edit', ['id' => $networkElement->getId()]);
+                return $this->redirectToRoute('network_element_index');
             }//l'alternativa può solo essere il cancel
             return $this->redirectToRoute('network_element_index');
         }
@@ -118,6 +118,30 @@ class NetworkElementController extends Controller
             'statistics' => $statistics,
             'element' => $networkElement,
         ]); 
+    }
+    /**
+     * @Route("/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
+     */
+    public function uploadCsv($id)
+    {
+        $networkElement = $this->getDoctrine()
+        ->getRepository(NetworkElement::class)
+        ->find($id);
+        $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
+        $fileList = scandir($path);
+        dump($fileList);
+        $output = "<h1>Report analisi file csv</h1>";
+        //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
+        foreach ($fileList as $fileName){
+            if(strpos($fileName,'.csv') == false){
+                $output = $output . "<p> . $fileName . non è un csv</p>";
+            }
+            else{
+                $output = $output . "<p> . $fileName . è un csv</p>"; 
+            }
+            
+        }
+        return new Response($output);
     }
 
 }

@@ -39,6 +39,11 @@ class NetworkElement
      */
     private $CapacityType;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $directoryStatistiche;
+
     public function __construct()
     {
         $this->statisticheRete = new ArrayCollection();
@@ -116,6 +121,18 @@ class NetworkElement
     public function setCapacityType(string $CapacityType): self
     {
         $this->CapacityType = $CapacityType;
+
+        return $this;
+    }
+
+    public function getDirectoryStatistiche(): ?string
+    {
+        return $this->directoryStatistiche;
+    }
+
+    public function setDirectoryStatistiche(?string $directoryStatistiche): self
+    {
+        $this->directoryStatistiche = $directoryStatistiche;
 
         return $this;
     }

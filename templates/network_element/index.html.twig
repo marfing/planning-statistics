@@ -12,7 +12,8 @@
                 <th>Nome</th>
                 <th>Capacity</th>
                 <th>CapacityType</th>
-                <th>actions</th>
+                <th>Statistic Directory</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -22,11 +23,13 @@
                 <td>{{ network_element.nome }}</td>
                 <td>{{ network_element.capacity }}</td>
                 <td>{{ network_element.capacityType }}</td>
+                <td>{{ network_element.directoryStatistiche }}</td>
                 <td>
                     <a class="btn btn-secondary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
                     <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">edit</a>
                     <a class="btn btn-danger" data-id="{{network_element.id}}" href="#">delete</a>
                     <a class="btn btn-outline-primary" href="{{ path('network_element_graph', {'id': network_element.id}) }}">graph</a>
+                    <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
                 </td>
             </tr>
         {% else %}

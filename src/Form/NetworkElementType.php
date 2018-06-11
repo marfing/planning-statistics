@@ -22,6 +22,7 @@ class NetworkElementType extends AbstractType
                     'Max Users' => 'users'),
                 'attr' => array(
                     'class' => 'form-control')))
+            ->add('directoryStatistiche')
         ;
     }
 
