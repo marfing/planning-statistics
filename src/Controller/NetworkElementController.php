@@ -138,6 +138,14 @@ class NetworkElementController extends Controller
             }
             else{
                 $output = $output . "<p> . $fileName . è un csv</p>"; 
+                $pieces = explode("_",$fileName);
+                foreach ($pieces as $piece){
+                    $output = $output . "<p> $piece </p>";
+                    if( strlen($piece) >= 12){
+                        list($year,$month,$day) = sscanf($piece,"%4d%2d%2d");
+                        $output = $output . "<p> Year: $year</p><p> Month: $month </p><p>Day: $day</p>";
+                    }                    
+                }
             }
             
         }
