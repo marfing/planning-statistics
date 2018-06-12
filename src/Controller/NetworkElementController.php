@@ -129,27 +129,66 @@ class NetworkElementController extends Controller
         ->find($id);
         $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
-        dump($fileList);
         $output = "<h1>Report analisi file csv</h1>";
         //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
+        $dataValues = array();
         foreach ($fileList as $fileName){
-            if(strpos($fileName,'.csv') == false){
-                $output = $output . "<p> . $fileName . non è un csv</p>";
-            }
-            else{
-                $output = $output . "<p> . $fileName . è un csv</p>"; 
+            if(strpos($fileName,'.csv') != false){
+                $output = $output . "<p> $fileName è un csv</p>"; 
                 $pieces = explode("_",$fileName);
                 foreach ($pieces as $piece){
-                    $output = $output . "<p> $piece </p>";
                     if( strlen($piece) >= 12){
                         list($year,$month,$day) = sscanf($piece,"%4d%2d%2d");
-                        $output = $output . "<p> Year: $year</p><p> Month: $month </p><p>Day: $day</p>";
+                        list($yearString,$monthString,$dayString) = sscanf($piece,"%4s%2s%2s");
+                        //implementare qui il check della validità per anno, mese e giorno
+                        if( ($year >= 2000) && ($year <= 3000) && ($month>=1) && ($month<=12) && ($day>=1) && ($day<=31) ){
+                            // creiamo la stringa data che diventerà l'indice dell'array associativo data-valore
+                            $data = "$yearString$monthString$dayString";
+                            //trovare se esiste già nell'array dataValues, altrimenti si crea con valore 0
+                            $dataAlreadyInArray = false;
+                            foreach ($dataValues as $dataArray => $valueArray){
+                                if($dataArray == $data){
+                                    $dataAlreadyInArray = true;
+                                }
+                            }
+                            if(!$dataAlreadyInArray){
+                                $dataValues[$data]=0;
+                            }
+                            //iniziamo l'apertura del file csv per trovare la colonna dove andare a leggere il valore
+                            $row = 1;
+                            if (($handle = fopen("$path/$fileName","r")) !== FALSE) {
+                                $valueIndex = 0;
+                                //scandisco le righe
+                                while (($fileRow = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                                    $num = count($fileRow);
+                                    $row++;
+                                    //scandisco i valori di ogni colonna nella riga, se ho già settato l'indice della colonna dove si trova il valore, lo gestisco
+                                    //modificandolo se maggiore di quello già esistente
+                                    for ($c=0; $c < $num; $c++) {
+                                        if($valueIndex != 0 && $valueIndex==$c){
+                                            if($fileRow[$c] > $dataValues[$data]){
+                                                $dataValues[$data]=$fileRow[$c];     
+                                                $output = $output . "<p>Aggiornato valore: ". $fileRow[$c]." per data: $data </p>";           
+                                            }
+                                        }
+                                        if($valueIndex == 0 && $fileRow[$c]=="Number of Users"){
+                                            $valueIndex=$c;
+                                        }
+                                    }
+                                }
+                                fclose($handle);
+                            }
+                        }
                     }                    
                 }
             }
-            
         }
-        return new Response($output);
+        //qui va inserito l'aggiornamento del db.
+        //lavorare sul formato della data per poterla inserire via doctrine
+        foreach ($dataValues as $data => $value){
+            $output = $output . "<p>DataValue: [$data][$value]</p>";
+        }
+            return new Response($output);
     }
 
 }
