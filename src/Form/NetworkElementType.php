@@ -14,7 +14,7 @@ class NetworkElementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nome')
+            ->add('cliList')
             ->add('capacity')
             ->add('capacityType', ChoiceType::class, array(
                 'choices' => array(

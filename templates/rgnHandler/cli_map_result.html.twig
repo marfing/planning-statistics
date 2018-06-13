@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rgn Cli Mapping Result{% endblock %}
+
+{% block body %}
+    <h1>Cli Rgn mapping</h1>
+
+    <table id="rgn" class="table">
+    <thead>
+        <tr>
+            <th>Cli</th>
+            <th>Prefix</th>
+            <th>Rgn</th>
+        </tr>
+    </thead>
+    <tbody>
+{#    {{ dump(rgnHandler.cliRgnMap) }}  #}
+    {% for row in rgnHandler.cliRgnMap %}
+        <tr>
+        {% for value in row %}
+            <td>{{ value }}</td>
+        {% endfor %}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
