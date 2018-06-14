@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\NetworkElement;
+use App\Entity\StatisticaRete;
 use App\Form\NetworkElementType;
 use App\Repository\NetworkElementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -129,12 +130,11 @@ class NetworkElementController extends Controller
         ->find($id);
         $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
-        $output = "<h1>Report analisi file csv</h1>";
+        //$output = "<h1>Report analisi file csv</h1>";
         //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
         $dataValues = array();
         foreach ($fileList as $fileName){
             if(strpos($fileName,'.csv') != false){
-                $output = $output . "<p> $fileName è un csv</p>"; 
                 $pieces = explode("_",$fileName);
                 foreach ($pieces as $piece){
                     if( strlen($piece) >= 12){
@@ -143,7 +143,7 @@ class NetworkElementController extends Controller
                         //implementare qui il check della validità per anno, mese e giorno
                         if( ($year >= 2000) && ($year <= 3000) && ($month>=1) && ($month<=12) && ($day>=1) && ($day<=31) ){
                             // creiamo la stringa data che diventerà l'indice dell'array associativo data-valore
-                            $data = "$yearString$monthString$dayString";
+                            $data = "$yearString-$monthString-$dayString";
                             //trovare se esiste già nell'array dataValues, altrimenti si crea con valore 0
                             $dataAlreadyInArray = false;
                             foreach ($dataValues as $dataArray => $valueArray){
@@ -168,10 +168,9 @@ class NetworkElementController extends Controller
                                         if($valueIndex != 0 && $valueIndex==$c){
                                             if($fileRow[$c] > $dataValues[$data]){
                                                 $dataValues[$data]=$fileRow[$c];     
-                                                $output = $output . "<p>Aggiornato valore: ". $fileRow[$c]." per data: $data </p>";           
                                             }
                                         }
-                                        if($valueIndex == 0 && $fileRow[$c]=="Number of Users"){
+                                        if($valueIndex == 0 && $fileRow[$c]==$networkElement->getCsvCapacityTypeName()){
                                             $valueIndex=$c;
                                         }
                                     }
@@ -183,12 +182,25 @@ class NetworkElementController extends Controller
                 }
             }
         }
-        //qui va inserito l'aggiornamento del db.
-        //lavorare sul formato della data per poterla inserire via doctrine
-        foreach ($dataValues as $data => $value){
-            $output = $output . "<p>DataValue: [$data][$value]</p>";
+        $em = $this->getDoctrine()->getManager();
+        foreach ($dataValues as $data => $value ){
+            $alreadyExist = false;
+            foreach( $networkElement->getStatisticheRete() as $oldStatistica){
+                if($oldStatistica->getDataAsString() == $data){
+                    $oldStatistica->setValore($value);
+                    $alreadyExist = true;
+                    $em->flush();
+                }
+            }
+            if(!$alreadyExist){
+                $statistica = new StatisticaRete;
+                $statistica->setDataFromString($data);
+                $statistica->setValore($value);
+                $networkElement->addStatisticheRete($statistica); //aggiunge anche networkElement a statisicaRete       
+                $em->persist($statistica);        
+            }
+            $em->flush();
         }
-            return new Response($output);
+        return $this->render('network_element/csv_loaded.html.twig',array('dataValues' => $dataValues));
     }
-
 }

@@ -6,7 +6,7 @@
     <h1>{{element.nome}} - {{element.CapacityType}} Graph</h1>
     <ul>
     <!--Div that will hold the pie chart-->
-    <div id="chart_div"></div>
+    <div class='container-fluid' id="chart_div"></div>
 {% endblock %}
 
 {% block javascripts %}
@@ -35,7 +35,8 @@
             var options = {
             title: '{{element.nome}} capacity',
             hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
-            vAxis: {minValue: 0}
+            vAxis: {minValue: 0,logScale: true},
+            height: 400
             };
 
             // Instantiate and draw our chart, passing in some options.

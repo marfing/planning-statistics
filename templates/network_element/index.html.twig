@@ -12,6 +12,7 @@
                 <th>Nome</th>
                 <th>Capacity</th>
                 <th>CapacityType</th>
+                <th>CSV capacity name</th>
                 <th>Statistic Directory</th>
                 <th>Actions</th>
             </tr>
@@ -23,6 +24,7 @@
                 <td>{{ network_element.nome }}</td>
                 <td>{{ network_element.capacity }}</td>
                 <td>{{ network_element.capacityType }}</td>
+                <td>{{ network_element.csvCapacityTypeName }}</td>
                 <td>{{ network_element.directoryStatistiche }}</td>
                 <td>
                     <a class="btn btn-secondary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>

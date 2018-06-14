@@ -3,20 +3,19 @@
 {% block title %}Rgn Cli Mapping Result{% endblock %}
 
 {% block body %}
-    <h1>Cli Rgn mapping</h1>
 
-    <table id="rgn" class="table">
+<h1>Cli Rgn mapping</h1>
+<table id="rgn" class="table table-hover">
     <thead>
         <tr>
-            <th>Cli</th>
-            <th>Prefix</th>
-            <th>Rgn</th>
+            <th scope="col">Cli</th>
+            <th scope="col">Prefix</th>
+            <th scope="col">Rgn</th>
         </tr>
     </thead>
     <tbody>
-{#    {{ dump(rgnHandler.cliRgnMap) }}  #}
     {% for row in rgnHandler.cliRgnMap %}
-        <tr>
+        <tr class="table-success">
         {% for value in row %}
             <td>{{ value }}</td>
         {% endfor %}
@@ -28,4 +27,21 @@
     {% endfor %}
     </tbody>
 </table>
+
+<div class="alert alert-dismissible alert-warning">
+    <h4 class="alert-heading">Warning! - List of wrong Cli submitted</h4>
+    <table id="wrong_rgn" class="table">
+        <tbody>
+        {% for cli in rgnHandler.wrongCli %}
+            <tr  class="table-warning">
+                <td>{{ cli }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

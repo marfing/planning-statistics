@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \Datetime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StatisticaReteRepository")
@@ -57,12 +58,23 @@ class StatisticaRete
 
     public function getDataAsString()
     {
-        return $this->data->format('d/m/Y');
+        return $this->data->format('Y-m-d');
     }
 
     public function setData(\DateTimeInterface $data): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    //data nel formato anno-mese-giorno
+    public function setDataFromString( $stringDate )
+    {
+        $tempData = new DateTime();
+        $pieces = explode("-",$stringDate);
+        $tempData->setDate($pieces[0],$pieces[1],$pieces[2]);
+        $this->data = $tempData;
 
         return $this;
     }

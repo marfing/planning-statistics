@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 
 class NetworkElementType extends AbstractType
@@ -14,15 +16,24 @@ class NetworkElementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('cliList')
-            ->add('capacity')
+        ->add('nome', TextType::class, array(
+            'label' => 'Nome dell\'elemento di rete'
+            ))
+        ->add('capacity', IntegerType::class, array(
+                'label' => 'Max capacity of the element'
+            ))
+            ->add('csvCapacityTypeName', TextType::class, array(
+                'label' => 'Name of the capacity value in ZTE CSV file',
+            ))
             ->add('capacityType', ChoiceType::class, array(
                 'choices' => array(
                     'Max Calls' => 'calls',
                     'Max Users' => 'users'),
                 'attr' => array(
-                    'class' => 'form-control')))
-            ->add('directoryStatistiche')
+                    'class' => 'form-control'))) 
+            ->add('directoryStatistiche', TextType::class, array(
+                'label' => 'Directory dove si trova il file CSV',
+            ))
         ;
     }
 

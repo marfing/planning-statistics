@@ -15,7 +15,7 @@ class RgnHandlerType extends AbstractType
     {
         $builder
             ->add('cliList', TextareaType::class, array(
-                'label' => 'Insert comma separated cli list - ex: 70251426,2356984...'
+                'label' => 'Insert comma separated cli list - ex: 070251426,02356984...'
             ))
             ->add('prefixRgnMap',TextareaType::class, array(
                 'label' => 'Tiscali C60 map: prefix,C60,prefix...etc - default 05/10/09',

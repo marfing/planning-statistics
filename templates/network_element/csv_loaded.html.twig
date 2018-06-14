@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} CSV values loaded {% endblock %}
+
+{% block body %}
+    <h1>Loaded csv values</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Valore</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key,value in dataValues %}
+            <tr class="table-success">
+                <td>{{ key }}</td>
+                <td>{{ value }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('network_element_index') }}">back to list</a>
+{% endblock %}

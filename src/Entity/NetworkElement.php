@@ -44,6 +44,11 @@ class NetworkElement
      */
     private $directoryStatistiche;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $csvCapacityTypeName;
+
     public function __construct()
     {
         $this->statisticheRete = new ArrayCollection();
@@ -133,6 +138,18 @@ class NetworkElement
     public function setDirectoryStatistiche(?string $directoryStatistiche): self
     {
         $this->directoryStatistiche = $directoryStatistiche;
+
+        return $this;
+    }
+
+    public function getCsvCapacityTypeName(): ?string
+    {
+        return $this->csvCapacityTypeName;
+    }
+
+    public function setCsvCapacityTypeName(string $csvCapacityTypeName): self
+    {
+        $this->csvCapacityTypeName = $csvCapacityTypeName;
 
         return $this;
     }
