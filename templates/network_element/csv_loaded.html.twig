@@ -5,21 +5,33 @@
 {% block body %}
     <h1>Loaded csv values</h1>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Valore</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for key,value in dataValues %}
-            <tr class="table-success">
-                <td>{{ key }}</td>
-                <td>{{ value }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% if csvExist == false %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Warning!</strong><p>No CSV files in given directory: {{ path }}</p>
+        </div>
+    {% elseif newValue == true %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Valore</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in dataValues %}
+                <tr class="table-success">
+                    <td>{{ key }}</td>
+                    <td>{{ value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-dismissible alert-primary">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Info!</strong><p>No new values found in csv files: {{ path }}</p>
+        </div>        
+    {% endif %}
     <a href="{{ path('network_element_index') }}">back to list</a>
 {% endblock %}

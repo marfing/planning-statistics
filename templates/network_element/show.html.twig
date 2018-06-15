@@ -24,15 +24,17 @@
                 <td>{{ network_element.capacityType }}</td>
             </tr>
             <tr>
-                <th>Directory Statistiche</th>
+                <th>CSV capacity name</th>
+                <td>{{ network_element.csvCapacityTypeName }}</td>
+            </tr>
+            <tr>
+                <th>Statistic Directory</th>
                 <td>{{ network_element.directoryStatistiche }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('network_element_index') }}">back to list</a>
-
-    <a href="{{ path('network_element_edit', {'id': network_element.id}) }}">edit</a>
-
-    {{ include('network_element/_delete_form.html.twig') }}
+    <a class="btn btn-primary" href="{{ path('network_element_index') }}">List</a>
+    <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">Edit</a>
+    <a class="btn btn-danger" data-id="{{network_element.id}}" href="#">Delete</a>
 {% endblock %}

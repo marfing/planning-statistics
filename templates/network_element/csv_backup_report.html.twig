@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} CSV values loaded {% endblock %}
+
+{% block body %}
+    <h1>Loaded csv values</h1>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Number of backed up files</th>
+                <th>Number of wrong type files</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-info">
+                <td>{{ phpFiles }}</td>
+                <td>{{ wrongFiles }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ path('network_element_index') }}">back to list</a>
+{% endblock %}
