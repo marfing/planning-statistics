@@ -110,7 +110,6 @@ class NetworkElement
                 $statisticheRete->setNetworkElement(null);
             }
         }
-
         return $this;
     }
 

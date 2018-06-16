@@ -105,6 +105,20 @@ class NetworkElementController extends Controller
     }
 
     /**
+     * @Route("/delete/{id}/statistics", name="network_element_delete_stat")
+     */
+    public function deleteStatistics($id): Response
+    {
+        $networkElement = $this->getDoctrine()->getRepository(NetworkElement::class)->find($id);
+        foreach( $networkElement->getStatisticheRete() as $statistica){
+            $networkElement->removeStatisticheRete($statistica);
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return $this->redirectToRoute('network_element_index');
+    }
+
+    /**
      * @Route("/graph/{id}", name="network_element_graph", methods="GET")
      */
     public function graph($id)
@@ -133,6 +147,7 @@ class NetworkElementController extends Controller
         $fileList = scandir($path);
         //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
         $dataValues = array();
+        $wrongFileList = array();
         $csvExist = false;
         $newGraphValue = false;
         foreach ($fileList as $fileName){
@@ -150,7 +165,8 @@ class NetworkElementController extends Controller
                             $valueIndex=$c;                                        
                         }
                     }
-                    if($valueIndex != 0){ // se l'indice esisto procedo con il cercare il valore più grande da memorizzare
+                    if($valueIndex != 0){ 
+                        //ricerca della data a partire dal nome del file
                         $pieces = explode("_",$fileName);
                         foreach ($pieces as $piece){
                             if( strlen($piece) >= 12){
@@ -170,7 +186,7 @@ class NetworkElementController extends Controller
                             }
                         }//fine scansione segnmenti del file name separati da _ per trovare la data
         
-                        while ($fileRow = fgetcsv($handle, 1000, ",") !== FALSE) { //scandisco le righe
+                        while ( ($fileRow = fgetcsv($handle, 1000, ",")) !== FALSE) { //scandisco le righe
                             $num = count($fileRow); //conta il numero di elementi nell'array $fileRow
                             for ($c=0; $c < $num; $c++) {
                                 if(($valueIndex==$c) && ($fileRow[$c] > $dataValues[$data])){
@@ -182,7 +198,7 @@ class NetworkElementController extends Controller
                     }
                     fclose($handle);
                 } //fine gestione contenuto del file
-            }//fine check csv file
+            } else { $wrongFileList[] = $fileName;}//fine check csv file
         } //fine parsing singolo file
         $em = $this->getDoctrine()->getManager();
         foreach ($dataValues as $data => $value ){
@@ -208,7 +224,8 @@ class NetworkElementController extends Controller
             'dataValues' => $dataValues,
             'csvExist' => $csvExist,
             'path' => $path,
-            'newValue' => $newGraphValue));
+            'newValue' => $newGraphValue,
+            'wrongFileList' => $wrongFileList));
     }
 
 

@@ -3,7 +3,10 @@
 {% block title %} CSV values loaded {% endblock %}
 
 {% block body %}
-    <h1>Loaded csv values</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">CSV Data Import Report</li>
+    </ol>
+
 
     {% if csvExist == false %}
         <div class="alert alert-dismissible alert-danger">
@@ -11,6 +14,10 @@
             <strong>Warning!</strong><p>No CSV files in given directory: {{ path }}</p>
         </div>
     {% elseif newValue == true %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Success!</strong><p>Loaded new {{ dataValues|length }} values</p>
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -32,6 +39,23 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             <strong>Info!</strong><p>No new values found in csv files: {{ path }}</p>
         </div>        
+    {% endif %}
+    {% if wrongFileList %}
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Warning!</strong><p>Not CSV files in given directory: {{ path }}</p>
+            <table class="table table-hover">
+                <tbody>
+                    {% for value in wrongFileList %}
+                        {% if value != "." and value != ".." %}
+                            <tr class="table-light">
+                                <td>{{ value }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
     <a href="{{ path('network_element_index') }}">back to list</a>
 {% endblock %}
