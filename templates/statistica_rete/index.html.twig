@@ -5,19 +5,36 @@
 {% block body %}
     <h1>StatisticaRete index</h1>
 
-    <table id="statistics" class="table">
+    <div id="toolbar">
+        <select class="form-control">
+            <option value="">Export Basic</option>
+            <option value="all">Export All</option>
+            <option value="selected">Export Selected</option>
+        </select>
+    </div>
+
+    <table 
+        id="statistics"
+        data-toggle="table" 
+        data-search="true" 
+        data-show-export="true"
+        data-pagination="true"
+        data-click-to-select="true"
+        data-toolbar="#toolbar">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Valore</th>
-                <th>Data</th>
-                <th>Nome Elemento</th>
-                <th>Actions</th>
+                <th data-field="state" data-checkbox="true"></th>
+                <th data-field="id" data-filter-control="input" data-sortable="true">Id</th>
+                <th data-field="valore" data-filter-control="input" data-sortable="true">Valore</th>
+                <th data-field="data" data-filter-control="input" data-sortable="true">Data</th>
+                <th data-field="nomeElemento" data-filter-control="input" data-sortable="true">Nome Elemento</th>
+                <th data-field="actions" data-filter-control="input" data-sortable="true">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for statistica_rete in statistica_retes %}
             <tr>
+                <td class="bs-checkbox "><input data-index="{{ statistica_rete.id }}" name="btSelectItem" type="checkbox"></td>
                 <td>{{ statistica_rete.id }}</td>
                 <td>{{ statistica_rete.valore }}</td>
                 <td>{{ statistica_rete.data ? statistica_rete.data|date('Y-m-d') : '' }}</td>
@@ -38,8 +55,27 @@
         {% endfor %}
         </tbody>
     </table>
-    <a class="btn btn-outline-primary" href="{{ path('statistica_rete_new')}}" class="nav-link">New Statistic</a>
+    <br>    
+    <p><a class="pull-right btn btn-outline-primary" href="{{ path('statistica_rete_new')}}" class="nav-link">New Statistic</a></p>
+
 {% endblock %}
 {% block javascripts %}
+<script src="{{asset('/js/bootstrap-table.js')}}"></script>
+<script src="{{asset('/js/bootstrap-table-it-IT.js')}}"></script>
+<script src="{{asset('/js/bootstrap-table-export.js')}}"></script>
+<script type="text/javascript" src="{{asset('/js/tableExport.js')}}"></script>
+<script type="text/javascript" src="{{asset('/js/jquery.base64.js')}}"></script>
+
+<script>
+    var $table = $('#statistics');
+    $(function () {
+        $('#toolbar').find('select').change(function () {
+           $table.bootstrapTable('destroy').bootstrapTable({
+                exportDataType: $(this).val()
+            });
+        });
+    })
+</script> 
+
 <script src="/js/main.js"></script>
 {% endblock %}
