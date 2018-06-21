@@ -143,7 +143,9 @@ class NetworkElementController extends Controller
         $networkElement = $this->getDoctrine()
         ->getRepository(NetworkElement::class)
         ->find($id);
-        $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
+        $path = $networkElement->getDirectoryStatistiche();
+        dump($path);
+//        $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
         //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
         $dataValues = array();
@@ -166,6 +168,7 @@ class NetworkElementController extends Controller
                         }
                     }
                     if($valueIndex != 0){ 
+                        //echo("Esiste colonna con indice cercato");
                         //ricerca della data a partire dal nome del file
                         $pieces = explode("_",$fileName);
                         foreach ($pieces as $piece){
@@ -185,16 +188,21 @@ class NetworkElementController extends Controller
                                 }
                             }
                         }//fine scansione segnmenti del file name separati da _ per trovare la data
-        
+                        //scandisce le righe e verifica se il nuovo valore trovato è maggiore di quello già esistente
                         while ( ($fileRow = fgetcsv($handle, 1000, ",")) !== FALSE) { //scandisco le righe
                             $num = count($fileRow); //conta il numero di elementi nell'array $fileRow
-                            for ($c=0; $c < $num; $c++) {
-                                if(($valueIndex==$c) && ($fileRow[$c] > $dataValues[$data])){
-                                    $dataValues[$data]=$fileRow[$c];     
-                                }
-                            }                                    
+                            if($num > 0){ //mi assicuro che ci siano valori da cercare
+                                for ($c=0; $c < $num; $c++) {
+                                    if(($valueIndex==$c)  
+                                        && ($fileRow[$c] > $dataValues[$data])
+                                        &&  is_numeric($fileRow[$c])
+                                    ){
+                                        $dataValues[$data]=$fileRow[$c]; 
+                                    }
+                                }                                        
+                            }
 
-                        }
+                        }//fine ricerva nuovo valore
                     }
                     fclose($handle);
                 } //fine gestione contenuto del file
