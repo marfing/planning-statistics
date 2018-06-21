@@ -144,68 +144,76 @@ class NetworkElementController extends Controller
         ->getRepository(NetworkElement::class)
         ->find($id);
         $path = $networkElement->getDirectoryStatistiche();
-        dump($path);
+//        dump($path);
 //        $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
         //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
         $dataValues = array();
         $wrongFileList = array();
-        $csvExist = false;
         $newGraphValue = false;
+        $csvExist = false; //usato solo per il report finale - true se esiste anche un solo file csv
+
         foreach ($fileList as $fileName){
+            $dataAlreadyInArray = false;
             if(strpos($fileName,'.csv') != false){
                 $csvExist = true;
                 //iniziamo l'apertura del file csv per controllare se esiste la colonna dove andare a leggere il valore
                 $row = 1;
                 if (($handle = fopen("$path/$fileName","r")) !== FALSE) {
                     $valueIndex = 0; //indice che rappresenta la colonna dove è presente il valore da controllare  
-                    $fileRow = fgetcsv($handle, 1000, ",");
-                    //controllo che esista l'indice di colonna settato per il network element
-                    $num = count($fileRow); //conta il numero di elementi nell'array $fileRow
-                    for ($c=0; $c < $num; $c++) {
-                        if($fileRow[$c]===$networkElement->getCsvCapacityTypeName()){
-                            $valueIndex=$c;                                        
-                        }
-                    }
-                    if($valueIndex != 0){ 
-                        //echo("Esiste colonna con indice cercato");
-                        //ricerca della data a partire dal nome del file
-                        $pieces = explode("_",$fileName);
-                        foreach ($pieces as $piece){
-                            if( strlen($piece) >= 12){
-                                list($year,$month,$day) = sscanf($piece,"%4d%2d%2d");
-                                list($yearString,$monthString,$dayString) = sscanf($piece,"%4s%2s%2s");
-                                //implementare qui il check della validità per anno, mese e giorno
-                                if( ($year >= 2000) && ($year <= 3000) && ($month>=1) && ($month<=12) && ($day>=1) && ($day<=31) ){
-                                    // creiamo la stringa data che diventerà l'indice dell'array associativo data-valore
-                                    $data = "$yearString-$monthString-$dayString";
-                                    //trovare se esiste già nell'array dataValues, altrimenti si crea con valore 0
-                                    $dataAlreadyInArray = false;
-                                    foreach ($dataValues as $dataArray => $valueArray){
-                                        if($dataArray == $data){ $dataAlreadyInArray = true; }
-                                    }
-                                    if(!$dataAlreadyInArray){$dataValues[$data]=0;}
+                    if(( $fileRow = fgetcsv($handle, 1000, ",")) != FALSE){
+                        //controllo che esista l'indice di colonna settato per il network element
+                        if($valueIndex == 0){
+                            $num = count($fileRow); //conta il numero di elementi nell'array $fileRow
+                            for ($c=0; $c < $num; $c++) {
+                                if($fileRow[$c]===$networkElement->getCsvCapacityTypeName()){
+                                    $valueIndex=$c;                                        
                                 }
                             }
-                        }//fine scansione segnmenti del file name separati da _ per trovare la data
-                        //scandisce le righe e verifica se il nuovo valore trovato è maggiore di quello già esistente
-                        while ( ($fileRow = fgetcsv($handle, 1000, ",")) !== FALSE) { //scandisco le righe
-                            $num = count($fileRow); //conta il numero di elementi nell'array $fileRow
-                            if($num > 0){ //mi assicuro che ci siano valori da cercare
-                                for ($c=0; $c < $num; $c++) {
-                                    if(($valueIndex==$c)  
-                                        && ($fileRow[$c] > $dataValues[$data])
-                                        &&  is_numeric($fileRow[$c])
-                                    ){
-                                        $dataValues[$data]=$fileRow[$c]; 
+//                            echo("<p>Filename: $fileName  -  Index found: $valueIndex </p>");    
+                        }  //fine controllo per ricerca indice di colonna corretto
+                        if($valueIndex != 0 && !$dataAlreadyInArray){ 
+                            //ricerca della data a partire dal nome del file
+                            $pieces = explode("_",$fileName);
+                            foreach ($pieces as $piece){
+                                if( strlen($piece) >= 12){
+                                    list($year,$month,$day) = sscanf($piece,"%4d%2d%2d");
+                                    list($yearString,$monthString,$dayString) = sscanf($piece,"%4s%2s%2s");
+                                    //implementare qui il check della validità per anno, mese e giorno
+                                    if( ($year >= 2000) && ($year <= 3000) && ($month>=1) && ($month<=12) && ($day>=1) && ($day<=31) ){
+                                        // creiamo la stringa data che diventerà l'indice dell'array associativo data-valore
+                                        $data = "$yearString-$monthString-$dayString";
+                                        //trovare se esiste già nell'array dataValues, altrimenti si crea con valore 0                                        
+                                        foreach ($dataValues as $dataArray => $valueArray){
+                                            if($dataArray == $data){ $dataAlreadyInArray = true; }
+                                        }
+                                        if(!$dataAlreadyInArray){
+//                                            echo("<p>Filename: $fileName - Data: $data </p>");
+                                            $dataValues[$data]=0;
+                                        }
                                     }
-                                }                                        
-                            }
-
-                        }//fine ricerva nuovo valore
-                    }
+                                }
+                            }//fine scansione segmenti del file name separati da _ per trovare la data
+                            //scandisce le righe e verifica se il nuovo valore trovato è maggiore di quello già esistente
+                            while ( ($fileRow = fgetcsv($handle, 1000, ",")) !== FALSE) { //scandisco le righe
+                                $num = count($fileRow); //conta il numero di elementi nell'array $fileRow
+                                if($num > 0){ //mi assicuro che ci siano valori da cercare
+                                    for ($c=0; $c < $num; $c++) {
+                                        if(($valueIndex==$c)  
+                                            && ($fileRow[$c] > $dataValues[$data])
+                                            &&  is_numeric($fileRow[$c])
+                                        ){
+                                            $dataValues[$data]=$fileRow[$c]; 
+                                            //echo("<p>Filename: $fileName - Valore: " .$fileRow[$c]."</p>");
+                                        }
+                                    }                                        
+                                }
+    
+                            }//fine ricerva nuovo valore
+                        }//fine gestione ricerva valori avendo trovato indice colonna valido  
+                    }//fine gestione singola riga file csv valida
                     fclose($handle);
-                } //fine gestione contenuto del file
+                } //fine gestione del file handler
             } else { $wrongFileList[] = $fileName;}//fine check csv file
         } //fine parsing singolo file
         $em = $this->getDoctrine()->getManager();
@@ -228,6 +236,7 @@ class NetworkElementController extends Controller
             }
             $em->flush();
         }
+        echo("<p>csvExist: $csvExist - New Value: $newGraphValue </p>");
         return $this->render('network_element/csv_loaded.html.twig',array(
             'dataValues' => $dataValues,
             'csvExist' => $csvExist,
@@ -245,7 +254,8 @@ class NetworkElementController extends Controller
         $networkElement = $this->getDoctrine()
         ->getRepository(NetworkElement::class)
         ->find($id);
-        $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
+        $path = $networkElement->getDirectoryStatistiche();
+        //$path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
         $phpFileCounter=0;
         $wrongFileTypeCounter=0;
@@ -263,4 +273,31 @@ class NetworkElementController extends Controller
                                     'wrongFiles' => $wrongFileTypeCounter));
     }
 
+    /**
+     * @Route("/backupcsvdelete/{id}", name="network_element_backup_csv_delete", methods="GET")
+     */
+    public function backupCsvDelete($id)
+    {
+        $networkElement = $this->getDoctrine()
+        ->getRepository(NetworkElement::class)
+        ->find($id);
+        $path = $networkElement->getDirectoryStatistiche() . "/backup";
+        $fileList = scandir($path);
+        $phpFileCounter=0;
+        $wrongFileTypeCounter=0;
+        foreach ($fileList as $fileName) {
+            if (file_exists($path."/".$fileName) && (strpos($fileName,'.csv') != false)) {
+                unlink($path."/".$fileName);
+                $phpFileCounter++;
+            } else {
+                $wrongFileTypeCounter++;
+                // File not found.
+            }
+        }
+        return $this->render('network_element/csv_backup_delete_report.html.twig',
+                                array(
+                                    'path' => $path,
+                                    'phpFiles' => $phpFileCounter,
+                                    'wrongFiles' => $wrongFileTypeCounter));
+    }
 }

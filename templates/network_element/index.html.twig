@@ -53,6 +53,7 @@
                     </p>
                     <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
                     <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv', {'id': network_element.id}) }}">Backup CSV</a>                    
+                    <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv_delete', {'id': network_element.id}) }}">Backup CSV Delete</a>                    
                 </td>
             </tr>
         {% else %}
