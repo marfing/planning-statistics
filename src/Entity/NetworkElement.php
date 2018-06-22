@@ -152,4 +152,32 @@ class NetworkElement
 
         return $this;
     }
+
+    public function getLastStatisticValue()
+    {
+        $value = 0;
+        $data = NULL;
+        foreach($this->statisticheRete as $statistica){
+            if( ($data == NULL) || ($statistica->getData() > $data)){
+                $data = $statistica->getData();
+                $value = $statistica->getValore();
+            }
+        }
+        return $value;
+    }
+
+    public function getFreeCapacity()
+    {
+        if( ($free = $this->capacity-$this->getLastStatisticValue()) > 0){
+            return $free; 
+        } else {return 0;}
+    }
+
+    public function getFreePercentage()
+    {
+        if( ($free = $this->capacity-$this->getLastStatisticValue()) > 0){
+            return (1-($this->getLastStatisticValue()/$this->capacity))*100; 
+        } else {return 0;}
+    }
+
 }

@@ -9,9 +9,7 @@
     <h1>NetworkElement index</h1>
     <div id="toolbar">
         <select class="form-control">
-            <option value="">Export Basic</option>
             <option value="all">Export All</option>
-            <option value="selected">Export Selected</option>
         </select>
     </div>
     <table id="netelements"
@@ -20,13 +18,16 @@
         data-show-export="true"
         data-pagination="true"
         data-click-to-select="true"
-        data-toolbar="#toolbar">
+        data-toolbar="#toolbar"
+        >
         <thead>
             <tr>
                 <th data-field="state" data-checkbox="true"></th>
                 <th data-field="id" data-filter-control="input" data-sortable="true">Id</th>
                 <th data-field="nome" data-filter-control="input" data-sortable="true">Nome</th>
                 <th data-field="capacity" data-filter-control="input" data-sortable="true">Capacity</th>
+                <th data-field="usage" data-filter-control="input" data-sortable="true">Usage</th>
+                <th data-field="percentage" data-filter-control="input" data-sortable="true">Free %</th>
                 <th data-field="capacityType" data-filter-control="input" data-sortable="true">Capacity Type</th>
                 <th data-field="CSVColumnName" data-filter-control="input" data-sortable="true">CSV column name</th>
                 <th data-field="CSVFilesDirectory" data-filter-control="input" data-sortable="true">CSV files directory</th>
@@ -40,6 +41,8 @@
                 <td>{{ network_element.id }}</td>
                 <td>{{ network_element.nome }}</td>
                 <td>{{ network_element.capacity }}</td>
+                <td>{{ network_element.getLastStatisticValue() }}</td>
+                <td>{{ network_element.getFreePercentage() }}</td>
                 <td>{{ network_element.capacityType }}</td>
                 <td>{{ network_element.csvCapacityTypeName }}</td>
                 <td>{{ network_element.directoryStatistiche }}</td>
@@ -75,10 +78,10 @@
 <script type="text/javascript" src="{{asset('/js/jquery.base64.js')}}"></script>
 
 <script>
-    var $table = $('#table');
+    var $table = $('#netelements');
     $(function () {
         $('#toolbar').find('select').change(function () {
-           $table.bootstrapTable('destroy').bootstrapTable({
+           $table.bootstrapTable({
                 exportDataType: $(this).val()
             });
         });

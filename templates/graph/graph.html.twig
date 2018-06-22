@@ -3,10 +3,24 @@
 {% block title %}Graph Page{% endblock %}
 
 {% block body %}
-    <h1>{{element.nome}} - {{element.CapacityType}} Graph</h1>
-    <ul>
+    <h1 class="display">{{element.nome}} - {{element.CapacityType}} Graph</h1>
+    {% if free_percentage == 0 %}
+    <div class="alert alert-dismissible alert-danger">Resources not available!!</div>
+    {% elseif free_percentage < 25 %}
+    <div class="alert alert-warning" role="alert">Warning - Resources limited!!</div>
+    {% else %} 
+    <div class="alert alert-success" role="alert">Resources available</div>
+    {% endif %}
+        
     <!--Div that will hold the pie chart-->
-    <div class='container-fluid' id="chart_div"></div>
+    <div class="container-fluid">
+        <div class="row jumbotron">
+            <div class='col' id="pie_chart_div"></div>
+            <div class='col-6' id="chart_div"></div>
+        </div>
+        <div class='row jumbotron' id="chart_basic"></div>
+    </div>
+    
 {% endblock %}
 
 {% block javascripts %}
@@ -25,15 +39,15 @@
 
             // Create the data table.
             var data = google.visualization.arrayToDataTable([
-                ['Data', '{{element.CapacityType}}'],
+                ['Data', '{{element.CapacityType}}','Capacity'],
                 {% for statistic in statistics %}
-                ['{{statistic.getDataAsString()}}',{{statistic.valore}}],
+                ['{{statistic.getDataAsString()}}',{{statistic.valore}},{{element.capacity}}],
                 {% endfor %}
             ]);
 
             // Set chart options
             var options = {
-            title: '{{element.nome}} capacity',
+            title: '{{element.nome}} capacity check',
             hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
             vAxis: {minValue: 0,logScale: true},
             height: 400
@@ -44,4 +58,61 @@
             chart.draw(data, options);
         }
         </script>
+
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawBasicChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawBasicChart() {
+
+            // Create the data table.
+            var data = google.visualization.arrayToDataTable([
+                ['Data', '{{element.CapacityType}}'],
+                {% for statistic in statistics %}
+                ['{{statistic.getDataAsString()}}',{{statistic.valore}}],
+                {% endfor %}
+            ]);
+
+            // Set chart options
+            var options = {
+            title: '{{element.nome}} capacity check',
+            hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0,logScale: true},
+            height: 400
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_basic'));
+            chart.draw(data, options);
+        }
+        </script>
+
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawPieChart);
+
+            function drawPieChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Usage', 'Value'],
+                ['Used',   {{last_value}}],
+                ['Free',   {{free_capacity}}],
+            ]);
+
+            var options = {
+                title: 'Resources Availability'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('pie_chart_div'));
+
+            chart.draw(data, options);
+            }
+        </script>
+
 {% endblock %}

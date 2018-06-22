@@ -28,7 +28,9 @@ class NetworkElementType extends AbstractType
             ->add('capacityType', ChoiceType::class, array(
                 'choices' => array(
                     'Max Calls' => 'calls',
-                    'Max Users' => 'users'),
+                    'Max Users' => 'users',
+                    'Max Voice Mail' => 'voicemail'
+                ),
                 'attr' => array(
                     'class' => 'form-control'))) 
             ->add('directoryStatistiche', TextType::class, array(

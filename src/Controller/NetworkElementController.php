@@ -132,6 +132,9 @@ class NetworkElementController extends Controller
         return $this->render('/graph/graph.html.twig',[
             'statistics' => $statistics,
             'element' => $networkElement,
+            'last_value' => $networkElement->getLastStatisticValue(), 
+            'free_capacity'=> $networkElement->getFreeCapacity(),
+            'free_percentage' => $networkElement->getFreePercentage()
         ]); 
     }
 
@@ -236,7 +239,6 @@ class NetworkElementController extends Controller
             }
             $em->flush();
         }
-        echo("<p>csvExist: $csvExist - New Value: $newGraphValue </p>");
         return $this->render('network_element/csv_loaded.html.twig',array(
             'dataValues' => $dataValues,
             'csvExist' => $csvExist,
