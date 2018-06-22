@@ -19,7 +19,7 @@ class NetworkElement
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=190, unique=true)
+     * @ORM\Column(type="string", length=190)
      */
     private $nome;
 
