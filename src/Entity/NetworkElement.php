@@ -166,6 +166,17 @@ class NetworkElement
         return $value;
     }
 
+    public function getLastStatisticDate()
+    {
+        $data = NULL;
+        foreach($this->statisticheRete as $statistica){
+            if( ($data == NULL) || ($statistica->getData() > $data)){
+                $data = $statistica->getData();
+            }
+        }
+        return $data->format('Y-m-d');
+    }
+
     public function getFreeCapacity()
     {
         if( ($free = $this->capacity-$this->getLastStatisticValue()) > 0){

@@ -23,9 +23,9 @@
         <thead>
             <tr>
                 <th data-field="state" data-checkbox="true"></th>
-                <th data-field="id" data-filter-control="input" data-sortable="true">Id</th>
                 <th data-field="nome" data-filter-control="input" data-sortable="true">Nome</th>
                 <th data-field="capacity" data-filter-control="input" data-sortable="true">Capacity</th>
+                <th data-field="lastDate" data-filter-control="input" data-sortable="true">Last statistic date</th>
                 <th data-field="usage" data-filter-control="input" data-sortable="true">Usage</th>
                 <th data-field="percentage" data-filter-control="input" data-sortable="true">Free %</th>
                 <th data-field="capacityType" data-filter-control="input" data-sortable="true">Capacity Type</th>
@@ -38,9 +38,9 @@
         {% for network_element in network_elements %}
             <tr>
                 <td class="bs-checkbox "><input data-index="{{ network_element.id }}" name="btSelectItem" type="checkbox"></td>
-                <td>{{ network_element.id }}</td>
                 <td>{{ network_element.nome }}</td>
                 <td>{{ network_element.capacity }}</td>
+                <td>{{ network_element.getLastStatisticDate() }}</td>
                 <td>{{ network_element.getLastStatisticValue() }}</td>
                 <td>{{ network_element.getFreePercentage() }}</td>
                 <td>{{ network_element.capacityType }}</td>
