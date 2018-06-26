@@ -9,6 +9,7 @@ use App\Repository\NetworkElementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -68,7 +69,9 @@ class NetworkElementController extends Controller
         if ($form->isSubmitted()){
             if($request->request->get('save') && $form->isValid()){
                 $this->getDoctrine()->getManager()->flush();
-                return $this->redirectToRoute('network_element_index');
+                return $this->redirectToRoute('network_element_show', array(
+                                                        'id' => $networkElement->getId()
+                ));
             }//l'alternativa può solo essere il cancel
             return $this->redirectToRoute('network_element_index');
         }
@@ -107,7 +110,7 @@ class NetworkElementController extends Controller
     /**
      * @Route("/delete/{id}/statistics", name="network_element_delete_stat")
      */
-    public function deleteStatistics($id): Response
+    public function deleteStatistics(Request $request, $id): Response
     {
         $networkElement = $this->getDoctrine()->getRepository(NetworkElement::class)->find($id);
         foreach( $networkElement->getStatisticheRete() as $statistica){
@@ -115,7 +118,12 @@ class NetworkElementController extends Controller
         }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
-        return $this->redirectToRoute('network_element_index');
+        $referer = $request->headers->get('referer');   
+        if($referer){
+            return new RedirectResponse($referer);
+        } else {
+            return $this->redirectToRoute('network_element_index');
+        }
     }
 
     /**
@@ -131,7 +139,7 @@ class NetworkElementController extends Controller
 
         return $this->render('/graph/graph.html.twig',[
             'statistics' => $statistics,
-            'element' => $networkElement,
+            'network_element' => $networkElement,
             'last_value' => $networkElement->getLastStatisticValue(), 
             'free_capacity'=> $networkElement->getFreeCapacity(),
             'free_percentage' => $networkElement->getFreePercentage()
@@ -141,14 +149,12 @@ class NetworkElementController extends Controller
     /**
      * @Route("/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
      */
-    public function uploadCsv($id)
+    public function uploadCsv(Request $request, $id)
     {
         $networkElement = $this->getDoctrine()
         ->getRepository(NetworkElement::class)
         ->find($id);
         $path = $networkElement->getDirectoryStatistiche();
-//        dump($path);
-//        $path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
         //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
         $dataValues = array();
@@ -173,7 +179,6 @@ class NetworkElementController extends Controller
                                     $valueIndex=$c;                                        
                                 }
                             }
-//                            echo("<p>Filename: $fileName  -  Index found: $valueIndex </p>");    
                         }  //fine controllo per ricerca indice di colonna corretto
                         if($valueIndex != 0 && !$dataAlreadyInArray){ 
                             //ricerca della data a partire dal nome del file
@@ -191,7 +196,6 @@ class NetworkElementController extends Controller
                                             if($dataArray == $data){ $dataAlreadyInArray = true; }
                                         }
                                         if(!$dataAlreadyInArray){
-//                                            echo("<p>Filename: $fileName - Data: $data </p>");
                                             $dataValues[$data]=0;
                                         }
                                     }
@@ -239,19 +243,20 @@ class NetworkElementController extends Controller
             }
             $em->flush();
         }
-        return $this->render('network_element/csv_loaded.html.twig',array(
-            'dataValues' => $dataValues,
-            'csvExist' => $csvExist,
-            'path' => $path,
-            'newValue' => $newGraphValue,
-            'wrongFileList' => $wrongFileList));
+        
+        $referer = $request->headers->get('referer');   
+        if($referer){
+            return new RedirectResponse($referer);
+        } else {
+            return $this->redirectToRoute('network_element_index');
+        }
     }
 
 
     /**
      * @Route("/backupcsv/{id}", name="network_element_backup_csv", methods="GET")
      */
-    public function backupCsv($id)
+    public function backupCsv(Request $request, $id)
     {
         $networkElement = $this->getDoctrine()
         ->getRepository(NetworkElement::class)
@@ -269,16 +274,23 @@ class NetworkElementController extends Controller
                 $wrongFileTypeCounter++;
             }
         }
-        return $this->render('network_element/csv_backup_report.html.twig',
+        $referer = $request->headers->get('referer');   
+        if($referer){
+            return new RedirectResponse($referer);
+        } else {
+            return $this->redirectToRoute('network_element_index');
+        }
+
+/*        return $this->render('network_element/csv_backup_report.html.twig',
                                 array(
                                     'phpFiles' => $phpFileCounter,
-                                    'wrongFiles' => $wrongFileTypeCounter));
+                                    'wrongFiles' => $wrongFileTypeCounter));*/
     }
 
     /**
      * @Route("/backupcsvdelete/{id}", name="network_element_backup_csv_delete", methods="GET")
      */
-    public function backupCsvDelete($id)
+    public function backupCsvDelete(Request $request, $id)
     {
         $networkElement = $this->getDoctrine()
         ->getRepository(NetworkElement::class)
@@ -296,10 +308,17 @@ class NetworkElementController extends Controller
                 // File not found.
             }
         }
-        return $this->render('network_element/csv_backup_delete_report.html.twig',
+        $referer = $request->headers->get('referer');   
+        if($referer){
+            return new RedirectResponse($referer);
+        } else {
+            return $this->redirectToRoute('network_element_index');
+        }
+
+/*        return $this->render('network_element/csv_backup_delete_report.html.twig',
                                 array(
                                     'path' => $path,
                                     'phpFiles' => $phpFileCounter,
-                                    'wrongFiles' => $wrongFileTypeCounter));
+                                    'wrongFiles' => $wrongFileTypeCounter));*/
     }
 }

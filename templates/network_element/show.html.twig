@@ -5,6 +5,24 @@
 {% block body %}
     <h1>NetworkElement</h1>
 
+    <h1 class="display">{{network_element.nome}} - {{network_element.CapacityType}} Graph</h1>
+    {% if network_element.getFreePercentage() == 0 %}
+    <div class="alert alert-dismissible alert-danger">Alarm - Network Element Resources Finished!!</div>
+    {% elseif network_element.getFreePercentage() < 25 %}
+    <div class="alert alert-warning" role="alert">Warning - Resources limited!!</div>
+    {% else %} 
+    <div class="alert alert-success" role="alert">Resources available</div>
+    {% endif %}
+
+    <!--Div that will hold the pie chart-->
+    <div class="container-fluid">
+        <div class="row jumbotron">
+            <div class='col' id="pie_chart_div"></div>
+            <div class='col-6' id="chart_div"></div>
+        </div>
+        <div class='row jumbotron' id="chart_basic"></div>
+    </div>
+
     <table class="table">
         <tbody>
             <tr>
@@ -18,6 +36,18 @@
             <tr>
                 <th>Capacity</th>
                 <td>{{ network_element.capacity }}</td>
+            </tr>
+            <tr>
+                <th>Last statistic date</th>
+                <td>{{ network_element.getLastStatisticDate() }}</td>
+            </tr>
+            <tr>
+                <th>Last statistic value</th>
+                <td>{{ network_element.getLastStatisticValue() }}</td>
+            </tr>
+            <tr>
+                <th>Free resources percentege</th>
+                <td>{{ network_element.getFreePercentage() }}</td>
             </tr>
             <tr>
                 <th>CapacityType</th>
@@ -37,4 +67,104 @@
     <a class="btn btn-primary" href="{{ path('network_element_index') }}">List</a>
     <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">Edit</a>
     <a class="btn btn-danger" data-id="{{network_element.id}}" href="#">Delete</a>
+    <a class="btn btn-outline-primary" href="{{ path('network_element_graph', {'id': network_element.id}) }}">graph</a>
+    <a class="btn btn-outline-primary" href="{{ path('network_element_delete_stat', {'id': network_element.id}) }}">Delete data</a>
+    <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
+    <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv', {'id': network_element.id}) }}">Backup CSV</a>                    
+    <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv_delete', {'id': network_element.id}) }}">Backup CSV Delete</a>                    
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" src="/js/charts/loader.js"></script>
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawChart() {
+
+            // Create the data table.
+            var data = google.visualization.arrayToDataTable([
+                ['Data', '{{network_element.CapacityType}}','Capacity'],
+                {% for statistic in network_element.getStatisticheRete() %}
+                ['{{statistic.getDataAsString()}}',{{statistic.valore}},{{network_element.capacity}}],
+                {% endfor %}
+            ]);
+
+            // Set chart options
+            var options = {
+            title: '{{network_element.nome}} capacity check',
+            hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0,logScale: false},
+            height: 400
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+        </script>
+
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages':['corechart']});
+
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(drawBasicChart);
+
+        // Callback that creates and populates a data table,
+        // instantiates the pie chart, passes in the data and
+        // draws it.
+        function drawBasicChart() {
+
+            // Create the data table.
+            var data = google.visualization.arrayToDataTable([
+                ['Data', '{{network_element.CapacityType}}'],
+                {% for statistic in network_element.getStatisticheRete() %}
+                ['{{statistic.getDataAsString()}}',{{statistic.valore}}],
+                {% endfor %}
+            ]);
+
+            // Set chart options
+            var options = {
+            title: '{{network_element.nome}} capacity check',
+            hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0,logScale: true},
+            height: 400
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_basic'));
+            chart.draw(data, options);
+        }
+        </script>
+
+        <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawPieChart);
+
+            function drawPieChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                ['Usage', 'Value'],
+                ['Used',   {{network_element.getLastStatisticValue()}}],
+                ['Free',   {{network_element.getFreeCapacity()}}],
+            ]);
+
+            var options = {
+                title: 'Resources Availability'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('pie_chart_div'));
+
+            chart.draw(data, options);
+            }
+        </script>
+
 {% endblock %}

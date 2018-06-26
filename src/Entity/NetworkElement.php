@@ -174,7 +174,10 @@ class NetworkElement
                 $data = $statistica->getData();
             }
         }
-        return $data->format('Y-m-d');
+        if($data == NULL){
+            return "Date not available";
+        } else {return $data->format('Y-m-d');}
+        
     }
 
     public function getFreeCapacity()

@@ -29,7 +29,11 @@ class NetworkElementType extends AbstractType
                 'choices' => array(
                     'Max Calls' => 'calls',
                     'Max Users' => 'users',
-                    'Max Voice Mail' => 'voicemail'
+                    'Max Voice Mail' => 'voicemail',
+                    'Max SIP Users' => 'sip users',
+                    'Max H248 Users' => 'h248 users',
+                    'Max H323 Users' => 'h323 users',                    
+                    'Max MSAN' => 'msan'
                 ),
                 'attr' => array(
                     'class' => 'form-control'))) 

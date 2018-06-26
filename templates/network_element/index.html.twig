@@ -48,15 +48,6 @@
                 <td>{{ network_element.directoryStatistiche }}</td>
                 <td>
                     <p><a class="btn btn-secondary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
-                    <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">edit</a>
-                    <a class="btn btn-danger" data-id="{{network_element.id}}" href="#">delete</a></p>
-                    <p>
-                        <a class="btn btn-outline-primary" href="{{ path('network_element_graph', {'id': network_element.id}) }}">graph</a>
-                        <a class="btn btn-outline-primary" href="{{ path('network_element_delete_stat', {'id': network_element.id}) }}">Delete data</a>
-                    </p>
-                    <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
-                    <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv', {'id': network_element.id}) }}">Backup CSV</a>                    
-                    <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv_delete', {'id': network_element.id}) }}">Backup CSV Delete</a>                    
                 </td>
             </tr>
         {% else %}
