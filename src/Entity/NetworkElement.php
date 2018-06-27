@@ -49,6 +49,16 @@ class NetworkElement
      */
     private $csvCapacityTypeName;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Vendor", inversedBy="networkElements")
+     */
+    private $vendor;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\NetworkElementsType", inversedBy="networkElements")
+     */
+    private $networkElementsType;
+
     public function __construct()
     {
         $this->statisticheRete = new ArrayCollection();
@@ -192,6 +202,30 @@ class NetworkElement
         if( ($free = $this->capacity-$this->getLastStatisticValue()) > 0){
             return (1-($this->getLastStatisticValue()/$this->capacity))*100; 
         } else {return 0;}
+    }
+
+    public function getVendor(): ?Vendor
+    {
+        return $this->vendor;
+    }
+
+    public function setVendor(?Vendor $vendor): self
+    {
+        $this->vendor = $vendor;
+
+        return $this;
+    }
+
+    public function getNetworkElementsType(): ?NetworkElementsType
+    {
+        return $this->networkElementsType;
+    }
+
+    public function setNetworkElementsType(?NetworkElementsType $networkElementsType): self
+    {
+        $this->networkElementsType = $networkElementsType;
+
+        return $this;
     }
 
 }

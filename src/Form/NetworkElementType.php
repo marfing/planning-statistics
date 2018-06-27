@@ -3,12 +3,17 @@
 namespace App\Form;
 
 use App\Entity\NetworkElement;
+use App\Entity\Vendor;
+use App\Entity\NetworkElementsType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
 
 
 class NetworkElementType extends AbstractType
@@ -16,10 +21,18 @@ class NetworkElementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('nome', TextType::class, array(
-            'label' => 'Nome dell\'elemento di rete'
+            ->add('nome', TextType::class, array(
+                'label' => 'Nome dell\'elemento di rete'
+                ))
+            ->add('vendor', EntityType::class, array(
+                'class' => Vendor::class,
+                'choice_label' => 'Name'
             ))
-        ->add('capacity', IntegerType::class, array(
+            ->add('networkElementsType', EntityType::class, array(
+                'class' => NetworkElementsType::class,
+                'choice_label' => 'Name'
+            ))
+            ->add('capacity', IntegerType::class, array(
                 'label' => 'Max capacity of the element'
             ))
             ->add('csvCapacityTypeName', TextType::class, array(

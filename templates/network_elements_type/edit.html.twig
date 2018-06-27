@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit NetworkElementsType{% endblock %}
+
+{% block body %}
+    <h1>Edit NetworkElementsType</h1>
+
+    {{ include('network_elements_type/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('network_elements_type_index') }}">back to list</a>
+
+    {{ include('network_elements_type/_delete_form.html.twig') }}
+{% endblock %}

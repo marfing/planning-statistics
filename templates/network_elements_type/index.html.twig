@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NetworkElementsType index{% endblock %}
+
+{% block body %}
+    <h1>NetworkElementsType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for network_elements_type in network_elements_types %}
+            <tr>
+                <td>{{ network_elements_type.id }}</td>
+                <td>{{ network_elements_type.name }}</td>
+                <td>
+                    <a href="{{ path('network_elements_type_show', {'id': network_elements_type.id}) }}">show</a>
+                    <a href="{{ path('network_elements_type_edit', {'id': network_elements_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('network_elements_type_new') }}">Create new</a>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\NetworkElement;
 use App\Entity\StatisticaRete;
+use App\Entity\NetworkElementsType;
 use App\Form\NetworkElementType;
 use App\Repository\NetworkElementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;

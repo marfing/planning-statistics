@@ -24,6 +24,7 @@
             <tr>
                 <th data-field="state" data-checkbox="true"></th>
                 <th data-field="nome" data-filter-control="input" data-sortable="true">Nome</th>
+                <th data-field="vendor" data-filter-control="input" data-sortable="true">Vendor</th>
                 <th data-field="capacity" data-filter-control="input" data-sortable="true">Capacity</th>
                 <th data-field="lastDate" data-filter-control="input" data-sortable="true">Last statistic date</th>
                 <th data-field="usage" data-filter-control="input" data-sortable="true">Usage</th>
@@ -39,6 +40,7 @@
             <tr>
                 <td class="bs-checkbox "><input data-index="{{ network_element.id }}" name="btSelectItem" type="checkbox"></td>
                 <td>{{ network_element.nome }}</td>
+{#                <td>{{ network_element.vendor.name }}</td>#}
                 <td>{{ network_element.capacity }}</td>
                 <td>{{ network_element.getLastStatisticDate() }}</td>
                 <td>{{ network_element.getLastStatisticValue() }}</td>
