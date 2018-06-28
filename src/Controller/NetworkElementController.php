@@ -27,6 +27,20 @@ class NetworkElementController extends Controller
     }
 
     /**
+     * @Route("/index/{name}", name="network_element_index_filter", methods="GET")
+     */
+    public function indexFilter($name): Response
+    {
+        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
+        foreach ( $networkElements as $key => $element){
+            if($element->getNetworkElementsType()->getName() != $name){
+                unset($networkElements[$key]);    
+            }
+        }
+        return $this->render('network_element/index.html.twig', ['network_elements' => $networkElements]);
+    }
+
+    /**
      * @Route("/new", name="network_element_new", methods="GET|POST")
      */
     public function new(Request $request): Response
@@ -56,6 +70,7 @@ class NetworkElementController extends Controller
      */
     public function show(NetworkElement $networkElement): Response
     {
+        $this->parseCSV($networkElement->getId());
         return $this->render('network_element/show.html.twig', ['network_element' => $networkElement]);
     }
 
@@ -147,10 +162,7 @@ class NetworkElementController extends Controller
         ]); 
     }
 
-    /**
-     * @Route("/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
-     */
-    public function uploadCsv(Request $request, $id)
+    public function parseCSV($id)
     {
         $networkElement = $this->getDoctrine()
         ->getRepository(NetworkElement::class)
@@ -244,7 +256,15 @@ class NetworkElementController extends Controller
             }
             $em->flush();
         }
-        
+    }
+
+
+    /**
+     * @Route("/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
+     */
+    public function uploadCsv(Request $request, $id)
+    {
+        $this->parseCSV($id);
         $referer = $request->headers->get('referer');   
         if($referer){
             return new RedirectResponse($referer);

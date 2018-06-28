@@ -87,4 +87,12 @@ class NetworkElementsTypeController extends Controller
 
         return $this->redirectToRoute('network_elements_type_index');
     }
+
+
+    public function getElementsTypeList(){
+        $networkElementsType = $this->getDoctrine()->getRepository(NetworkElementsType::class)->findAll();
+        return $this->render('network_elements_type/render_list.html.twig', [
+            'elementsTypeList' => $networkElementsType
+        ]);
+    }
 }

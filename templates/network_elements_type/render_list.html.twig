@@ -1,0 +1,4 @@
+{# templates/network_elements_type/render_list.html.twig #}
+{% for type in elementsTypeList %}
+    <a class="dropdown-item" href="{{ path('network_element_index_filter',{name: type.name}) }}">{{type.name}}</a>
+{% endfor %}

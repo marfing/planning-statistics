@@ -33,6 +33,7 @@ class NetworkElementsType
         $this->networkElements = new ArrayCollection();
     }
 
+    
     public function getId()
     {
         return $this->id;

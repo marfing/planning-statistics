@@ -35,7 +35,7 @@
             </tr>
             <tr>
                 <th>Vendor</th>
-{#}                <td>{{ network_element.vendor.name }}</td>#}
+                <td>{{ network_element.vendor.name }}</td>
             </tr>
             <tr>
                 <th>Capacity</th>
@@ -71,7 +71,7 @@
     <a class="btn btn-primary" href="{{ path('network_element_index') }}">List</a>
     <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">Edit</a>
     <a class="btn btn-danger" data-id="{{network_element.id}}" href="#">Delete</a>
-    <a class="btn btn-outline-primary" href="{{ path('network_element_graph', {'id': network_element.id}) }}">graph</a>
+{#    <a class="btn btn-outline-primary" href="{{ path('network_element_graph', {'id': network_element.id}) }}">graph</a>#}
     <a class="btn btn-outline-primary" href="{{ path('network_element_delete_stat', {'id': network_element.id}) }}">Delete data</a>
     <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
     <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv', {'id': network_element.id}) }}">Backup CSV</a>                    

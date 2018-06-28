@@ -7,24 +7,31 @@
 
 {% block body %}
     <h1>NetworkElement index</h1>
-    <div id="toolbar">
+{#}    <div id="toolbar">
         <select class="form-control">
             <option value="all">Export All</option>
         </select>
+    </div> #}
+
+    <div id="toolbar">
+        <button id="export" class="btn btn-secondary">Export CSV</button>
     </div>
+
     <table id="netelements"
         data-toggle="table"
         data-search="true"
-        data-show-export="true"
+{#}        data-show-export="true"#}
         data-pagination="true"
         data-click-to-select="true"
         data-toolbar="#toolbar"
         >
         <thead>
             <tr>
-                <th data-field="state" data-checkbox="true"></th>
+{#}                <th data-field="state" data-checkbox="true"></th>#}
+                <th data-field="actions" data-export="false">Actions</th>
                 <th data-field="nome" data-filter-control="input" data-sortable="true">Nome</th>
                 <th data-field="vendor" data-filter-control="input" data-sortable="true">Vendor</th>
+                <th data-field="networkElementsType" data-filter-control="input" data-sortable="true">Type</th>
                 <th data-field="capacity" data-filter-control="input" data-sortable="true">Capacity</th>
                 <th data-field="lastDate" data-filter-control="input" data-sortable="true">Last statistic date</th>
                 <th data-field="usage" data-filter-control="input" data-sortable="true">Usage</th>
@@ -32,15 +39,18 @@
                 <th data-field="capacityType" data-filter-control="input" data-sortable="true">Capacity Type</th>
                 <th data-field="CSVColumnName" data-filter-control="input" data-sortable="true">CSV column name</th>
                 <th data-field="CSVFilesDirectory" data-filter-control="input" data-sortable="true">CSV files directory</th>
-                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for network_element in network_elements %}
             <tr>
-                <td class="bs-checkbox "><input data-index="{{ network_element.id }}" name="btSelectItem" type="checkbox"></td>
+{#}                <td class="bs-checkbox "><input data-index="{{ network_element.id }}" name="btSelectItem" type="checkbox"></td>#}
+                <td>
+                    <p><a class="btn btn-secondary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
+                </td>
                 <td>{{ network_element.nome }}</td>
-{#                <td>{{ network_element.vendor.name }}</td>#}
+                <td>{{ network_element.vendor.name | default("Missing") }}</td>
+                <td>{{ network_element.networkElementsType.name | default("Missing")}}</td>
                 <td>{{ network_element.capacity }}</td>
                 <td>{{ network_element.getLastStatisticDate() }}</td>
                 <td>{{ network_element.getLastStatisticValue() }}</td>
@@ -48,9 +58,6 @@
                 <td>{{ network_element.capacityType }}</td>
                 <td>{{ network_element.csvCapacityTypeName }}</td>
                 <td>{{ network_element.directoryStatistiche }}</td>
-                <td>
-                    <p><a class="btn btn-secondary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
-                </td>
             </tr>
         {% else %}
             <tr>
@@ -71,14 +78,27 @@
 <script type="text/javascript" src="{{asset('/js/jquery.base64.js')}}"></script>
 
 <script>
+    $(function () {
+        var $table = $('#netelements');
+        $('#export').click(function () {
+            $table.tableExport({
+            type: 'csv',
+            escape: false
+            });
+        });
+    });
+</script>
+
+{#<script>
     var $table = $('#netelements');
     $(function () {
         $('#toolbar').find('select').change(function () {
            $table.bootstrapTable({
-                exportDataType: $(this).val()
+                exportDataType: "basic"
             });
         });
     })
-</script> 
+</script>#}
+
 <script src="/js/main.js"></script>
 {% endblock %}
