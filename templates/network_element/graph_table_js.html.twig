@@ -1,0 +1,24 @@
+{# templates/network_element/graph_table_js.html.twig #}
+
+
+<script type="text/javascript" src="/js/charts/loader.js"></script>
+
+{% for element in elements %}
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawPieChart{{element.id}});
+    function drawPieChart{{element.id}}() {
+        var data_{{element.id}} = google.visualization.arrayToDataTable([
+            ['Usage', 'Value'],
+            ['Used',   {{element.getLastStatisticValue()}}],
+            ['Free',   {{element.getFreeCapacity()}}],
+        ]);
+        var options_{{element.id}} = {
+            title: '{{element.vendor.name}}_{{element.nome}}_{{element.capacityType}}'
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('pie_chart_{{element.id}}'));
+        chart.draw(data_{{element.id}}, options_{{element.id}});
+    }
+</script>
+{% endfor %}
+

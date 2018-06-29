@@ -3,11 +3,9 @@
 {% block title %}Home Page{% endblock %}
 
 {% block body %}
+    {{ render(controller('App\\Controller\\NetworkElementController::getElementsGraphTable')) }}
+{% endblock %}
 
-
-<div class="example-wrapper">
-    <h1>Architettura sito</h1>
-</div>
-
-
+{% block javascripts %}
+    {{ render(controller('App\\Controller\\NetworkElementController::getElementsGraphTableJs')) }}
 {% endblock %}

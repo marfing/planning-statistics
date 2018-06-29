@@ -47,10 +47,12 @@
                     </ul>
                 </div>
                 <div>
-                    <a class="btn btn-outline-primary" href="{{ path('logout')}}">logout</a>
+                    <a class="btn btn-outline-secondary" href="{{ path('login')}}">login</a>
+                    <a class="btn btn-outline-secondary" href="{{ path('logout')}}">logout</a>
                 </div>
             </div>
         </nav>
+        
         <div class="container">
             {% block body %}{% endblock %}
         </div>

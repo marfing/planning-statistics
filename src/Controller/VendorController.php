@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/vendor")
@@ -25,6 +26,7 @@ class VendorController extends Controller
 
     /**
      * @Route("/new", name="vendor_new", methods="GET|POST")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
     {
@@ -56,6 +58,7 @@ class VendorController extends Controller
 
     /**
      * @Route("/{id}/edit", name="vendor_edit", methods="GET|POST")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function edit(Request $request, Vendor $vendor): Response
     {
@@ -76,6 +79,7 @@ class VendorController extends Controller
 
     /**
      * @Route("/{id}", name="vendor_delete", methods="DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function delete(Request $request, Vendor $vendor): Response
     {

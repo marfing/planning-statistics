@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/network/element/type")
@@ -25,6 +26,7 @@ class NetworkElementsTypeController extends Controller
 
     /**
      * @Route("/new", name="network_elements_type_new", methods="GET|POST")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
     {
@@ -56,6 +58,7 @@ class NetworkElementsTypeController extends Controller
 
     /**
      * @Route("/{id}/edit", name="network_elements_type_edit", methods="GET|POST")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function edit(Request $request, NetworkElementsType $networkElementsType): Response
     {
@@ -76,6 +79,7 @@ class NetworkElementsTypeController extends Controller
 
     /**
      * @Route("/{id}", name="network_elements_type_delete", methods="DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function delete(Request $request, NetworkElementsType $networkElementsType): Response
     {

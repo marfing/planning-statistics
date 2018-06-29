@@ -1,0 +1,12 @@
+{# templates/network_element/graph_table.html.twig #}
+<div class="container-fluid">
+        <div class="row jumbotron" style="height: 300px">
+{% for element in elements %}
+            <div class="col" id="pie_chart_{{element.id}}"></div>
+    {% if loop.index is divisible by(2) %}
+    </div>
+        <div class="row jumbotron" style="height: 300px">
+    {% endif %}            
+{% endfor %}
+        </div>
+</div>

@@ -14,6 +14,8 @@ class MainController extends Controller{
      */
     public function index()
     {
+        #marfi - implementare qui il reload dei file csv
+        
         return $this->render('/home/home.html.twig');
     }
 }

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/network/element")
@@ -42,6 +43,7 @@ class NetworkElementController extends Controller
 
     /**
      * @Route("/new", name="network_element_new", methods="GET|POST")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
     {
@@ -76,7 +78,8 @@ class NetworkElementController extends Controller
 
     /**
      * @Route("/{id}/edit", name="network_element_edit", methods="GET|POST")
-     */
+     * @Security("has_role('ROLE_ADMIN')")
+     * */
     public function edit(Request $request, NetworkElement $networkElement): Response
     {
         $form = $this->createForm(NetworkElementType::class, $networkElement);
@@ -100,6 +103,7 @@ class NetworkElementController extends Controller
 
     /**
      * @Route("/{id}", name="network_element_delete", methods="DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function delete(Request $request, NetworkElement $networkElement): Response
     {
@@ -113,6 +117,7 @@ class NetworkElementController extends Controller
 
     /**
      * @Route("/delete/{id}", name="network_element_mydelete", methods="DELETE")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function mydelete($id): Response
     {
@@ -125,6 +130,7 @@ class NetworkElementController extends Controller
 
     /**
      * @Route("/delete/{id}/statistics", name="network_element_delete_stat")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteStatistics(Request $request, $id): Response
     {
@@ -228,7 +234,6 @@ class NetworkElementController extends Controller
                                         }
                                     }                                        
                                 }
-    
                             }//fine ricerva nuovo valore
                         }//fine gestione ricerva valori avendo trovato indice colonna valido  
                     }//fine gestione singola riga file csv valida
@@ -276,6 +281,7 @@ class NetworkElementController extends Controller
 
     /**
      * @Route("/backupcsv/{id}", name="network_element_backup_csv", methods="GET")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function backupCsv(Request $request, $id)
     {
@@ -310,6 +316,7 @@ class NetworkElementController extends Controller
 
     /**
      * @Route("/backupcsvdelete/{id}", name="network_element_backup_csv_delete", methods="GET")
+     * @Security("has_role('ROLE_ADMIN')")
      */
     public function backupCsvDelete(Request $request, $id)
     {
@@ -342,4 +349,19 @@ class NetworkElementController extends Controller
                                     'phpFiles' => $phpFileCounter,
                                     'wrongFiles' => $wrongFileTypeCounter));*/
     }
+
+    public function getElementsGraphTable(){
+        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
+        return $this->render('network_element/graph_table.html.twig', [
+            'elements' => $networkElements
+        ]);
+    }
+
+    public function getElementsGraphTableJs(){
+        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
+        return $this->render('network_element/graph_table_js.html.twig', [
+            'elements' => $networkElements
+        ]);
+    }
+
 }

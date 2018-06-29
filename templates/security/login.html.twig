@@ -13,6 +13,7 @@
 {% endif %}
 
 <form action="{{ path('login') }}" method="post">
+    
     <label for="username">Username:</label>
     <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
@@ -25,6 +26,7 @@
         <input type="hidden" name="_target_path" value="/account" />
     #}
 
+    <a class="btn btn-outline-primary" href="{{ path('logout')}}">logout</a>
     <button class="btn btn-action" type="submit">login</button>
 </form>
 

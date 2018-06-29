@@ -70,7 +70,7 @@
 
     <a class="btn btn-primary" href="{{ path('network_element_index') }}">List</a>
     <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">Edit</a>
-    <a class="btn btn-danger" data-id="{{network_element.id}}" href="#">Delete</a>
+    <a class="btn btn-danger" id="netelements" data-id="{{network_element.id}}" href="#">Delete</a>
 {#    <a class="btn btn-outline-primary" href="{{ path('network_element_graph', {'id': network_element.id}) }}">graph</a>#}
     <a class="btn btn-outline-primary" href="{{ path('network_element_delete_stat', {'id': network_element.id}) }}">Delete data</a>
     <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
@@ -80,6 +80,7 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script src="/js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="/js/charts/loader.js"></script>
     <script type="text/javascript">
         // Load the Visualization API and the corechart package.
@@ -115,6 +116,7 @@
         }
         </script>
 
+    <script src="/js/main.js"></script>
     <script type="text/javascript">
         // Load the Visualization API and the corechart package.
         google.charts.load('current', {'packages':['corechart']});
@@ -147,28 +149,28 @@
             var chart = new google.visualization.AreaChart(document.getElementById('chart_basic'));
             chart.draw(data, options);
         }
-        </script>
+    </script>
 
-        <script type="text/javascript">
-            google.charts.load('current', {'packages':['corechart']});
-            google.charts.setOnLoadCallback(drawPieChart);
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawPieChart);
 
-            function drawPieChart() {
+        function drawPieChart() {
 
-            var data = google.visualization.arrayToDataTable([
-                ['Usage', 'Value'],
-                ['Used',   {{network_element.getLastStatisticValue()}}],
-                ['Free',   {{network_element.getFreeCapacity()}}],
-            ]);
+        var data = google.visualization.arrayToDataTable([
+            ['Usage', 'Value'],
+            ['Used',   {{network_element.getLastStatisticValue()}}],
+            ['Free',   {{network_element.getFreeCapacity()}}],
+        ]);
 
-            var options = {
-                title: 'Resources Availability'
-            };
+        var options = {
+            title: 'Resources Availability'
+        };
 
-            var chart = new google.visualization.PieChart(document.getElementById('pie_chart_div'));
+        var chart = new google.visualization.PieChart(document.getElementById('pie_chart_div'));
 
-            chart.draw(data, options);
-            }
-        </script>
+        chart.draw(data, options);
+        }
+    </script>
 
 {% endblock %}
