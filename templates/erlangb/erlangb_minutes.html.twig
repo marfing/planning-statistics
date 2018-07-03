@@ -1,0 +1,139 @@
+{# /template/erlangB/erlangb.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Erlang B calculators{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="alert alert-dark">
+    <form NAME="MinutesForm" target="_self">
+      <div align="center">
+        <center>
+          <table border="0" cellspacing="0" width="330">
+          <thead>
+            <tr>
+              <th>ErlangB - Channels from minutes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td width="100%" class="CalcTable">
+                <table border="0" cellpadding="2" cellspacing="1" width="330" bgcolor="#D4D0C8" class="CalcTable" style="border: 1px outset">
+                  <tr>
+                    <td width="100%" bgcolor="#003399" class="CalcCaptionBack" colspan="2">
+                      <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                          <td><font color="#FFFFFF"><span class="CalcCaptionText"><strong>Call Minutes Calculator</strong></span></font></td>
+                          <td align="right">
+                            <table border="0" cellpadding="0" cellspacing="0" style="border: 1px outset">
+                              <tr>
+                                <td class="CalcTable" bgcolor="#D4D0C8" align="center">
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%">
+                      <table border="0" cellpadding="0" cellspacing="1" width="100%" style="border: thin groove">
+                        <tr>
+                          <td width="100%" align="center"><strong>Blocking target<font size="2" face="Arial"><br></font></strong>
+                            <input LANGUAGE="JavaScript" TYPE="text" VALUE="0.010" ONCHANGE="ValidateBlocking()" SIZE="15" NAME="Blocking_Edit" class="RightAlign"> 
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="50%">
+                      <table border="0" cellpadding="0" cellspacing="1" width="100%" style="border: thin groove">
+                        <tr>
+                          <td width="100%" align="center"><strong>Busy hour factor (%)<font size="2" face="Arial"><br></font></strong>
+                            <input LANGUAGE="JavaScript" TYPE="text" VALUE="17" ONCHANGE="ValidateBHF()" SIZE="15" NAME="BHF_Edit" class="RightAlign"> 
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="50%">
+                      <table border="0" cellpadding="0" cellspacing="1" width="100%" style="border: thin groove">
+                        <tr>
+                          <td width="100%" align="center"><b>Minutes per day</b><font size="2" face="Arial"><br></font>
+                            <input LANGUAGE="JavaScript" TYPE="radio" VALUE="Minutes_Radio" ONCLICK="ChangeUnknown(Minutes)" NAME="Unknown"> Unknown<font size="2" face="Arial"><br></font>
+                            <input LANGUAGE="JavaScript" TYPE="text" ONBLUR="if (UnknownVal==Minutes) {document.MinutesForm.Minutes_Edit.value=&quot;&quot;}" ONCHANGE="ValidateMinutes()" SIZE="15" NAME="Minutes_Edit" maxlength="15" class="RightAlign">
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="50%">
+                      <table border="0" cellpadding="0" cellspacing="1" width="100%" style="border: thin groove">
+                        <tr>
+                          <td width="100%" align="center"><b>Lines required</b><font size="2" face="Arial"><br></font>
+                            <input LANGUAGE="JavaScript" TYPE="radio" VALUE="Lines_Radio" ONCLICK="ChangeUnknown(Lines)" CHECKED NAME="Unknown"> Unknown<font size="2" face="Arial"><br></font>
+                            <input LANGUAGE="JavaScript" TYPE="text" ONBLUR="if (UnknownVal==Lines) {document.MinutesForm.Lines_Edit.value=&quot;&quot;}" ONCHANGE="ValidateLines()" SIZE="15" NAME="Lines_Edit" maxlength="15" class="RightAlign"> 
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td align="center" colspan="2">
+                      <table border="0" cellpadding="0" cellspacing="1" width="100%">
+                        <tr>
+                          <td width="33%" align="center"><font size="2"><input TYPE="button" VALUE="Calc." ONCLICK="CalcPressed()" NAME="Calc_Button"></font><font size="2" face="Arial"> </font></td>
+                          <td width="33%" align="center"><font size="2"><input TYPE="button" VALUE="Results" ONCLICK="ResultsPressed()" NAME="ResultsButton"></font><font size="2" face="Arial"> </font></td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+          </table>
+        </center>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div class="alert alert-dark">
+    <h2 class="alert-heading">Here is a brief introduction to the calculator</h2>
+    <p>You can use this calculator to work out how many lines you need to provide in a trunk group if you know the number of minutes of calls which will be offered to that trunk group.</p>
+    <p>The trunk group can be a PSTN link (CO trunks), a group of leased lines between two private network locations or an access group to a Virtual Private Network.</p>
+    <hr>
+    <ul class="list-group">
+      <li class="list-group-item active">As an example, if you wanted to know how many lines would need to be provided for a trunk group which was offered 10000 minutes of calls a day:</li>
+      <li class="list-group-item">Click on the Unknown radio button in the Lines Required section to indicate that it is the number of lines you wish to calculate.</li>
+      <li class="list-group-item">Enter 10000 in the Minutes per day edit box.</li>
+      <li class="list-group-item">Press the Calc. button.</li>
+      <li class="list-group-item">The answer is displayed in the Lines edit box (40).</li>
+    </ul>
+    <hr>
+    <p>Reverse calculations are also possible allowing you to calculate the minutes of calls which can be carried by a trunk group of a particular size.</p>
+    <p>To carry out such a calculation, click on the Unknown radio button in the Minutes per day section, enter the number of lines in the Lines required edit box and press the Calc. button.</p>
+    <p>The answer will be shown in the Minutes per day edit box.</p>
+    <hr>
+    <p>This calculator uses the Erlang B traffic model. You have the opportunity to specify two additional parameters relating to this traffic model and to the traffic pattern:</p>
+    <p>The busy hour factor is the percentage of daily minutes which are offered during the busiest hour of the day. 17% (the default) is a reasonable figure for a business which operates an 8 hour working day, but a higher figure could be entered if the business in question operates a shorter working day, or if frequent calls are being made to a different time zone.</p>
+    <p>Blocking target is the ratio of calls which will be blocked because no lines are available. 0.010 (the default) means that 1% of calls would be lost. This is a normal figure for traffic engineering, but other figures can be entered into this edit box.</p>
+    <br>
+    <p>Please note that in order to make a safe judgement of the number of lines required, traffic figures over a significant time period are required. One day's traffic figures are not enough.</p>
+  </div>
+</div>
+<div class="row">
+
+
+    
+
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{asset('/js/erlb/niftycube.js')}}"></script>
+  <script language="JavaScript" src="{{asset('/js/erlb/localmenus_minutes.js')}}"></script>
+{% endblock %}

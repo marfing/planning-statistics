@@ -1,0 +1,155 @@
+{# /template/erlangB/erlangb.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Erlang B calculators{% endblock %}
+
+{% block body %}
+
+<div class="row">
+  <div class="alert alert-dark">
+    <form NAME="erlangb" target="_self">
+    <div align="center">
+        <center>
+        <table width="330" cellspacing="0" border="0">
+          <thead>
+            <tr>
+              <th>ErlangB - Channels</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="CalcTable" width="100%">
+                <table class="CalcTable" style="border: 1px outset" width="330" cellspacing="1" cellpadding="2" border="0" bgcolor="#D4D0C8">
+                  <tbody>
+                    <tr>
+                      <td colspan="3" class="CalcCaptionBack" width="100%" bgcolor="#003399">
+                        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                          <tbody>
+                            <tr>
+                              <td width="17"><img src="../../images/icon.gif" width="15" height="15"></td>
+                              <td><font color="#FFFFFF"><span class="CalcCaptionText"><strong>Erlang B Calculator</strong></span></font></td>
+                              <td align="right">
+                                <table style="border: 1px outset" cellspacing="0" cellpadding="0" border="0">
+                                  <tbody>
+                                    <tr>
+                                      <td class="CalcTable" bgcolor="#D4D0C8" align="center"></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="34%">
+                        <table style="border: thin groove" width="100%" cellspacing="1" cellpadding="0" border="0">
+                          <tbody>
+                            <tr>
+                              <td width="100%" align="center"><b>BHT (Erl.)</b><br>
+                                <input value="BHT_Radio" onclick="ChangeUnknown(BHT)" name="Unknown" type="radio"> Unknown<font size="2" face="Arial"><br></font>
+                                <input onblur="if (unknownval==BHT) {document.erlangb.BHT_Edit.value=''}" onchange="ValidateBHT()" size="8" name="BHT_Edit" maxlength="8" class="RightAlign" type="text">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td width="33%">
+                        <table style="border: thin groove" width="100%" cellspacing="1" cellpadding="0" border="0">
+                          <tbody>
+                            <tr>
+                              <td width="100%" align="center"><b>Blocking</b><br>
+                                <input value="Blocking_Radio" onclick="ChangeUnknown(blocking)" name="Unknown" type="radio"> Unknown<font size="2" face="Arial"><br></font>
+                                <input value="0.010" onblur="if (unknownval==blocking) {document.erlangb.Blocking_Edit.value=''}" onchange="ValidateBlocking()" size="8" name="Blocking_Edit" maxlength="5" class="RightAlign" type="text">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                      <td width="33%">
+                        <table style="border: thin groove" width="100%" cellspacing="1" cellpadding="0" border="0">
+                          <tbody>
+                            <tr>
+                              <td width="100%" align="center"><b>Lines<br></b>
+                                <input value="Lines_Radio" onclick="ChangeUnknown(lines)" checked="" name="Unknown" type="radio"> Unknown<font size="2" face="Arial"><br></font>
+                                <input onblur="if (unknownval==lines) {document.erlangb.Lines_Edit.value=''}" onchange="ValidateLines()" size="8" name="Lines_Edit" maxlength="4" class="RightAlign" type="text">
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" align="center">
+                        <table width="100%" cellspacing="1" cellpadding="0" border="0">
+                          <tbody>
+                            <tr>
+                              <td width="33%" align="center"><font size="2"><input value="Calc." onclick="CalcPressed()" name="Calc_Button" type="button"></font><font size="2" face="Arial"> </font></td>
+                              <td width="33%" align="center"><font size="2"><input value="Results" onclick="ResultsPressed()" name="ResultsButton" type="button"></font><font size="2" face="Arial"> </font></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </center>
+    </div>
+  </form>
+</div>
+<div class="row">
+  <div class="alert alert-dark">
+    <h2 class="alert-heading">Here is a brief introduction to the calculator</h2>
+    <hr>
+    <p>The Erlang B traffic model is used by telephone system designers to estimate the number of lines required for PSTN connections (CO trunks) or private wire connections.</p>
+    <p>The three variables involved are Busy Hour Traffic (BHT), Blocking and Lines.
+    <ul class="list-group">
+      <li class="list-group-item">Busy Hour Traffic (in Erlangs) is the number of hours of call traffic there are during the busiest hour of operation of a telephone system.</li>
+      <li class="list-group-item">Blocking  is the failure of calls due to an insufficient number of lines being available.  E.g. 0.03 mean 3 calls blocked per 100 calls attempted.</li>
+      <li class="list-group-item">Lines is the number of lines in a trunk group.</li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="alert alert-dark">
+  <h2>If you know two of the figures, you can work out the third as follows:</h2>
+    <ul class="list-group">
+      <li class="list-group-item">Click on the Unknown radio button representing the unknown variable.</li>
+      <li class="list-group-item">Enter the 2 known figures into their edit boxes</li>
+      <li class="list-group-item">Press Calc and the third figure will be calculated and displayed in the remaining edit box</li>
+    </ul>
+  </div>
+</div>
+    
+<div class="row">
+  <div class="alert alert-dark">
+  <h2>If you know that the Busy Hour Traffic is 10 Erlangs, and you want to know how many lines are required in this trunk group if you are prepared to tolerate 2 calls being blocked in every 100 calls attempted then:</h2>
+    <ul class="list-group">
+      <li class="list-group-item">Press the Lines Unknown radio button (this is selected by default)</li>
+      <li class="list-group-item">Enter 10 in the BHT edit box</li>
+      <li class="list-group-item">Enter 0.02 in the Blocking edit box</li>
+      <li class="list-group-item">When you press the Calc button, 17 will be displayed in the Lines edit box indicating that 17 lines would be required in this trunk group</li>
+    </ul>
+  </div>
+</div>
+    
+
+
+    
+    
+    
+    
+
+
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{asset('/js/erlb/niftycube.js')}}"></script>
+  <script language="JavaScript" src="{{asset('/js/erlb/localmenus.js')}}"></script>
+{% endblock %}

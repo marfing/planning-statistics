@@ -38,6 +38,13 @@
                         <li class="nav-item">
                             <a href="{{ path('cli_rgn_map')}}" class="nav-link">Map Cli-Rgn</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ErlangB</a>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                                <a class="dropdown-item" href="{{ path('erlangb')}}">Erlang</a>
+                                <a class="dropdown-item" href="{{ path('erlangb_minutes')}}">Minutes</a>
+                            </div>
+                        </li>
 {#                        <li class="nav-item">
                             <a href="{{ path('statistica_rete_index')}}" class="nav-link">List Statistics</a>
                         </li>
