@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="{{asset('/css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('/css/cosmo-bootstrap.css')}}">
+
+
+    {% block stylesheets %}{% endblock %}
+    </head>
+    <body style="font-size:1.5rem">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-3">
+            <div class="container" >
+                <a href="{{ path('home')}}" class="navbar-brand">Network Statistics</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mobile-nav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mobile-nav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="{{ path('home')}}" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            {#<a href="{{ path('network_element_index')}}" class="nav-link">Elements</a>#}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Network Elements</a>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                                <a class="dropdown-item" href="{{ path('network_element_index')}}">All</a>
+                                {{ render(controller('App\\Controller\\NetworkElementsTypeController::getElementsTypeList')) }}
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('vendor_index')}}" class="nav-link">Vendors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('network_elements_type_index')}}" class="nav-link">Elements Types</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('cli_rgn_map')}}" class="nav-link">Map Cli-Rgn</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ErlangB</a>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                                <a class="dropdown-item" href="{{ path('erlangb')}}">Erlang</a>
+                                <a class="dropdown-item" href="{{ path('erlangb_minutes')}}">Minutes</a>
+                            </div>
+                        </li>
+{#                        <li class="nav-item">
+                            <a href="{{ path('statistica_rete_index')}}" class="nav-link">List Statistics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('statistica_rete_new')}}" class="nav-link">New Statistic</a>
+                        </li> #}
+                    </ul>
+                </div>
+                <div>
+                    <a class="btn btn-outline-secondary" href="{{ path('login')}}">login</a>
+                    <a class="btn btn-outline-secondary" href="{{ path('logout')}}">logout</a>
+                </div>
+            </div>
+        </nav>
+        <div class="sidebar-nav">
+                <div class="collapse navbar-collapse" id="mobile-nav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="{{ path('home')}}" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            {#<a href="{{ path('network_element_index')}}" class="nav-link">Elements</a>#}
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Network Elements</a>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                                <a class="dropdown-item" href="{{ path('network_element_index')}}">All</a>
+                                {{ render(controller('App\\Controller\\NetworkElementsTypeController::getElementsTypeList')) }}
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('vendor_index')}}" class="nav-link">Vendors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('network_elements_type_index')}}" class="nav-link">Elements Types</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('cli_rgn_map')}}" class="nav-link">Map Cli-Rgn</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ErlangB</a>
+                            <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 39px, 0px);">
+                                <a class="dropdown-item" href="{{ path('erlangb')}}">Erlang</a>
+                                <a class="dropdown-item" href="{{ path('erlangb_minutes')}}">Minutes</a>
+                            </div>
+                        </li>
+{#                        <li class="nav-item">
+                            <a href="{{ path('statistica_rete_index')}}" class="nav-link">List Statistics</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('statistica_rete_new')}}" class="nav-link">New Statistic</a>
+                        </li> #}
+                    </ul>
+                </div>
+
+        <p>Sidebar</p>
+        </div>
+
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+        
+        <script src="{{asset('/js/jquery-3.3.1.js')}}"></script>
+        <script src="{{asset('/js/bootstrap.min.js')}}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
