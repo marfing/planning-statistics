@@ -3,8 +3,6 @@
 {% block title %}NetworkElement{% endblock %}
 
 {% block body %}
-    <h1>NetworkElement</h1>
-
     <h1 class="display">{{network_element.nome}} - {{network_element.CapacityType}} Graph</h1>
     {% if network_element.getFreePercentage() == 0 %}
     <div class="alert alert-dismissible alert-danger">Alarm - Network Element Resources Finished!!</div>
@@ -16,67 +14,71 @@
 
     <!--Div that will hold the pie chart-->
     <div class="container-fluid">
-        <div class="row jumbotron">
+        <div class="row">
             <div class='col-6' id="pie_chart_div"></div>
             <div class='col-6' id="chart_div"></div>
         </div>
-        <div class='row jumbotron' id="chart_basic"></div>
+        <div class='row' id="chart_basic"></div>
     </div>
 
-    <table class="table">
-        <tbody>
-{#            <tr>
-                <th>Id</th>
-                <td>{{ network_element.id }}</td>
-            </tr> #}
-            <tr>
-                <th>Nome</th>
-                <td>{{ network_element.nome }}</td>
-            </tr>
-            <tr>
-                <th>Vendor</th>
-                <td>{{ network_element.vendor.name }}</td>
-            </tr>
-            <tr>
-                <th>Capacity</th>
-                <td>{{ network_element.capacity }}</td>
-            </tr>
-            <tr>
-                <th>Last statistic date</th>
-                <td>{{ network_element.getLastStatisticDate() }}</td>
-            </tr>
-            <tr>
-                <th>Last statistic value</th>
-                <td>{{ network_element.getLastStatisticValue() }}</td>
-            </tr>
-            <tr>
-                <th>Free resources percentege</th>
-                <td>{{ network_element.getFreePercentage() }}</td>
-            </tr>
-            <tr>
-                <th>CapacityType</th>
-                <td>{{ network_element.capacityType }}</td>
-            </tr>
-            <tr>
-                <th>CSV capacity name</th>
-                <td>{{ network_element.csvCapacityTypeName }}</td>
-            </tr>
-            <tr>
-                <th>Statistic Directory</th>
-                <td>{{ network_element.directoryStatistiche }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a class="btn btn-primary" href="{{ path('network_element_index') }}">List</a>
-    <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">Edit</a>
-    <a class="btn btn-danger" id="netelements" data-id="{{network_element.id}}" href="#">Delete</a>
-{#    <a class="btn btn-outline-primary" href="{{ path('network_element_graph', {'id': network_element.id}) }}">graph</a>#}
-    <a class="btn btn-outline-primary" href="{{ path('network_element_delete_stat', {'id': network_element.id}) }}">Delete data</a>
-    <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
-    <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv', {'id': network_element.id}) }}">Backup CSV</a>                    
-    <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv_delete', {'id': network_element.id}) }}">Backup CSV Delete</a>                    
-
+    <div class="row mt-5">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Nome</th>
+                    <td>{{ network_element.nome }}</td>
+                </tr>
+                <tr>
+                    <th>Vendor</th>
+                    <td>{{ network_element.vendor.name }}</td>
+                </tr>
+                <tr>
+                    <th>Capacity</th>
+                    <td>{{ network_element.capacity }}</td>
+                </tr>
+                <tr>
+                    <th>Last statistic date</th>
+                    <td>{{ network_element.getLastStatisticDate() }}</td>
+                </tr>
+                <tr>
+                    <th>Last statistic value</th>
+                    <td>{{ network_element.getLastStatisticValue() }}</td>
+                </tr>
+                <tr>
+                    <th>Free resources percentege</th>
+                    <td>{{ network_element.getFreePercentage() }}</td>
+                </tr>
+                <tr>
+                    <th>CapacityType</th>
+                    <td>{{ network_element.capacityType }}</td>
+                </tr>
+                <tr>
+                    <th>CSV capacity name</th>
+                    <td>{{ network_element.csvCapacityTypeName }}</td>
+                </tr>
+                <tr>
+                    <th>Statistic Directory</th>
+                    <td>{{ network_element.directoryStatistiche }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row mt-3">
+        <div class="col-sm-4">
+            <a class="btn btn-primary" href="{{ path('network_element_index') }}">List</a>
+            <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">Edit</a>
+            <a class="btn btn-danger" id="netelements" data-id="{{network_element.id}}" href="#">Delete</a>
+            <a class="btn btn-outline-primary" href="{{ path('network_element_delete_stat', {'id': network_element.id}) }}">Delete data</a>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-sm-6">
+            <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
+            <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv', {'id': network_element.id}) }}">Backup CSV</a>
+            <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv', {'id': network_element.id}) }}">Backup CSV</a>
+            <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv_delete', {'id': network_element.id}) }}">Backup CSV Delete</a>
+        </div>    
+    </div>
 {% endblock %}
 
 {% block javascripts %}
