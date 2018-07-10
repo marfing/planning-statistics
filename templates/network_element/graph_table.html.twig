@@ -4,7 +4,12 @@
 {% for element in elements %}
                 <div class="col col-md-4">
                         <div class="card">
-                                <div class="card-body" id="pie_chart_{{element.id}}"></div>
+                                <div class="card-header">
+                                        <small>Date: {{ element.getLastStatisticDate }}</small>
+                                </div>
+                                <div class="card-body" id="pie_chart_{{element.id}}">
+                                </div>
+                                
                         </div>
                 </div>
     {% if loop.index is divisible by(3) %}

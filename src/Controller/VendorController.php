@@ -25,7 +25,7 @@ class VendorController extends Controller
     }
 
     /**
-     * @Route("/new", name="vendor_new", methods="GET|POST")
+     * @Route("/admin/new", name="vendor_new", methods="GET|POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
@@ -57,7 +57,7 @@ class VendorController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="vendor_edit", methods="GET|POST")
+     * @Route("/admin/{id}/edit", name="vendor_edit", methods="GET|POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function edit(Request $request, Vendor $vendor): Response
@@ -78,7 +78,7 @@ class VendorController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="vendor_delete", methods="DELETE")
+     * @Route("/admin/{id}", name="vendor_delete", methods="DELETE")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function delete(Request $request, Vendor $vendor): Response

@@ -7,27 +7,20 @@
 
 {% block body %}
     <h1>NetworkElement index</h1>
-{#}    <div id="toolbar">
-        <select class="form-control">
-            <option value="all">Export All</option>
-        </select>
-    </div> #}
-
     <div id="toolbar">
         <button id="export" class="btn btn-secondary">Export CSV</button>
+        <a class="btn btn-secondary" href="{{ path('network_element_update_all') }}">Update All</a>
     </div>
 
     <table id="netelements"
         data-toggle="table"
         data-search="true"
-{#}        data-show-export="true"#}
         data-pagination="true"
         data-click-to-select="true"
         data-toolbar="#toolbar"
         >
         <thead>
             <tr>
-{#}                <th data-field="state" data-checkbox="true"></th>#}
                 <th data-field="actions" data-export="false">Actions</th>
                 <th data-field="nome" data-filter-control="input" data-sortable="true">Nome</th>
                 <th data-field="vendor" data-filter-control="input" data-sortable="true">Vendor</th>
@@ -44,9 +37,24 @@
         <tbody>
         {% for network_element in network_elements %}
             <tr>
-{#}                <td class="bs-checkbox "><input data-index="{{ network_element.id }}" name="btSelectItem" type="checkbox"></td>#}
                 <td>
-                    <p><a class="btn btn-secondary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
+                    <p><a class="btn btn-primary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
+                    <p><a class="btn btn-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">update</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <p><a class="btn btn-danger" id="cleancsv_{{network_element.id}}" data-id="{{network_element.id}}" href="#">clean csv</a></p>
+                    <script>
+                        console.log(document.getElementById("cleancsv_{{network_element.id}}"));
+                        document.getElementById("cleancsv_{{network_element.id}}").addEventListener('click', e => {
+                            if(e.target.className === 'btn btn-danger'){
+                                if(confirm('Are you sure to delete csv files?')){
+                                    fetch(`/network/admin/csvdelete/{{network_element.id}}}`, {
+                                        method: 'DELETE'
+                                    }).then(res => window.location.reload());
+                                }
+                            }
+                        });
+                    </script>
+                    {% endif %}
                 </td>
                 <td>{{ network_element.nome }}</td>
                 <td>{{ network_element.vendor.name | default("Missing") }}</td>
@@ -67,7 +75,9 @@
         </tbody>
     </table>
     <br>
+    {% if is_granted('ROLE_ADMIN') %}
     <p><a class="pull-right btn btn-outline-primary" href="{{ path('network_element_new')}}" class="nav-link">New Network Element</a></p>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}
@@ -88,5 +98,5 @@
         });
     });
 </script>
-<script src="/js/main.js"></script>
+
 {% endblock %}

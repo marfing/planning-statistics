@@ -66,11 +66,14 @@
     <div class="row mt-3">
         <div class="col-sm-4">
             <a class="btn btn-primary" href="{{ path('network_element_index') }}">List</a>
+            {% if is_granted('ROLE_ADMIN') %}
             <a class="btn btn-primary" href="{{ path('network_element_edit', {'id': network_element.id}) }}">Edit</a>
             <a class="btn btn-danger" id="netelements" data-id="{{network_element.id}}" href="#">Delete</a>
             <a class="btn btn-outline-primary" href="{{ path('network_element_delete_stat', {'id': network_element.id}) }}">Delete data</a>
+            {% endif %}
         </div>
     </div>
+    {% if is_granted('ROLE_ADMIN') %}
     <div class="row mt-2">
         <div class="col-sm-6">
             <a class="btn btn-outline-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">Upload CSV</a>
@@ -79,6 +82,7 @@
             <a class="btn btn-outline-secondary" href="{{ path('network_element_backup_csv_delete', {'id': network_element.id}) }}">Backup CSV Delete</a>
         </div>    
     </div>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

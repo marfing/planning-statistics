@@ -66,15 +66,24 @@
                         {{ render(controller('App\\Controller\\NetworkElementsTypeController::getElementsTypeList')) }}
                     </ul>
                 </li>
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a href="{{ path('vendor_index')}}" class="nav-link">Vendors</a>
                 </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a href="{{ path('network_elements_type_index')}}" class="nav-link">Elements Types</a>
                 </li>
+                {% endif %}
                 <li class="nav-item">
                     <a href="{{ path('cli_rgn_map')}}" class="nav-link">Map Cli-Rgn</a>
                 </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+                    <a href="{{ path('user_index')}}" class="nav-link">Users</a>
+                </li>
+                {% endif %}
             </ul>
         </nav>
 

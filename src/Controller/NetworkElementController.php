@@ -42,7 +42,7 @@ class NetworkElementController extends Controller
     }
 
     /**
-     * @Route("/new", name="network_element_new", methods="GET|POST")
+     * @Route("/admin/new", name="network_element_new", methods="GET|POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
@@ -77,7 +77,7 @@ class NetworkElementController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="network_element_edit", methods="GET|POST")
+     * @Route("/admin/{id}/edit", name="network_element_edit", methods="GET|POST")
      * @Security("has_role('ROLE_ADMIN')")
      * */
     public function edit(Request $request, NetworkElement $networkElement): Response
@@ -116,7 +116,7 @@ class NetworkElementController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="network_element_mydelete", methods="DELETE")
+     * @Route("/admin/delete/{id}", name="network_element_mydelete", methods="DELETE")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function mydelete($id): Response
@@ -129,7 +129,7 @@ class NetworkElementController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}/statistics", name="network_element_delete_stat")
+     * @Route("/admin/delete/{id}/statistics", name="network_element_delete_stat")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function deleteStatistics(Request $request, $id): Response
@@ -265,7 +265,7 @@ class NetworkElementController extends Controller
 
 
     /**
-     * @Route("/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
+     * @Route("/admin/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
      */
     public function uploadCsv(Request $request, $id)
     {
@@ -280,14 +280,14 @@ class NetworkElementController extends Controller
 
 
     /**
-     * @Route("/backupcsv/{id}", name="network_element_backup_csv", methods="GET")
+     * @Route("/admin/backupcsv/{id}", name="network_element_backup_csv", methods="GET")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function backupCsv(Request $request, $id)
     {
         $networkElement = $this->getDoctrine()
-        ->getRepository(NetworkElement::class)
-        ->find($id);
+            ->getRepository(NetworkElement::class)
+            ->find($id);
         $path = $networkElement->getDirectoryStatistiche();
         //$path = '../statistiche/'. $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
@@ -307,15 +307,10 @@ class NetworkElementController extends Controller
         } else {
             return $this->redirectToRoute('network_element_index');
         }
-
-/*        return $this->render('network_element/csv_backup_report.html.twig',
-                                array(
-                                    'phpFiles' => $phpFileCounter,
-                                    'wrongFiles' => $wrongFileTypeCounter));*/
     }
 
     /**
-     * @Route("/backupcsvdelete/{id}", name="network_element_backup_csv_delete", methods="GET")
+     * @Route("/admin/backupcsvdelete/{id}", name="network_element_backup_csv_delete", methods="GET")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function backupCsvDelete(Request $request, $id)
@@ -343,11 +338,37 @@ class NetworkElementController extends Controller
             return $this->redirectToRoute('network_element_index');
         }
 
-/*        return $this->render('network_element/csv_backup_delete_report.html.twig',
-                                array(
-                                    'path' => $path,
-                                    'phpFiles' => $phpFileCounter,
-                                    'wrongFiles' => $wrongFileTypeCounter));*/
+    }
+
+    /**
+     * @Route("/admin/csvdelete/{id}", name="network_element_csv_delete", methods="GET")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function csvDelete(Request $request, $id)
+    {
+        $networkElement = $this->getDoctrine()
+            ->getRepository(NetworkElement::class)
+            ->find($id);
+        $path = $networkElement->getDirectoryStatistiche();
+        $fileList = scandir($path);
+        $phpFileCounter=0;
+        $wrongFileTypeCounter=0;
+        foreach ($fileList as $fileName) {
+            if (file_exists($path."/".$fileName) && (strpos($fileName,'.csv') != false)) {
+                unlink($path."/".$fileName);
+                $phpFileCounter++;
+            } else {
+                $wrongFileTypeCounter++;
+                // File not found.
+            }
+        }
+        $referer = $request->headers->get('referer');   
+        if($referer){
+            return new RedirectResponse($referer);
+        } else {
+            return $this->redirectToRoute('network_element_index');
+        }
+
     }
 
     public function getElementsGraphTable(){
@@ -362,6 +383,22 @@ class NetworkElementController extends Controller
         return $this->render('network_element/graph_table_js.html.twig', [
             'elements' => $networkElements
         ]);
+    }
+
+    /**
+     * @Route("/index/updateallcsv/", name="network_element_update_all", methods="GET")
+     */
+    public function updateAllCsv(Request $request){
+        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
+        foreach ($networkElements as $networkElement) {
+            $this->parseCSV($networkElement->getId());
+        }
+        $referer = $request->headers->get('referer');   
+        if($referer){
+            return new RedirectResponse($referer);
+        } else {
+            return $this->redirectToRoute('network_element_index');
+        }
     }
 
 }

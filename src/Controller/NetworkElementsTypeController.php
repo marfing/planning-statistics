@@ -25,7 +25,7 @@ class NetworkElementsTypeController extends Controller
     }
 
     /**
-     * @Route("/new", name="network_elements_type_new", methods="GET|POST")
+     * @Route("/admin/new", name="network_elements_type_new", methods="GET|POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function new(Request $request): Response
@@ -57,7 +57,7 @@ class NetworkElementsTypeController extends Controller
     }
 
     /**
-     * @Route("/{id}/edit", name="network_elements_type_edit", methods="GET|POST")
+     * @Route("/admin/{id}/edit", name="network_elements_type_edit", methods="GET|POST")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function edit(Request $request, NetworkElementsType $networkElementsType): Response
@@ -78,7 +78,7 @@ class NetworkElementsTypeController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="network_elements_type_delete", methods="DELETE")
+     * @Route("/admin/{id}", name="network_elements_type_delete", methods="DELETE")
      * @Security("has_role('ROLE_ADMIN')")
      */
     public function delete(Request $request, NetworkElementsType $networkElementsType): Response
@@ -91,7 +91,6 @@ class NetworkElementsTypeController extends Controller
 
         return $this->redirectToRoute('network_elements_type_index');
     }
-
 
     public function getElementsTypeList(){
         $networkElementsType = $this->getDoctrine()->getRepository(NetworkElementsType::class)->findAll();

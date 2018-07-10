@@ -7,9 +7,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-#non sono riuscito ancora a farlo funzionare#
-#devo ancora capire come risolvere il problema del listener#
-
 
 class SecurityController extends Controller
 {
