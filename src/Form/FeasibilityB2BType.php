@@ -42,27 +42,33 @@ class FeasibilityB2BType extends AbstractType
                 'multiple' => 'false'))
             ->add('C2TChannels', TextType::class, [
                 'label' => 'Incomig (Customer 2 Tiscali) channels',
-                'property_path' => 'Customer2TiscaliCapacity[Channels]'
+                'property_path' => 'Customer2TiscaliCapacity[Channels]',
+                'data' => '0'
             ])
             ->add('C2TMinutesPerMonth', TextType::class, [
                 'label' => 'Incomig (Customer 2 Tiscali) minutes per month',
-                'property_path' => 'Customer2TiscaliCapacity[MinutesPerMonth]'
+                'property_path' => 'Customer2TiscaliCapacity[MinutesPerMonth]',
+                'data' => '0'
             ])
             ->add('C2TErlang', TextType::class, [
                 'label' => 'Incomig (Customer 2 Tiscali) erlangs',
-                'property_path' => 'Customer2TiscaliCapacity[Erlang]'
+                'property_path' => 'Customer2TiscaliCapacity[Erlang]',
+                'data' => '0'
             ])
             ->add('T2CChannels', TextType::class, [
                 'label' => 'Outgoing (Tiscali 2 Customer) channels',
-                'property_path' => 'Tiscali2CustomerCapacity[Channels]'
+                'property_path' => 'Tiscali2CustomerCapacity[Channels]',
+                'data' => '0'
             ])
             ->add('T2CMinutesPerMonth', TextType::class, [
                 'label' => 'Outgoing (Tiscali 2 Customer) minutes per month',
-                'property_path' => 'Tiscali2CustomerCapacity[MinutesPerMonth]'
+                'property_path' => 'Tiscali2CustomerCapacity[MinutesPerMonth]',
+                'data' => '0'
             ])
             ->add('T2CErlang', TextType::class, [
                 'label' => 'Outgoing (Tiscali 2 Customer) erlangs',
-                'property_path' => 'Tiscali2CustomerCapacity[Erlang]'
+                'property_path' => 'Tiscali2CustomerCapacity[Erlang]',
+                'data' => '0'
             ])
             ->add('Note')
         ;

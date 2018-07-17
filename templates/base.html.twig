@@ -111,18 +111,21 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav flex-row ml-md-auto">
+                    {% if not app.user %}
                     <li class="nav-item">
                         <a class="btn btn-info" href="{{ path('login')}}">
                             <i class="fas fa-sign-in-alt"></i>
                             <span>Login</span>
                         </a>
                     </li>
+                    {% else %}
                     <li class="nav-item">
                         <a class="btn btn-info ml-2" href="{{ path('logout')}}">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logout</span>
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
 
