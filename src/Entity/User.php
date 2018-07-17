@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -42,6 +44,16 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="array")
      */
     private $roles;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FeasibilityB2B", mappedBy="User")
+     */
+    private $feasibilitiesB2B;
+
+    public function __construct()
+    {
+        $this->feasibilitiesB2B = new ArrayCollection();
+    }
 
 
     public function _construct(){
@@ -151,5 +163,36 @@ class User implements UserInterface, \Serializable
 
     public function addRole(string $role){
         $this->roles[] = $role;
+    }
+
+    /**
+     * @return Collection|FeasibilityB2B[]
+     */
+    public function getFeasibilitiesB2B(): Collection
+    {
+        return $this->feasibilitiesB2B;
+    }
+
+    public function addFeasibilitiesB2B(FeasibilityB2B $feasibilitiesB2B): self
+    {
+        if (!$this->feasibilitiesB2B->contains($feasibilitiesB2B)) {
+            $this->feasibilitiesB2B[] = $feasibilitiesB2B;
+            $feasibilitiesB2B->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFeasibilitiesB2B(FeasibilityB2B $feasibilitiesB2B): self
+    {
+        if ($this->feasibilitiesB2B->contains($feasibilitiesB2B)) {
+            $this->feasibilitiesB2B->removeElement($feasibilitiesB2B);
+            // set the owning side to null (unless already changed)
+            if ($feasibilitiesB2B->getUser() === $this) {
+                $feasibilitiesB2B->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

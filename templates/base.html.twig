@@ -37,15 +37,21 @@
                 <li>
                     <a href="{{ path('home')}}" class="nav-link">Home</a>
                 </li>
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_B2B') or is_granted('ROLE_PLANNING')%}
                 <li class="active">
                     <a href="#fattibilitàSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Fattibilità</a>
                     <ul class="collapse list-unstyled" id="fattibilitàSubmenu">
                         <li>
-                            <a href="#">B2B</a>
+                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_B2B') %}
+                            <a href="{{ path('feasibility_b2b_new')}}">B2B new</a>
+                            {% endif %}
+                            <a href="{{ path('feasibility_b2b_index')}}">B2B list</a>
                             <a href="#">Wholesale</a>
                         </li>
                     </ul>
                 </li>
+                {% endif %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PLANNING') %}
                 <li class="active">
                     <a href="#erlangbSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">ErlangB</a>
                     <ul class="collapse list-unstyled" id="erlangbSubmenu">
@@ -60,25 +66,31 @@
                 <li class="active">
                     <a href="#netelementsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Network Elements</a>
                     <ul class="collapse list-unstyled" id="netelementsSubmenu">
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <li>
+                            <a href="{{ path('network_element_new')}}">New</a>
+                        </li>
+                        {% endif %}
                         <li>
                             <a href="{{ path('network_element_index')}}">All</a>
                         </li>
                         {{ render(controller('App\\Controller\\NetworkElementsTypeController::getElementsTypeList')) }}
                     </ul>
                 </li>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a href="{{ path('vendor_index')}}" class="nav-link">Vendors</a>
                 </li>
-                {% endif %}
-                {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a href="{{ path('network_elements_type_index')}}" class="nav-link">Elements Types</a>
                 </li>
                 {% endif %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PLANNING')%}
                 <li class="nav-item">
                     <a href="{{ path('cli_rgn_map')}}" class="nav-link">Map Cli-Rgn</a>
                 </li>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a href="{{ path('user_index')}}" class="nav-link">Users</a>

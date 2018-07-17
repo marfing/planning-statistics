@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FeasibilityB2B index{% endblock %}
+
+{% block body %}
+    <h1>FeasibilityB2B index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CustomerName</th>
+                <th>TrunkType</th>
+                <th>IPType</th>
+                <th>CodecList</th>
+                <th>Customer2TiscaliCapacity</th>
+                <th>Tiscali2CustomerCapacity</th>
+                <th>Status</th>
+                <th>Note</th>
+                <th>User</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for feasibility_b2_b in feasibility_b2_bs %}
+            <tr>
+                <td>{{ feasibility_b2_b.id }}</td>
+                <td>{{ feasibility_b2_b.CustomerName }}</td>
+                <td>{{ feasibility_b2_b.TrunkType }}</td>
+                <td>{{ feasibility_b2_b.IPType }}</td>
+                <td>
+                    {% for codec in feasibility_b2_b.CodecList %}
+                    <table>
+                        <tbody>
+                            <tr><td>{{ codec }}</td></tr>
+                        </tbody>
+                    </table>
+                    {% endfor %}
+                </td>
+                <td>{{ feasibility_b2_b.Customer2TiscaliCapacity ? feasibility_b2_b.Customer2TiscaliCapacity|join(', ') : '' }}</td>
+                <td>{{ feasibility_b2_b.Tiscali2CustomerCapacity ? feasibility_b2_b.Tiscali2CustomerCapacity|join(', ') : '' }}</td>
+                <td>{{ feasibility_b2_b.Status }}</td>
+                <td>{{ feasibility_b2_b.Note }}</td>
+                <td>{{ feasibility_b2_b.user.username }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('feasibility_b2b_show', {'id': feasibility_b2_b.id}) }}">show</a>
+                    <a class="btn btn-secondary" href="{{ path('feasibility_b2b_edit', {'id': feasibility_b2_b.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a class="btn btn-primary" href="{{ path('feasibility_b2b_new') }}">Create new</a>
+{% endblock %}

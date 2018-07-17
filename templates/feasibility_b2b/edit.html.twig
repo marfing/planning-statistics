@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit FeasibilityB2B{% endblock %}
+
+{% block body %}
+    <h1>Edit FeasibilityB2B</h1>
+
+    {{ include('feasibility_b2b/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('feasibility_b2b_index') }}">back to list</a>
+
+    {{ include('feasibility_b2b/_delete_form.html.twig') }}
+{% endblock %}

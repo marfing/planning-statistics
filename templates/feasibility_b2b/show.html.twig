@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}FeasibilityB2B{% endblock %}
+
+{% block body %}
+    <h1>FeasibilityB2B</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ feasibility_b2_b.id }}</td>
+            </tr>
+            <tr>
+                <th>CustomerName</th>
+                <td>{{ feasibility_b2_b.CustomerName }}</td>
+            </tr>
+            <tr>
+                <th>TrunkType</th>
+                <td>{{ feasibility_b2_b.TrunkType }}</td>
+            </tr>
+            <tr>
+                <th>IPType</th>
+                <td>{{ feasibility_b2_b.IPType }}</td>
+            </tr>
+            <tr>
+                <th>CodecList</th>
+                <td>
+                    <table>
+                        <tbody>
+                            <tr>
+                                {% for codec in feasibility_b2_b.CodecList %}
+                                <td>{{ codec }}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <th>Customer2TiscaliCapacity</th>
+                <td>{{ feasibility_b2_b.Customer2TiscaliCapacity ? feasibility_b2_b.Customer2TiscaliCapacity|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Tiscali2CustomerCapacity</th>
+                <td>{{ feasibility_b2_b.Tiscali2CustomerCapacity ? feasibility_b2_b.Tiscali2CustomerCapacity|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ feasibility_b2_b.Status }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ feasibility_b2_b.Note }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('feasibility_b2b_index') }}">back to list</a>
+
+    <a href="{{ path('feasibility_b2b_edit', {'id': feasibility_b2_b.id}) }}">edit</a>
+
+    {{ include('feasibility_b2b/_delete_form.html.twig') }}
+{% endblock %}
