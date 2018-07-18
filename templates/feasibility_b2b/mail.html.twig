@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Nuova fattibilità B2B</title>
+
+    </head>
+    <body>
+        <h1>Fattibilità B2B</h1>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>User</th>
+                    <td>{{ feasibility_b2_b.user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ feasibility_b2_b.id }}</td>
+                </tr>
+                <tr>
+                    <th>CustomerName</th>
+                    <td>{{ feasibility_b2_b.CustomerName }}</td>
+                </tr>
+                <tr>
+                    <th>TrunkType</th>
+                    <td>{{ feasibility_b2_b.TrunkType }}</td>
+                </tr>
+                <tr>
+                    <th>IPType</th>
+                    <td>{{ feasibility_b2_b.IPType }}</td>
+                </tr>
+                <tr>
+                    <th>CodecList</th>
+                    <td>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    {% for codec in feasibility_b2_b.CodecList %}
+                                    <td>{{ codec }}</td>
+                                    {% endfor %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Customer2TiscaliCapacity</th>
+                    <td>{{ feasibility_b2_b.Customer2TiscaliCapacity ? feasibility_b2_b.Customer2TiscaliCapacity|join(', ') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Tiscali2CustomerCapacity</th>
+                    <td>{{ feasibility_b2_b.Tiscali2CustomerCapacity ? feasibility_b2_b.Tiscali2CustomerCapacity|join(', ') : '' }}</td>
+                </tr>
+                <tr>
+                    <th>Status</th>
+                    <td>{{ feasibility_b2_b.Status }}</td>
+                </tr>
+                <tr>
+                    <th>Note</th>
+                    <td>{{ feasibility_b2_b.Note }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </body>

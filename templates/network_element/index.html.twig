@@ -21,7 +21,6 @@
         >
         <thead>
             <tr>
-                <th data-field="actions" data-export="false">Actions</th>
                 <th data-field="nome" data-filter-control="input" data-sortable="true">Nome</th>
                 <th data-field="vendor" data-filter-control="input" data-sortable="true">Vendor</th>
                 <th data-field="networkElementsType" data-filter-control="input" data-sortable="true">Type</th>
@@ -32,11 +31,22 @@
                 <th data-field="capacityType" data-filter-control="input" data-sortable="true">Capacity Type</th>
                 <th data-field="CSVColumnName" data-filter-control="input" data-sortable="true">CSV column name</th>
                 <th data-field="CSVFilesDirectory" data-filter-control="input" data-sortable="true">CSV files directory</th>
+                <th data-field="actions" data-export="false">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for network_element in network_elements %}
             <tr>
+                <td>{{ network_element.nome }}</td>
+                <td>{{ network_element.vendor.name | default("Missing") }}</td>
+                <td>{{ network_element.networkElementsType.name | default("Missing")}}</td>
+                <td>{{ network_element.capacity }}</td>
+                <td>{{ network_element.getLastStatisticDate() }}</td>
+                <td>{{ network_element.getLastStatisticValue() }}</td>
+                <td>{{ network_element.getFreePercentage() }}</td>
+                <td>{{ network_element.capacityType }}</td>
+                <td>{{ network_element.csvCapacityTypeName }}</td>
+                <td>{{ network_element.directoryStatistiche }}</td>
                 <td>
                     <p><a class="btn btn-primary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
                     <p><a class="btn btn-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">update</a>
@@ -56,16 +66,6 @@
                     </script>
                     {% endif %}
                 </td>
-                <td>{{ network_element.nome }}</td>
-                <td>{{ network_element.vendor.name | default("Missing") }}</td>
-                <td>{{ network_element.networkElementsType.name | default("Missing")}}</td>
-                <td>{{ network_element.capacity }}</td>
-                <td>{{ network_element.getLastStatisticDate() }}</td>
-                <td>{{ network_element.getLastStatisticValue() }}</td>
-                <td>{{ network_element.getFreePercentage() }}</td>
-                <td>{{ network_element.capacityType }}</td>
-                <td>{{ network_element.csvCapacityTypeName }}</td>
-                <td>{{ network_element.directoryStatistiche }}</td>
             </tr>
         {% else %}
             <tr>

@@ -1,30 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}FeasibilityB2B index{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('/css/bootstrap-table.css')}}">
+{% endblock %}
+
 
 {% block body %}
     <h1>FeasibilityB2B index</h1>
+    <div id="toolbar">
+        <button id="export" class="btn btn-secondary">Export CSV</button>
+    </div>
 
-    <table class="table">
+    <table 
+        id="feasibilities"
+        data-toggle="table"
+        data-search="true"
+        data-pagination="true"
+        data-click-to-select="true"
+        data-toolbar="#toolbar">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>CustomerName</th>
-                <th>TrunkType</th>
-                <th>IPType</th>
-                <th>CodecList</th>
-                <th>Customer2TiscaliCapacity</th>
-                <th>Tiscali2CustomerCapacity</th>
-                <th>Status</th>
-                <th>Note</th>
-                <th>User</th>
-                <th>actions</th>
+{#                <th>Id</th> #}
+                <th data-field="customerName" data-filter-control="input" data-sortable="true">CustomerName</th>
+                <th data-field="trunkType" data-filter-control="input" data-sortable="true">TrunkType</th>
+                <th data-field="ipType" data-filter-control="input" data-sortable="true">IPType</th>
+                <th data-field="codecList" data-filter-control="input" data-sortable="true">CodecList</th>
+                <th data-field="customer2tiscalicapacity" data-filter-control="input" data-sortable="true">Customer2TiscaliCapacity</th>
+                <th data-field="tiscali2customercapacity" data-filter-control="input" data-sortable="true">Tiscali2CustomerCapacity</th>
+                <th data-field="status" data-filter-control="input" data-sortable="true">Status</th>
+                {#<th>Note</th>#}
+                <th data-field="user" data-filter-control="input" data-sortable="true">User</th>
+                <th data-field="actions" data-export="false">actions</th>
             </tr>
         </thead>
         <tbody>
         {% for feasibility_b2_b in feasibility_b2_bs %}
             <tr>
-                <td>{{ feasibility_b2_b.id }}</td>
+                {#<td>{{ feasibility_b2_b.id }}</td>#}
                 <td>{{ feasibility_b2_b.CustomerName }}</td>
                 <td>{{ feasibility_b2_b.TrunkType }}</td>
                 <td>{{ feasibility_b2_b.IPType }}</td>
@@ -40,7 +53,7 @@
                 <td>{{ feasibility_b2_b.Customer2TiscaliCapacity ? feasibility_b2_b.Customer2TiscaliCapacity|join(', ') : '' }}</td>
                 <td>{{ feasibility_b2_b.Tiscali2CustomerCapacity ? feasibility_b2_b.Tiscali2CustomerCapacity|join(', ') : '' }}</td>
                 <td>{{ feasibility_b2_b.Status }}</td>
-                <td>{{ feasibility_b2_b.Note }}</td>
+                {#<td>{{ feasibility_b2_b.Note }}</td>#}
                 <td>{{ feasibility_b2_b.user.username }}</td>
                 <td>
                     <a class="btn btn-primary" href="{{ path('feasibility_b2b_show', {'id': feasibility_b2_b.id}) }}">show</a>
@@ -56,4 +69,25 @@
     </table>
 
     <a class="btn btn-primary" href="{{ path('feasibility_b2b_new') }}">Create new</a>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('/js/bootstrap-table.js')}}"></script>
+<script src="{{asset('/js/bootstrap-table-it-IT.js')}}"></script>
+<script src="{{asset('/js/bootstrap-table-export.js')}}"></script>
+<script type="text/javascript" src="{{asset('/js/tableExport.js')}}"></script>
+<script type="text/javascript" src="{{asset('/js/jquery.base64.js')}}"></script>
+
+<script>
+    $(function () {
+        var $table = $('#feasibilities');
+        $('#export').click(function () {
+            $table.tableExport({
+            type: 'csv',
+            escape: false
+            });
+        });
+    });
+</script>
+
 {% endblock %}

@@ -35,36 +35,63 @@
             <ul class="list-unstyled components">
                 <p>Planning services</p>
                 <li>
-                    <a href="{{ path('home')}}" class="nav-link">Home</a>
+                    <a href="{{ path('home')}}" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
                 </li>
-                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_B2B') or is_granted('ROLE_PLANNING')%}
+                {% if is_granted('ROLE_B2B') or is_granted('ROLE_PLANNING')%}
                 <li class="active">
-                    <a href="#fattibilitàSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Fattibilità</a>
+                    <a href="#fattibilitàSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fa fa-wrench"></i>
+                        <span>Fattibilità</span>
+                    </a>
                     <ul class="collapse list-unstyled" id="fattibilitàSubmenu">
                         <li>
-                            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_B2B') %}
-                            <a href="{{ path('feasibility_b2b_new')}}">B2B new</a>
+                            {% if is_granted('ROLE_B2B') %}
+                            <a href="{{ path('feasibility_b2b_new')}}">
+                                <i class="fa fa-user-tie"></i>
+                                <span>B2B new</span>
+                            </a>
                             {% endif %}
-                            <a href="{{ path('feasibility_b2b_index')}}">B2B list</a>
-                            <a href="#">Wholesale</a>
+                            <a href="{{ path('feasibility_b2b_index')}}">
+                                <i class="fas fa-list-ul"></i>
+                                <span>B2B list</span>
+                            </a>
+                            <a href="#">
+                                <i class="fas fa-arrows-alt"></i>
+                                <span>Wholesale</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
                 {% endif %}
-                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PLANNING') %}
+                {% if is_granted('ROLE_PLANNING') %}
                 <li class="active">
-                    <a href="#erlangbSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">ErlangB</a>
+                    <a href="#erlangbSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-phone"></i>
+                        <span>ErlangB</span>
+                    </a>
                     <ul class="collapse list-unstyled" id="erlangbSubmenu">
                         <li>
-                            <a href="{{ path('erlangb')}}">Erlang</a>
+                            <a href="{{ path('erlangb')}}">
+                                <i class="fa fa-phone-volume"></i>
+                                <span>Erlang</span>
+                            </a>
                         </li>
                         <li>
-                            <a href="{{ path('erlangb_minutes')}}">Minutes</a>
+                            <a href="{{ path('erlangb_minutes')}}">
+                                <i class="fas fa-clock"></i>
+                                <span>Minutes</span>
+                            </a>
                         </li>
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#netelementsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Network Elements</a>
+                    <a href="#netelementsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-server"></i>
+                        <span>Network Elements</span>
+                    </a>
                     <ul class="collapse list-unstyled" id="netelementsSubmenu">
                         {% if is_granted('ROLE_ADMIN') %}
                         <li>
@@ -80,13 +107,16 @@
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
-                    <a href="{{ path('vendor_index')}}" class="nav-link">Vendors</a>
+                    <a href="{{ path('vendor_index')}}" class="nav-link">
+                        <i class="fa fa-address-book"></i>
+                        <span>Vendors</span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ path('network_elements_type_index')}}" class="nav-link">Elements Types</a>
                 </li>
                 {% endif %}
-                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_PLANNING')%}
+                {% if is_granted('ROLE_PLANNING')%}
                 <li class="nav-item">
                     <a href="{{ path('cli_rgn_map')}}" class="nav-link">Map Cli-Rgn</a>
                 </li>
@@ -123,6 +153,12 @@
                         <a class="btn btn-info ml-2" href="{{ path('logout')}}">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logout</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-info ml-2" href="{{ path('user_edit',{'id':app.user.id}) }}">
+                            <i class="fas fa-user"></i>
+                            <span>{{ app.user.username }}</span>
                         </a>
                     </li>
                     {% endif %}

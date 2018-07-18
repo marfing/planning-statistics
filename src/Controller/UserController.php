@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/user")
@@ -27,10 +28,10 @@ class UserController extends Controller
     /**
      * @Route("/new", name="user_new", methods="GET|POST")
      */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder): Response
+    public function new(Request $request, UserPasswordEncoderInterface $encoder, Security $security): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['role' => $security->getUser()->getRoles()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -60,9 +61,15 @@ class UserController extends Controller
     /**
      * @Route("/{id}/edit", name="user_edit", methods="GET|POST")
      */
-    public function edit(Request $request, User $user, UserPasswordEncoderInterface $encoder): Response
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $encoder, Security $security): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        //se utente attuale ha id diverso da {id} ridirigi su pagina errore
+        if($security->getUser()->getId() != $user->getId()){
+            return $this->render('user/permission_denied.html.twig');
+        }
+
+        $user=$this->getUser();
+        $form = $this->createForm(UserType::class, $user, ['role' => $user->getRoles()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

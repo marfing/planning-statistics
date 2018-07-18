@@ -47,4 +47,16 @@ class FeasibilityB2BRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByUserID($id)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.User', 'u')
+            ->andWhere('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

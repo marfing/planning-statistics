@@ -40,18 +40,18 @@ class FeasibilityB2B
      * @ORM\Column(type="array")
      */
     private $Customer2TiscaliCapacity = [
-        'Channels' => '',
-        'MinutesPerMonth' => '',
-        'Erlang' => ''
+        'Channels' => 0,
+        'MinutesPerMonth' => 0,
+        'Erlang' => 0
     ];
 
     /**
      * @ORM\Column(type="array")
      */
     private $Tiscali2CustomerCapacity= [
-        'Channels' => '',
-        'MinutesPerMonth' => '',
-        'Erlang' => ''
+        'Channels' => 0,
+        'MinutesPerMonth' => 0,
+        'Erlang' => 0
     ];
 
     /**
