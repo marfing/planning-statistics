@@ -59,9 +59,15 @@ class NetworkElement
      */
     private $networkElementsType;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $dashboard;
+
     public function __construct()
     {
         $this->statisticheRete = new ArrayCollection();
+        $this->dashboard = false;
     }
 
     public function getId()
@@ -224,6 +230,18 @@ class NetworkElement
     public function setNetworkElementsType(?NetworkElementsType $networkElementsType): self
     {
         $this->networkElementsType = $networkElementsType;
+
+        return $this;
+    }
+
+    public function getDashboard(): ?bool
+    {
+        return $this->dashboard;
+    }
+
+    public function setDashboard(bool $dashboard): self
+    {
+        $this->dashboard = $dashboard;
 
         return $this;
     }

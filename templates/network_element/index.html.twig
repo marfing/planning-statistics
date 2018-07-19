@@ -48,10 +48,10 @@
                 <td>{{ network_element.csvCapacityTypeName }}</td>
                 <td>{{ network_element.directoryStatistiche }}</td>
                 <td>
-                    <p><a class="btn btn-primary" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
-                    <p><a class="btn btn-secondary" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">update</a>
+                    <p><a class="btn btn-primary btn-sm" href="{{ path('network_element_show', {'id': network_element.id}) }}">show</a>
+                    <p><a class="btn btn-secondary btn-sm" href="{{ path('network_element_upload_csv', {'id': network_element.id}) }}">update</a>
                     {% if is_granted('ROLE_ADMIN') %}
-                    <p><a class="btn btn-danger" id="cleancsv_{{network_element.id}}" data-id="{{network_element.id}}" href="#">clean csv</a></p>
+                    <p><a class="btn btn-danger btn-sm" id="cleancsv_{{network_element.id}}" data-id="{{network_element.id}}" href="#">clean csv</a></p>
                     <script>
                         console.log(document.getElementById("cleancsv_{{network_element.id}}"));
                         document.getElementById("cleancsv_{{network_element.id}}").addEventListener('click', e => {

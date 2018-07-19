@@ -171,8 +171,8 @@ class NetworkElementController extends Controller
     public function parseCSV($id)
     {
         $networkElement = $this->getDoctrine()
-        ->getRepository(NetworkElement::class)
-        ->find($id);
+                                ->getRepository(NetworkElement::class)
+                                ->find($id);
         $path = $networkElement->getDirectoryStatistiche();
         $fileList = scandir($path);
         //marfi - serve adesso cercare tutti i file csv, raggrupparli per giorno e prendere sempre il valore maggiore da inserire nel db
@@ -251,7 +251,8 @@ class NetworkElementController extends Controller
                     $em->flush();
                 }
             }
-            if(!$alreadyExist){
+            //controllo cheanche il valore ottenuto sia coerente, non deve essere più del quadruplo del valore del giorno precedente
+            if(!$alreadyExist && (($value/$networkElement->getLastStatisticValue()) < 4)) {
                 $statistica = new StatisticaRete;
                 $statistica->setDataFromString($data);
                 $statistica->setValore($value);
@@ -372,7 +373,9 @@ class NetworkElementController extends Controller
     }
 
     public function getElementsGraphTable(){
-        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
+        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findBy(
+            ['dashboard' => true]
+        );
         return $this->render('network_element/graph_table.html.twig', [
             'elements' => $networkElements
         ]);

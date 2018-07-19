@@ -47,4 +47,16 @@ class StatisticaReteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByNetworkElementID($id)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.networkElement', 'n')
+            ->andWhere('n.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }

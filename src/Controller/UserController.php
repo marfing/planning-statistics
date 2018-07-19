@@ -69,8 +69,7 @@ class UserController extends Controller
             return $this->render('user/permission_denied.html.twig');
         }
 
-        $user=$this->getUser();
-        $form = $this->createForm(UserType::class, $user, ['role' => $user->getRoles()]);
+        $form = $this->createForm(UserType::class, $user, ['role' => $currentUser->getRoles()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -56,9 +56,17 @@
         </tbody>
     </table>
 
-    <a href="{{ path('feasibility_b2b_index') }}">back to list</a>
-
-    <a href="{{ path('feasibility_b2b_edit', {'id': feasibility_b2_b.id}) }}">edit</a>
-
-    {{ include('feasibility_b2b/_delete_form.html.twig') }}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-outline-primary" href="{{ path('feasibility_b2b_index') }}">back to list</a>
+                <a class="btn btn-primary" href="{{ path('feasibility_b2b_edit', {'id': feasibility_b2_b.id}) }}">edit</a>
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="col">
+                {{ include('feasibility_b2b/_delete_form.html.twig') }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\BooleanType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
@@ -52,6 +53,13 @@ class NetworkElementType extends AbstractType
                     'class' => 'form-control'))) 
             ->add('directoryStatistiche', TextType::class, array(
                 'label' => 'Directory dove si trova il file CSV',
+            ))
+            ->add('dashboard', ChoiceType::class, array(
+                'choices' => array(
+                    'Show in dashboard' => true,
+                    'Hide from dashboard' => false
+                ),
+                'label' => 'Visualizzazione sulla dashboard',
             ))
         ;
     }

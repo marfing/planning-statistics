@@ -6,17 +6,27 @@
 {% for element in elements %}
 <script type="text/javascript">
     google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawPieChart{{element.id}});
-    function drawPieChart{{element.id}}() {
+    google.charts.setOnLoadCallback(drawBasicChart{{element.id}});
+    function drawBasicChart{{element.id}}() {
+
+        // Create the data table.
         var data_{{element.id}} = google.visualization.arrayToDataTable([
-            ['Usage', 'Value'],
-            ['Used',   {{element.getLastStatisticValue()}}],
-            ['Free',   {{element.getFreeCapacity()}}],
+            ['Data', '{{element.getCapacityType}}'],
+            {% for statistic in element.getStatisticheRete() %}
+            ['{{statistic.getDataAsString()}}',{{statistic.valore}}],
+            {% endfor %}
         ]);
+
+        // Set chart options
         var options_{{element.id}} = {
-            title: '{{element.vendor.name}}_{{element.nome}}_{{element.capacityType}}'
+            title: '{{element.vendor.name}}_{{element.nome}}_{{element.capacityType}}',
+            hAxis: {title: 'Data',  titleTextStyle: {color: '#333'}},
+            vAxis: {minValue: 0,logScale: true},
+            height: 400
         };
-        var chart = new google.visualization.PieChart(document.getElementById('pie_chart_{{element.id}}'));
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_basic_{{element.id}}'));
         chart.draw(data_{{element.id}}, options_{{element.id}});
     }
 </script>

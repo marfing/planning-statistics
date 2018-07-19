@@ -24,6 +24,14 @@ class StatisticaReteController extends Controller
     }
 
     /**
+     * @Route("/index/{id}", name="statistica_rete_filtered_index", methods="GET")
+     */
+    public function filteredIndex(StatisticaReteRepository $statisticaReteRepository, $id): Response
+    {
+        return $this->render('statistica_rete/index.html.twig', ['statistica_retes' => $statisticaReteRepository->findByNetworkElementId($id)]);
+    }
+
+    /**
      * @Route("/new", name="statistica_rete_new", methods="GET|POST")
      */
     public function new(Request $request): Response

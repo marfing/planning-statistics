@@ -1,15 +1,21 @@
 {# templates/network_element/graph_table.html.twig #}
 <div class="container">
+        <div class="row" style="height: 300px">                
 {% for element in elements %}
-        <div class="row" style="height: 400px">                
-                <div class="col">
+                <div class="col col-md-4">
                         <div class="card">
                                 <div class="card-header">
                                         <small>Date: {{ element.getLastStatisticDate }}</small>
                                 </div>
-                                <div class="card-body" id="chart_basic_{{element.id}}"></div>                                
+                                <div class="card-body" id="pie_chart_{{element.id}}">
+                                </div>
+                                
                         </div>
                 </div>
+    {% if loop.index is divisible by(3) %}
         </div>
+        <div class="row" style="height: 300px">
+    {% endif %}            
 {% endfor %}
+        </div>
 </div>

@@ -27,7 +27,17 @@
     </table>
 
 
-    <a class="btn btn-primary" href="{{ path('statistica_rete_edit', {'id': statistica_rete.id}) }}">edit</a>
-    <a class="btn btn-danger" data-id="{{statistica_rete.id}}" href="#">delete</a>
-    <a href="{{ path('statistica_rete_index') }}">back to list</a>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <a class="btn btn-primary" href="{{ path('statistica_rete_edit', {'id': statistica_rete.id}) }}">edit</a>
+                <a class="btn btn-outline-primary" href="{{ path('statistica_rete_index') }}">back to list</a>
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="col">
+                {{ include('statistica_rete/_delete_form.html.twig') }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

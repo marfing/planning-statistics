@@ -59,6 +59,19 @@ class FeasibilityB2BController extends Controller
                 )
             ;
             $mailer->send($message);
+            $message2 = (new \Swift_Message('New B2B Feasibility') )
+                ->setFrom('planning.rete@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'feasibility_b2b/mail.html.twig', 
+                            array('feasibility_b2_b' => $feasibilityB2B)
+                    ),
+                    'text/html'
+                )
+            ;
+            $mailer->send($message2);
+
             return $this->redirectToRoute('feasibility_b2b_index');
         }
 
@@ -79,7 +92,7 @@ class FeasibilityB2BController extends Controller
     /**
      * @Route("/{id}/edit", name="feasibility_b2b_edit", methods="GET|POST")
      */
-    public function edit(Request $request, FeasibilityB2B $feasibilityB2B): Response
+    public function edit(Request $request, FeasibilityB2B $feasibilityB2B, \Swift_Mailer $mailer): Response
     {
         $user=$this->getUser();
         $form = $this->createForm(FeasibilityB2BType::class, $feasibilityB2B, ['role' => $user->getRoles()]);
@@ -88,7 +101,31 @@ class FeasibilityB2BController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('feasibility_b2b_edit', ['id' => $feasibilityB2B->getId()]);
+            $message = (new \Swift_Message('New B2B Feasibility') )
+                ->setFrom('planning.rete@gmail.com')
+                ->setTo('mfigus@it.tiscali.com')
+                ->setBody(
+                    $this->renderView(
+                        'feasibility_b2b/mail.html.twig', 
+                            array('feasibility_b2_b' => $feasibilityB2B)
+                    ),
+                    'text/html'
+                )
+            ;
+            $mailer->send($message);
+            $message2 = (new \Swift_Message('New B2B Feasibility') )
+                ->setFrom('planning.rete@gmail.com')
+                ->setTo($feasibilityB2B->getUser()->getEmail())
+                ->setBody(
+                    $this->renderView(
+                        'feasibility_b2b/mail.html.twig', 
+                            array('feasibility_b2_b' => $feasibilityB2B)
+                    ),
+                    'text/html'
+                )
+            ;
+            $mailer->send($message2);
+            return $this->redirectToRoute('feasibility_b2b_show', ['id' => $feasibilityB2B->getId()]);
         }
 
         return $this->render('feasibility_b2b/edit.html.twig', [
