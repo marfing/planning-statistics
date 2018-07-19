@@ -63,8 +63,9 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $encoder, Security $security): Response
     {
-        //se utente attuale ha id diverso da {id} ridirigi su pagina errore
-        if($security->getUser()->getId() != $user->getId()){
+        //se utente attuale non è admin ed ha id diverso da {id} ridirigi su pagina errore
+        $currentUser = $security->getUser();
+        if( !$currentUser->isAdmin() && $currentUser->getId() != $user->getId()){
             return $this->render('user/permission_denied.html.twig');
         }
 

@@ -6,10 +6,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 
 class SecurityController extends Controller
 {
+    
+    /**
+     * @Route("/", name="first_page", methods="GET")
+     */
+    public function index()
+    {
+        return $this->redirectToRoute('home');
+    }
+    
+    
+    
     /**
      * @Route("/login", name="login")
      */

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use \Datetime;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FeasibilityB2BRepository")
@@ -69,6 +70,23 @@ class FeasibilityB2B
      * @ORM\JoinColumn(nullable=false)
      */
     private $User;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $rejectDate;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $approveDate;
+
+    
 
     public function getId()
     {
@@ -155,6 +173,18 @@ class FeasibilityB2B
     public function setStatus(?string $Status): self
     {
         $this->Status = $Status;
+        $date = new DateTime('now');
+        switch($Status){
+            case "new":
+                $this->SetCreationDate($date);
+            break;
+            case "approved":
+                $this->SetApproveDate($date);
+            break;
+            case "rejected":
+                $this->SetRejectDate($date);
+            break;
+        }
 
         return $this;
     }
@@ -179,6 +209,42 @@ class FeasibilityB2B
     public function setUser(?User $User): self
     {
         $this->User = $User;
+
+        return $this;
+    }
+
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): self
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getRejectDate(): ?\DateTimeInterface
+    {
+        return $this->rejectDate;
+    }
+
+    public function setRejectDate(?\DateTimeInterface $rejectDate): self
+    {
+        $this->rejectDate = $rejectDate;
+
+        return $this;
+    }
+
+    public function getApproveDate(): ?\DateTimeInterface
+    {
+        return $this->approveDate;
+    }
+
+    public function setApproveDate(?\DateTimeInterface $approveDate): self
+    {
+        $this->approveDate = $approveDate;
 
         return $this;
     }

@@ -29,6 +29,9 @@
                 <th data-field="customer2tiscalicapacity" data-filter-control="input" data-sortable="true">Customer2TiscaliCapacity</th>
                 <th data-field="tiscali2customercapacity" data-filter-control="input" data-sortable="true">Tiscali2CustomerCapacity</th>
                 <th data-field="status" data-filter-control="input" data-sortable="true">Status</th>
+                <th data-field="creationDate" data-filter-control="input" data-sortable="true">Creation Date</th>
+                <th data-field="approveDate" data-filter-control="input" data-sortable="true">Approvation Date</th>
+                <th data-field="rejectDate" data-filter-control="input" data-sortable="true">Rejection Date</th>
                 {#<th>Note</th>#}
                 <th data-field="user" data-filter-control="input" data-sortable="true">User</th>
                 <th data-field="actions" data-export="false">actions</th>
@@ -53,6 +56,9 @@
                 <td>{{ feasibility_b2_b.Customer2TiscaliCapacity ? feasibility_b2_b.Customer2TiscaliCapacity|join(', ') : '' }}</td>
                 <td>{{ feasibility_b2_b.Tiscali2CustomerCapacity ? feasibility_b2_b.Tiscali2CustomerCapacity|join(', ') : '' }}</td>
                 <td>{{ feasibility_b2_b.Status }}</td>
+                <td>{{ feasibility_b2_b.creationDate ? feasibility_b2_b.creationDate|date('Y-m-d') : '' }}</td>
+                <td>{{ feasibility_b2_b.approveDate ? feasibility_b2_b.approveDate|date('Y-m-d') : '' }}</td>
+                <td>{{ feasibility_b2_b.rejectDate ? feasibility_b2_b.rejectDate|date('Y-m-d') : '' }}</td>
                 {#<td>{{ feasibility_b2_b.Note }}</td>#}
                 <td>{{ feasibility_b2_b.user.username }}</td>
                 <td>
