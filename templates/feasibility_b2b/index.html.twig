@@ -7,7 +7,7 @@
 
 
 {% block body %}
-    <h1>FeasibilityB2B index</h1>
+    <h1>Lista delle tue fattibilità voce B2B</h1>
     <div id="toolbar">
         <button id="export" class="btn btn-secondary">Export CSV</button>
     </div>
@@ -21,7 +21,6 @@
         data-toolbar="#toolbar">
         <thead>
             <tr>
-{#                <th>Id</th> #}
                 <th data-field="customerName" data-filter-control="input" data-sortable="true">CustomerName</th>
                 <th data-field="trunkType" data-filter-control="input" data-sortable="true">TrunkType</th>
                 <th data-field="ipType" data-filter-control="input" data-sortable="true">IPType</th>
@@ -40,7 +39,6 @@
         <tbody>
         {% for feasibility_b2_b in feasibility_b2_bs %}
             <tr>
-                {#<td>{{ feasibility_b2_b.id }}</td>#}
                 <td>{{ feasibility_b2_b.CustomerName }}</td>
                 <td>{{ feasibility_b2_b.TrunkType }}</td>
                 <td>{{ feasibility_b2_b.IPType }}</td>

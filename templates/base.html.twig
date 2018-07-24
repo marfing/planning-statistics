@@ -32,37 +32,48 @@
             <div class="sidebar-header">
                 <h4>tiscali: planning</h4>
             </div>
-
             <ul class="list-unstyled components">
                 <p>Planning services</p>
                 <li>
                     <a href="{{ path('home')}}" class="nav-link">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-home mr-2"></i>
                         <span>Home</span>
                     </a>
                 </li>
                 {% if is_granted('ROLE_B2B') or is_granted('ROLE_PLANNING')%}
                 <li class="active">
                     <a href="#fattibilitàSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fa fa-wrench"></i>
+                        <i class="fa fa-wrench mr-2"></i>
                         <span>Fattibilità</span>
                     </a>
                     <ul class="collapse list-unstyled" id="fattibilitàSubmenu">
-                        <li>
-                            {% if is_granted('ROLE_B2B') %}
-                            <a href="{{ path('feasibility_b2b_new')}}">
-                                <i class="fa fa-user-tie"></i>
-                                <span>B2B new</span>
+                        <li class="active">
+                            <a href="#fattibilitàVoce" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="fas fa-phone mr-2"></i>
+                            <span>Voce</span>
                             </a>
-                            {% endif %}
-                            <a href="{{ path('feasibility_b2b_index')}}">
-                                <i class="fas fa-list-ul"></i>
-                                <span>B2B list</span>
-                            </a>
-                            <a href="#">
-                                <i class="fas fa-arrows-alt"></i>
-                                <span>Wholesale</span>
-                            </a>
+                            <ul class="collapse list-unstyled" id="fattibilitàVoce">
+                                {% if is_granted('ROLE_B2B') %}
+                                <li class="active">
+                                    <a href="{{ path('feasibility_b2b_new')}}">
+                                        <i class="fa fa-user-tie mr-2"></i>
+                                        <span>B2B new</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                <li class="active">
+                                    <a href="{{ path('feasibility_b2b_index')}}">
+                                        <i class="fas fa-list-ul mr-2"></i>
+                                        <span>B2B list</span>
+                                    </a>
+                                </li>
+                                <li class="active">
+                                    <a href="#">
+                                        <i class="fas fa-arrows-alt mr-2"></i>
+                                        <span>Wholesale</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>
@@ -70,19 +81,19 @@
                 {% if is_granted('ROLE_PLANNING') %}
                 <li class="active">
                     <a href="#erlangbSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-microphone-alt mr-2"></i>
                         <span>ErlangB</span>
                     </a>
                     <ul class="collapse list-unstyled" id="erlangbSubmenu">
                         <li>
                             <a href="{{ path('erlangb')}}">
-                                <i class="fa fa-phone-volume"></i>
+                                <i class="fa fa-phone-volume mr-2"></i>
                                 <span>Erlang</span>
                             </a>
                         </li>
                         <li>
                             <a href="{{ path('erlangb_minutes')}}">
-                                <i class="fas fa-clock"></i>
+                                <i class="fas fa-clock mr-2"></i>
                                 <span>Minutes</span>
                             </a>
                         </li>
@@ -90,7 +101,7 @@
                 </li>
                 <li class="active">
                     <a href="#netelementsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                        <i class="fas fa-server"></i>
+                        <i class="fas fa-server mr-2"></i>
                         <span>Network Elements</span>
                     </a>
                     <ul class="collapse list-unstyled" id="netelementsSubmenu">
@@ -109,22 +120,31 @@
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a href="{{ path('vendor_index')}}" class="nav-link">
-                        <i class="fa fa-address-book"></i>
+                        <i class="fa fa-address-book mr-2"></i>
                         <span>Vendors</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ path('network_elements_type_index')}}" class="nav-link">Elements Types</a>
+                    <a href="{{ path('network_elements_type_index')}}" class="nav-link">
+                        <i class="fas fa-project-diagram mr-2"></i>
+                        <span>Elements Types</span>
+                    </a>
                 </li>
                 {% endif %}
                 {% if is_granted('ROLE_PLANNING')%}
                 <li class="nav-item">
-                    <a href="{{ path('cli_rgn_map')}}" class="nav-link">Map Cli-Rgn</a>
+                    <a href="{{ path('cli_rgn_map')}}" class="nav-link">
+                        <i class="fas fa-map-signs mr-2"></i>
+                        <span>Map Cli-Rgn</span>
+                    </a>
                 </li>
                 {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
-                    <a href="{{ path('user_index')}}" class="nav-link">Users</a>
+                    <a href="{{ path('user_index')}}" class="nav-link">
+                        <i class="fas fa-users mr-2"></i>
+                        <span>Users</span>
+                    </a>
                 </li>
                 {% endif %}
             </ul>

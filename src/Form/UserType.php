@@ -8,6 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -15,24 +16,31 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('password',PasswordType::class)
-            ->add('email',EmailType::class);
-
         if( in_array('ROLE_ADMIN',$options['role'])){
             $builder
-                ->add('username')
-                ->add('roles', ChoiceType::class, array(
+            ->add('password',PasswordType::class)
+            ->add('username')
+            ->add('email',EmailType::class)
+            ->add('roles', ChoiceType::class, array(
                     'choices' => array(
                         'Admin' => 'ROLE_ADMIN',
                         'Planner' => 'ROLE_PLANNING',
                         'User' => 'ROLE_USER',
                         'B2B' => 'ROLE_B2B'
                     ),
-                    'expanded' => false,
-                    'multiple' => true
-                ))
-                ->add('isActive');
+                'expanded' => false,
+                'multiple' => true
+            ))
+            ->add('isActive');
+        } else {
+            $builder
+            ->add('username',TextType::class, array(
+                'disabled' => true
+            ))
+            ->add('password',PasswordType::class)
+            ->add('email',EmailType::class, array(
+                'disabled' => true
+            ));
         }
     }
 
