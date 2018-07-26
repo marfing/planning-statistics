@@ -87,6 +87,16 @@ class FeasibilityB2B
      */
     private $approveDate;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Type;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $MobilePercentage;
+
     
 
     public function getId()
@@ -246,6 +256,30 @@ class FeasibilityB2B
     public function setApproveDate(?\DateTimeInterface $approveDate): self
     {
         $this->approveDate = $approveDate;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->Type;
+    }
+
+    public function setType(string $Type): self
+    {
+        $this->Type = $Type;
+
+        return $this;
+    }
+
+    public function getMobilePercentage(): ?int
+    {
+        return $this->MobilePercentage;
+    }
+
+    public function setMobilePercentage(?int $MobilePercentage): self
+    {
+        $this->MobilePercentage = $MobilePercentage;
 
         return $this;
     }
