@@ -57,32 +57,26 @@ class FeasibilityB2BType extends AbstractType
             ->add('C2TChannels', IntegerType::class, [
                 'label' => 'Incomig (Customer 2 Tiscali) channels',
                 'property_path' => 'Customer2TiscaliCapacity[Channels]',
-                'data' => 0
             ])
             ->add('C2TMinutesPerMonth', IntegerType::class, [
                 'label' => 'Incomig (Customer 2 Tiscali) minutes per month',
                 'property_path' => 'Customer2TiscaliCapacity[MinutesPerMonth]',
-                'data' => 0
             ])
             ->add('C2TErlang', IntegerType::class, [
                 'label' => 'Incomig (Customer 2 Tiscali) erlangs',
                 'property_path' => 'Customer2TiscaliCapacity[Erlang]',
-                'data' => 0
             ])
             ->add('T2CChannels', IntegerType::class, [
                 'label' => 'Outgoing (Tiscali 2 Customer) channels',
                 'property_path' => 'Tiscali2CustomerCapacity[Channels]',
-                'data' => 0
             ])
             ->add('T2CMinutesPerMonth', IntegerType::class, [
                 'label' => 'Outgoing (Tiscali 2 Customer) minutes per month',
                 'property_path' => 'Tiscali2CustomerCapacity[MinutesPerMonth]',
-                'data' => 0
             ])
             ->add('T2CErlang', IntegerType::class, [
                 'label' => 'Outgoing (Tiscali 2 Customer) erlangs',
                 'property_path' => 'Tiscali2CustomerCapacity[Erlang]',
-                'data' => 0
             ])
             ->add('Note')
         ;
