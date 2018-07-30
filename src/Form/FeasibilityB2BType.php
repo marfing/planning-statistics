@@ -108,7 +108,7 @@ class FeasibilityB2BType extends AbstractType
 
         $formModifier = function (FormInterface $form, $type = null) {
             if($type == 'wholesale'){
-                $form->add('MobilePercentage');
+                $form->add('MobilePercentage'); 
             }
         };    
 
@@ -126,15 +126,13 @@ class FeasibilityB2BType extends AbstractType
             function (FormEvent $event) use ($formModifier) {
                 // It's important here to fetch $event->getForm()->getData(), as
                 // $event->getData() will get you the client data (that is, the ID)
-                $feasibility = $event->getForm()->getData();
+                $type = $event->getForm()->getData();
 
                 // since we've added the listener to the child, we'll have to pass on
                 // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $feasibility);
+                $formModifier($event->getForm()->getParent(), $type);
             }
         );
-
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
