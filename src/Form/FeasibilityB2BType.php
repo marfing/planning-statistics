@@ -50,6 +50,10 @@ class FeasibilityB2BType extends AbstractType
                 'expanded' => 'true',
                 'multiple' => 'false',
                 'required' => true))
+            ->add('MobilePercentage', IntegerType::class, [
+                'label' => 'Percentuale traffico mobile',
+                'help' => 'Da usare solo per fattibilità Wholesale'
+            ])
             ->add('C2TChannels', IntegerType::class, [
                 'label' => 'Incomig (Customer 2 Tiscali) channels',
                 'property_path' => 'Customer2TiscaliCapacity[Channels]',
@@ -106,36 +110,17 @@ class FeasibilityB2BType extends AbstractType
                 ;
         }
 
-        $formModifier = function (FormInterface $form, $type = null) {
-            if($type == 'wholesale'){
-                $form->add('MobilePercentage'); 
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $feasibility = $event->getData();
+            $form = $event->getForm();
+            if($feasibility->getType() == 'b2b'){
+                $form->add('MobilePercentage', IntegerType::class, [
+                    'label' => 'Percentuale traffico mobile',
+                    'attr' => array('style' => 'display:none;',),
+                    'help' => 'Da usare solo per fattibilità Wholesale',
+                ]);
             }
-        };    
-
-        $builder->addEventListener(
-            FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
-                $form = $event->getForm();
-                $data = $event->getData();
-                $typeValue = $data->getType();
-                if($typeValue == "wholesale"){
-                    $form->add('MobilePercentage');
-                }
-            }
-        );
-
-        $builder->get('Type')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
-                $type = $event->getForm()->getData();
-
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $type);
-            }
-        );
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -21,16 +21,18 @@
         data-toolbar="#toolbar">
         <thead>
             <tr>
-                <th data-field="customerName" data-filter-control="input" data-sortable="true">CustomerName</th>
-                <th data-field="trunkType" data-filter-control="input" data-sortable="true">TrunkType</th>
-                <th data-field="ipType" data-filter-control="input" data-sortable="true">IPType</th>
-                <th data-field="codecList" data-filter-control="input" data-sortable="true">CodecList</th>
-                <th data-field="customer2tiscalicapacity" data-filter-control="input" data-sortable="true">Customer2TiscaliCapacity</th>
-                <th data-field="tiscali2customercapacity" data-filter-control="input" data-sortable="true">Tiscali2CustomerCapacity</th>
+                <th data-field="customerName" data-filter-control="input" data-sortable="true">Nome<br>Cliente</th>
+                <th data-field="type" data-filter-control="input" data-sortable="true">Tipo</th>
+                <th data-field="trunkType" data-filter-control="input" data-sortable="true">Tipo<br>Trunk</th>
+                <th data-field="ipType" data-filter-control="input" data-sortable="true">Tipo<br>IP</th>
+                <th data-field="codecList" data-filter-control="input" data-sortable="true">Lista<br>Codec</th>
+                <th data-field="mobilePercentage" data-filter-control="input" data-sortable="true">Percentuale<br>traffico mobile</th>
+                <th data-field="customer2tiscalicapacity" data-filter-control="input" data-sortable="true">Customer to Tiscali<br>Capacity</th>
+                <th data-field="tiscali2customercapacity" data-filter-control="input" data-sortable="true">Tiscali to Customer<br>Capacity</th>
                 <th data-field="status" data-filter-control="input" data-sortable="true">Status</th>
-                <th data-field="creationDate" data-filter-control="input" data-sortable="true">Creation Date</th>
-                <th data-field="approveDate" data-filter-control="input" data-sortable="true">Approvation Date</th>
-                <th data-field="rejectDate" data-filter-control="input" data-sortable="true">Rejection Date</th>
+                <th data-field="creationDate" data-filter-control="input" data-sortable="true">Creation<br> Date</th>
+                <th data-field="approveDate" data-filter-control="input" data-sortable="true">Approvation<br>Date</th>
+                <th data-field="rejectDate" data-filter-control="input" data-sortable="true">Rejection<br>Date</th>
                 {#<th>Note</th>#}
                 <th data-field="user" data-filter-control="input" data-sortable="true">User</th>
                 <th data-field="actions" data-export="false">actions</th>
@@ -40,6 +42,7 @@
         {% for feasibility_b2_b in feasibility_b2_bs %}
             <tr>
                 <td>{{ feasibility_b2_b.CustomerName }}</td>
+                <td>{{ feasibility_b2_b.Type }}</td>
                 <td>{{ feasibility_b2_b.TrunkType }}</td>
                 <td>{{ feasibility_b2_b.IPType }}</td>
                 <td>
@@ -51,6 +54,7 @@
                     </table>
                     {% endfor %}
                 </td>
+                <td>{{ feasibility_b2_b.MobilePercentage }}</td>
                 <td>{{ feasibility_b2_b.Customer2TiscaliCapacity ? feasibility_b2_b.Customer2TiscaliCapacity|join(', ') : '' }}</td>
                 <td>{{ feasibility_b2_b.Tiscali2CustomerCapacity ? feasibility_b2_b.Tiscali2CustomerCapacity|join(', ') : '' }}</td>
                 <td>{{ feasibility_b2_b.Status }}</td>

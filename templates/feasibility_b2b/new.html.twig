@@ -2,30 +2,28 @@
 
 {% block title %}Fattibilità voce{% endblock %}
 
-{% block javascripts %}
-<script>
-    var $type = $('#feasibility_b2_b_Type');
-    console.log("script loaded");
-    // When Type gets selected ...
-    $type.change(function() {
-        // ... retrieve the corresponding form.
-        console.log("type.change");
-        var $form = $(this).closest('form');
-        if($type.val() == 'wholesale'){
-            document.getElementById("scriptlog").innerHTML = "Type == wholesale";
-        } else {
-            document.getElementById("scriptlog").innerHTML = "Type != wholesale";
-        }
-    });
-</script>
-{% endblock %}
-
 
 {% block body %}
     <h1>Nuova fattibilità voce</h1>
 
     {{ include('feasibility_b2b/_form.html.twig') }}
     <p id="scriptlog">Script log</p>
+
 {% endblock %}
 
+{% block javascripts %}
+    <script>
+        var type = document.getElementById("feasibility_b2_b_Type");
+        console.log("script loaded");
+
+        type.onchange = function(){
+            console.log("type.change");
+            if(type.value == 'wholesale'){
+                document.getElementById("feasibility_b2_b_MobilePercentage").style.display = 'inline';
+            } else {
+                document.getElementById("feasibility_b2_b_MobilePercentage").style.display = 'none';
+            }
+        };
+    </script>
+{% endblock %}
 

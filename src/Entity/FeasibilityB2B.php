@@ -95,7 +95,7 @@ class FeasibilityB2B
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $MobilePercentage;
+    private $MobilePercentage = 0;
 
     
 

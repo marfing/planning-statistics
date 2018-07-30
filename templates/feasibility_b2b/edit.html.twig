@@ -1,12 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifica fattibilità voce B2B{% endblock %}
+{% block title %}Modifica fattibilità voce{% endblock %}
 
 {% block body %}
     <h1>Modifica fattibilità voce B2B</h1>
-        {{ include('feasibility_b2b/_form.html.twig', {'button_label': 'Update'}) }}
-        {% if is_granted('ROLE_ADMIN') %}
-        {{ include('feasibility_b2b/_delete_form.html.twig') }}
+    {{ include('feasibility_b2b/_form.html.twig', {'button_label': 'Update'}) }}
+    {% if is_granted('ROLE_ADMIN') %}
+    {{ include('feasibility_b2b/_delete_form.html.twig') }}
     {% endif %}
-
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        var type = document.getElementById("feasibility_b2_b_Type");
+        console.log("script loaded");
+
+        type.onchange = function(){
+            console.log("type.change");
+            if(type.value == 'wholesale'){
+                document.getElementById("feasibility_b2_b_MobilePercentage").style.display = 'inline';
+            } else {
+                document.getElementById("feasibility_b2_b_MobilePercentage").style.display = 'none';
+            }
+        };
+    </script>
+{% endblock %}
+
