@@ -106,34 +106,17 @@ class FeasibilityB2BType extends AbstractType
                 ;
         }
 
-        $formModifier = function (FormInterface $form, $type = null) {
-            if($type == 'wholesale'){
-                $form->add('MobilePercentage');
-            }
-        };    
-
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
-                // this would be your entity, i.e. Feasibility
+            function (FormEvent $event) {
+                $form = $event->getForm();
                 $data = $event->getData();
-                $formModifier($event->getForm(), $data->getType());
+                $typeValue = $data->getType();
+                if($typeValue == "wholesale"){
+                    $form->add('MobilePercentage');
+                }
             }
         );
-
-        $builder->get('Type')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                // It's important here to fetch $event->getForm()->getData(), as
-                // $event->getData() will get you the client data (that is, the ID)
-                $feasibility = $event->getForm()->getData();
-
-                // since we've added the listener to the child, we'll have to pass on
-                // the parent to the callback functions!
-                $formModifier($event->getForm()->getParent(), $feasibility);
-            }
-        );
-
 
     }
 

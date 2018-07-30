@@ -1,15 +1,29 @@
 {# templates/network_element/graph_table.html.twig #}
-<div class="container">
-{% for element in elements %}
+
+<div class="container mt-4">
+{% if elements %}
+        {% for element in elements %}
+                <div class="row" style="height: 400px">                
+                        <div class="col">
+                                <div class="card">
+                                        <div class="card-header">
+                                                <small>Date: {{ element.getLastStatisticDate }}</small>
+                                        </div>
+                                        <div class="card-body" id="chart_basic_{{element.id}}"></div>                                
+                                </div>
+                        </div>
+                </div>
+        {% endfor %}
+{% else %}
         <div class="row" style="height: 400px">                
                 <div class="col">
-                        <div class="card">
-                                <div class="card-header">
-                                        <small>Date: {{ element.getLastStatisticDate }}</small>
-                                </div>
-                                <div class="card-body" id="chart_basic_{{element.id}}"></div>                                
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Mi dispiace!</strong> Non ci sono Network Elements abilitati per la dashboard.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                        </button>
                         </div>
                 </div>
         </div>
-{% endfor %}
+{% endif %}
 </div>

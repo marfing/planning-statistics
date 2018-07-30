@@ -37,7 +37,7 @@ class FeasibilityB2BController extends Controller
     {
         $feasibilityB2B = new FeasibilityB2B();
         $user=$this->getUser();
-        $form = $this->createForm(FeasibilityB2BType::class, $feasibilityB2B);
+        $form = $this->createForm(FeasibilityB2BType::class, $feasibilityB2B, ['role' => $user->getRoles()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

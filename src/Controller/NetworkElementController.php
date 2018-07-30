@@ -378,7 +378,7 @@ class NetworkElementController extends Controller
         );
         return $this->render('network_element/graph_table.html.twig', [
             'elements' => $networkElements
-        ]);
+        ]);    
     }
 
     public function getElementsGraphTableJs(){
