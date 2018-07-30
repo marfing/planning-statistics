@@ -18,7 +18,18 @@
         <script src="{{ asset('/bootstrap/js/bootstrap.min.js') }}"></script> 
         <!-- Font Awesome JS -->
         <script defer src="{{ asset('/fontawesome/js/all.js') }}"></script>
-
+        <!-- jQuery CDN - Slim version (=without AJAX) -->
+        <script src="{{asset('/js/jquery-3.3.1.slim.min.js')}}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <!-- Popper.JS -->
+        <script src="{{asset('/js/popper.min.js')}}" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#sidebarCollapse').on('click', function () {
+                    $('#sidebar').toggleClass('active');
+                });
+            });
+        </script>
         {% block javascripts %}{% endblock %}
     </head>
 
@@ -54,14 +65,14 @@
                                 <li class="active">
                                     <a href="{{ path('feasibility_b2b_new')}}">
                                         <i class="fa fa-user-tie mr-2"></i>
-                                        <span>B2B new</span>
+                                        <span>New</span>
                                     </a>
                                 </li>
                                 {% endif %}
                                 <li class="active">
                                     <a href="{{ path('feasibility_b2b_index')}}">
                                         <i class="fas fa-list-ul mr-2"></i>
-                                        <span>B2B list</span>
+                                        <span>List</span>
                                     </a>
                                 </li>
                                 <li class="active">
@@ -186,19 +197,6 @@
             {% block body %}{% endblock %}
         </div>
     </div>
-
-    <!-- jQuery CDN - Slim version (=without AJAX) -->
-    <script src="{{asset('/js/jquery-3.3.1.slim.min.js')}}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!-- Popper.JS -->
-    <script src="{{asset('/js/popper.min.js')}}" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-    
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
-        });
-    </script>
 
     </body>
 </html>

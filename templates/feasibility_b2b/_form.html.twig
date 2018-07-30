@@ -3,17 +3,3 @@
     <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
     <a class="btn btn-outline-primary" href="{{ path('feasibility_b2b_index') }}">back to list</a>
 {{ form_end(form) }}
-
-
-{#
-<script>
-var $type = $('#feasibility_b2_b_Type');
-// When Type gets selected ...
-$type.change(function() {
-  // ... retrieve the corresponding form.
-  var $form = $(this).closest('form');
-  // Simulate form data, but only include the selected sport value.
-  //  if($type.val() == 
-});
-
-</script> #}
