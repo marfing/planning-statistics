@@ -7,7 +7,10 @@
         <div class="col">
                 <div class="card">
                         <div class="card-header">
-                                <small>Date: {{ element.getLastStatisticDate }}</small>
+                                <div class="d-flex justify-content-between">
+                                        <small>Date: {{ element.getLastStatisticDate }}</small>
+                                        <a class="btn btn-secondary btn-sm" href="{{ path('network_element_upload_csv', {'id': element.id}) }}">update</a>
+                                </div>
                         </div>
                         <div class="card-body" id="chart_basic_{{element.id}}"></div>                                
                 </div>
