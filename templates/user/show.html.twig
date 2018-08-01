@@ -29,6 +29,20 @@
                 <th>IsActive</th>
                 <td>{{ user.isActive ? 'Yes' : 'No' }}</td>
             </tr>
+            {% if user.feasibilitiesB2B | length > 0 %}
+            <tr>Feasibilities
+                <th>Fattibilità</th>
+                <td>
+                    <table clas="table">
+                        <tbody>
+                        {% for feasibility in user.feasibilitiesB2B %}
+                            <tr><td>{{ feasibility.CustomerName }}</td></tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            {% endif %}
         </tbody>
     </table>
 
