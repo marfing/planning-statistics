@@ -34,7 +34,7 @@ security:
         - { path: ^/erlangb, roles:[ROLE_PLANNING] }
         - { path: ^/feasibility, roles:[ROLE_PLANNING,ROLE_B2B] }
         - { path: ^/rgn, roles:[ROLE_PLANNING] }
-        - { path: ^/user, roles:[ROLE_PLANNING,ROLE_B2B,ROLE_USER] }
+        - { path: ^/user, roles:[ROLE_PLANNING,ROLE_B2B,ROLE_USER,ROLE_GUEST] }
         - { path: ^/home, roles:[ROLE_PLANNING,ROLE_B2B,ROLE_USER,ROLE_GUEST] }
 
         #- { path: ^/,roles:[ROLE_USER,ROLE_PLANNING,ROLE_B2B]}
