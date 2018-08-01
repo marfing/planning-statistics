@@ -7,13 +7,13 @@
     <div class="text-center">
         <img src="{{ asset('img/ProgettoCruscottoMonitoring.jpg')}}" class="img-fluid" alt="Responsive image">
     </div>
-    {% if is_granted('ROLE_PLANNING') %}
+    {% if is_granted('ROLE_GUEST') %}
     {{ render(controller('App\\Controller\\NetworkElementController::getElementsGraphTable')) }}
     {% endif %}
 {% endblock %}
 
 {% block javascripts %}
-    {% if is_granted('ROLE_PLANNING')%}
+    {% if is_granted('ROLE_GUEST')%}
     {{ render(controller('App\\Controller\\NetworkElementController::getElementsGraphTableJs')) }}
     {% endif %}
 {% endblock %}

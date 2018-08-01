@@ -28,20 +28,25 @@ class FeasibilityB2BType extends AbstractType
                     'b2b' => 'b2b',
                     'wholesale' => 'wholesale'
                 ),
-                'placeholder' => ''
+                'placeholder' => '',
+                'label' => 'Tipo cliente',
             ))
-            ->add('CustomerName')
+            ->add('CustomerName', TextType::class, [
+                'label' => 'Nome Cliente'
+            ])
             ->add('TrunkType', ChoiceType::class, array(
                 'choices' => array(
                     'Single' => 'single',
                     'Backup' => 'backup',
                     'Load Balance' => 'load balance',
                     'Trabocco' => 'trabocco'),
+                'label' => 'Tipo di trunk',
             ))
             ->add('IPType', ChoiceType::class, array(
                 'choices' => array(
                     'Public' => 'public',
                     'Private' => 'private'),
+                'label' => 'Tipo di IP',
             ))
             ->add('CodecList', ChoiceType::class, array(
                 'choices' => array(
@@ -49,33 +54,36 @@ class FeasibilityB2BType extends AbstractType
                     'G.729' => 'g.729'),
                 'expanded' => 'true',
                 'multiple' => 'false',
-                'required' => true))
+                'required' => true,
+                'label' => 'Lista dei codec',
+                'help' => 'Fare riferimento ai vincoli imposti da Ingegneria'
+            ))
             ->add('MobilePercentage', IntegerType::class, [
                 'label' => 'Percentuale traffico mobile',
                 'help' => 'Da usare solo per fattibilità Wholesale'
             ])
             ->add('C2TChannels', IntegerType::class, [
-                'label' => 'Incomig (Customer 2 Tiscali) channels',
+                'label' => 'Numero canali (Customer to Tiscali)',
                 'property_path' => 'Customer2TiscaliCapacity[Channels]',
             ])
             ->add('C2TMinutesPerMonth', IntegerType::class, [
-                'label' => 'Incomig (Customer 2 Tiscali) minutes per month',
+                'label' => 'Numero minuti per mese (Customer to Tiscali)',
                 'property_path' => 'Customer2TiscaliCapacity[MinutesPerMonth]',
             ])
             ->add('C2TErlang', IntegerType::class, [
-                'label' => 'Incomig (Customer 2 Tiscali) erlangs',
+                'label' => 'Numero Erlangs (Customer to Tiscali)',
                 'property_path' => 'Customer2TiscaliCapacity[Erlang]',
             ])
             ->add('T2CChannels', IntegerType::class, [
-                'label' => 'Outgoing (Tiscali 2 Customer) channels',
+                'label' => 'Numero canali (Tiscali to Customer)',
                 'property_path' => 'Tiscali2CustomerCapacity[Channels]',
             ])
             ->add('T2CMinutesPerMonth', IntegerType::class, [
-                'label' => 'Outgoing (Tiscali 2 Customer) minutes per month',
+                'label' => 'Numero Minuti per mese (Tiscali to Customer)',
                 'property_path' => 'Tiscali2CustomerCapacity[MinutesPerMonth]',
             ])
             ->add('T2CErlang', IntegerType::class, [
-                'label' => 'Outgoing (Tiscali 2 Customer) erlangs',
+                'label' => 'Numero Erlangs (Tiscali to Customer)',
                 'property_path' => 'Tiscali2CustomerCapacity[Erlang]',
             ])
             ->add('Note')
