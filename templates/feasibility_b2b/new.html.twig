@@ -4,20 +4,24 @@
 
 
 {% block body %}
+<div class="container">
     <h1>Nuova fattibilità voce</h1>
-
-    {{ include('feasibility_b2b/_form.html.twig') }}
-    <p id="scriptlog">Script log</p>
-
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Attenzione!</strong> Rimangono validi tutti i vincoli tecnologici imposti da Ingegneria. Questo form è valido 
+                                    esclusivamente per una valutazione delle risorse a disposizione e non riporta tutti i dettagli 
+                                    necessari per una fattibilità tecnica da inoltrare ad Ingegneria
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{{ include('feasibility_b2b/_form.html.twig') }}
+</div>
 {% endblock %}
 
 {% block javascripts %}
     <script>
         var type = document.getElementById("feasibility_b2_b_Type");
-        console.log("script loaded");
-
         type.onchange = function(){
-            console.log("type.change");
             if(type.value == 'wholesale'){
                 document.getElementById("feasibility_b2_b_MobilePercentage").style.display = 'inline';
             } else {

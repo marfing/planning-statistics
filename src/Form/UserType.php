@@ -26,7 +26,8 @@ class UserType extends AbstractType
                         'Admin' => 'ROLE_ADMIN',
                         'Planner' => 'ROLE_PLANNING',
                         'User' => 'ROLE_USER',
-                        'B2B' => 'ROLE_B2B'
+                        'B2B' => 'ROLE_B2B',
+                        'GUEST' => 'ROLE_GUEST',
                     ),
                 'expanded' => false,
                 'multiple' => true

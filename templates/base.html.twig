@@ -98,6 +98,8 @@
                         </li>
                     </ul>
                 </li>
+                {% endif %}
+                {% if is_granted('ROLE_GUEST') %}
                 <li class="active">
                     <a href="#netelementsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <i class="fas fa-server mr-2"></i>
