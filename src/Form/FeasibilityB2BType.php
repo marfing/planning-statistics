@@ -93,6 +93,7 @@ class FeasibilityB2BType extends AbstractType
                 ->add('Status', ChoiceType::class, array(
                     'choices' => array(
                         'New' => 'new',
+                        'WorkInProgress' => 'workinprogress',
                         'Approved' => 'approved',
                         'Rejected' => 'rejected')))
             ;
