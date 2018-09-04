@@ -140,6 +140,30 @@
                     </a>
                 </li>
                 {% endif %}
+                {% if is_granted('ROLE_PLANNING')%}
+                <li class="active">
+                    <a href="#routersSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <i class="fas fa-server mr-2"></i>
+                        <span>Routing</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="routersSubmenu">
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <li>
+                            <a href="{{ path('router_new')}}">New Router</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a href="{{ path('router_index')}}">Router List</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('traffic_report_index')}}">Flow report</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('traffic_report_live_index')}}">Live flow report</a>
+                        </li>
+                    </ul>
+                </li>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item">
                     <a href="{{ path('user_index')}}" class="nav-link">

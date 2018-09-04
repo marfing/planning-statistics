@@ -8,14 +8,14 @@ use Doctrine\DBAL\Schema\Schema;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20180725145019 extends AbstractMigration
+final class Version20180904130827 extends AbstractMigration
 {
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE feasibility_b2b ADD type VARCHAR(255) NOT NULL, ADD mobile_percentage INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE router CHANGE ip_address ip_address VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +23,6 @@ final class Version20180725145019 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE feasibility_b2b DROP type, DROP mobile_percentage');
+        $this->addSql('ALTER TABLE router CHANGE ip_address ip_address INT NOT NULL');
     }
 }

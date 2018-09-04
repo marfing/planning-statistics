@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TrafficReport index{% endblock %}
+
+{% block body %}
+    <h1>TrafficReport index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>RouterInName</th>
+                <th>RouterInIP</th>
+                <th>RouterOutName</th>
+                <th>RouterOutIP</th>
+                <th>Bandwidth</th>
+                <th>LastTimestamp</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for traffic_report in traffic_reports %}
+            <tr>
+                <td>{{ traffic_report.id }}</td>
+                <td>{{ traffic_report.routerInName }}</td>
+                <td>{{ traffic_report.routerInIP }}</td>
+                <td>{{ traffic_report.routerOutName }}</td>
+                <td>{{ traffic_report.routerOutIP }}</td>
+                <td>{{ traffic_report.bandwidth }}</td>
+                <td>{{ traffic_report.lastTimestamp ? traffic_report.lastTimestamp|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('traffic_report_show', {'id': traffic_report.id}) }}">show</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('traffic_report_edit', {'id': traffic_report.id}) }}">edit</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('traffic_report_new') }}">Create new</a>
+    {% endif %}
+{% endblock %}

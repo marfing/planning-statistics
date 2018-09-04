@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TrafficReport{% endblock %}
+
+{% block body %}
+    <h1>TrafficReport</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ traffic_report.id }}</td>
+            </tr>
+            <tr>
+                <th>RouterInName</th>
+                <td>{{ traffic_report.routerInName }}</td>
+            </tr>
+            <tr>
+                <th>RouterInIP</th>
+                <td>{{ traffic_report.routerInIP }}</td>
+            </tr>
+            <tr>
+                <th>RouterOutName</th>
+                <td>{{ traffic_report.routerOutName }}</td>
+            </tr>
+            <tr>
+                <th>RouterOutIP</th>
+                <td>{{ traffic_report.routerOutIP }}</td>
+            </tr>
+            <tr>
+                <th>Bandwidth</th>
+                <td>{{ traffic_report.bandwidth }}</td>
+            </tr>
+            <tr>
+                <th>LastTimestamp</th>
+                <td>{{ traffic_report.lastTimestamp ? traffic_report.lastTimestamp|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('traffic_report_index') }}">back to list</a>
+
+    <a href="{{ path('traffic_report_edit', {'id': traffic_report.id}) }}">edit</a>
+
+    {{ include('traffic_report/_delete_form.html.twig') }}
+{% endblock %}
