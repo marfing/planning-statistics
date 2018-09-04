@@ -266,7 +266,7 @@ class NetworkElementController extends Controller
 
 
     /**
-     * @Route("/admin/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
+     * @Route("/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
      */
     public function uploadCsv(Request $request, $id)
     {
