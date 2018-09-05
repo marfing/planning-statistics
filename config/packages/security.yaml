@@ -27,7 +27,9 @@ security:
     access_control:
         - { path: ^/network/element/admin, roles:[ROLE_ADMIN] }
         - { path: ^/router/admin, roles:[ROLE_ADMIN] }
+        - { path: ^/router, roles:[ROLE_PLANNING] }
         - { path: ^/traffic/report/admin, roles:[ROLE_ADMIN] }
+        - { path: ^/traffic/report, roles:[ROLE_PLANNING] }
         - { path: ^/network/element/type/admin, roles:[ROLE_ADMIN] }
         - { path: ^/vendor/admin, roles:[ROLE_ADMIN] }
         - { path: ^/vendor, roles:[ROLE_PLANNING] }
