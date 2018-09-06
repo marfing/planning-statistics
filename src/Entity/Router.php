@@ -153,4 +153,14 @@ class Router
 
         return $this;
     }
+
+    public function amIRouterIN(string $sourceIP){
+        //implementare qui il check sul source IP address
+        return true;
+    }
+
+    public function getRouterOut(string $destinationIP){
+        //implementare qui chiamata a sf di maurizio per avere IP address del router di terminazione per questo IP
+    }
+
 }

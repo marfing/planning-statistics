@@ -93,7 +93,6 @@ class RouterController extends Controller
      * @Route("/actions/update_flows", name="router_update_flows", methods="GET|POST")
      * 
      */
-
     public function updateTrafficFlows(RouterRepository $routerRepository)
     {
         $answer = "<h1>Update Traffic Flows</h1>";
@@ -109,7 +108,10 @@ class RouterController extends Controller
             $minutes=$time->format('i');
 
             $today = $time->getTimestamp(); 
-            if($minutes < 10){
+            if($minutes < 5){
+                $file_minutes = '55';
+                $hours = $hours-1;
+            } elseif($minutes < 10){
                 $file_minutes = '00';
             } elseif ($minutes < 15) {
                 $file_minutes = '05';
@@ -124,14 +126,16 @@ class RouterController extends Controller
             $rootPath = $router->getFileSystemRootPath();
             $filePath = $year."/".$month."/".$mday."/";
             $fileName = "nfcapd.".$year.$month.$mday.$hours.$file_minutes;
-            $command = 'nfdump -M '.$rootPath.' -T -r '.$filePath.$fileName.' -a -A srcip,dstip -o "fmt:%ts,%td,%sa,%da,%bps" -q -c 2';
+            $command = 'nfdump -M '.$rootPath.' -T -r '.$filePath.$fileName.' -a -A srcip,dstip -o "fmt:%ts,%td,%sa,%da,%bps,%fl," -q -n 10 -s record/bps \'bps > 100k\'';
             //eseguire il comando di sistema:
             //  nfdump -M /var/nfsen/profiles-data/live/peer1  -T  -r 2018/09/04/nfcapd.201809040800 -a  -A srcip,dstip -o "fmt:%ts,%td,%sa,%da,%bps" -q
-            $commandOutput = system($command);
-            // non funziona, resituizsce soltanto l'ultima riga dell'output.
+            $commandOutput = shell_exec($command);
+            // non funziona, resituisce soltanto l'ultima riga dell'output.
             //modificare il command creando un file csv con l'output, parsandolo e poi cancellandolo alla fine
-            dump($commandOutput);
-            $answer = $answer . "<p><h2>Router name: ".$router->getName()."</h2></p>
+            //dump($commandOutput);
+            $token = strtok($commandOutput, ",");                
+            //$csvArray = array();
+            $answer .= "<p><h2>Router name: ".$router->getName()."</h2></p>
             <p>Month: ".$month."</p>
             <p>Day: ".$mday."</p>
             <p>Year: ".$year."</p>
@@ -141,42 +145,57 @@ class RouterController extends Controller
             <p>Root path: ".$rootPath."</p>
             <p>File path/name: ".$filePath.$fileName."</p>
             <p>Command: ".$command."</p>
-            <p>Command output: ".$commandOutput."</p>
-            <br>
-            <table>
-                <tr>
-                    <th>Timestamp</th>
-                    <th>Duration</th>
-                    <th>SourceIP</th>
-                    <th>DestinationIP</th>
-                    <th>Bandwidth</th>
-                </tr>";
-                
-            $token = strtok($commandOutput, ",");                
-            $csvArray = array();
+            <!-- <p>Command output: ".$commandOutput."</p> -->
+            <br>";
+
+            $counter=0;
+            $idCounter=0;
+            $answer .= "<table>
+            <tr>
+                <th>Index</th>
+                <th>Timestamp</th>
+                <th>Duration (msec)</th>
+                <th>SourceIP</th>
+                <th>DestinationIP</th>
+                <th>Bandwidth (bps)</th>
+                <th>Flussi</th>
+            </tr>
+            <tr><td>0</td>";
+            $srcIPRoot = 2; //tutti i sourceIP si trovano nella 3° colonna del csv
+            $dstIPRoot = 3; //tutti i destinationIP si trovano nella 4° colonna del csv
+            $bwRoot = 4; //tutti i valori di banda si trovano nella 4° colonna del csv
+            $tempTokenArray = array();
+            $isRouterIn=false;
+            $getBw=false;
             while ($token !== FALSE){
-                $csvArray[] = $token;
-                $token = strtok(",");
-            }
-            dump($csvArray);
-            $num = count($csvArray);
-            if($num > 4){
-                $answer=$answer."<tr>";
-                $innerCounter=0;
-                for($counter=0; $counter < $num; $counter++){
-                    $answer=$answer."<td>".$csvArray[$counter]."</td>";
-                    $innerCounter++;
-                    if($innerCounter==5){
-                        $innerCounter=0;
-                        $answer=$answer."</tr>";
-                        if($counter < $num){
-                            $answer=$answer."<tr>";
+                //check srcIp address
+                if($counter >= $srcIPRoot && !$isRouterIn ){
+                    if( ($counter == $srcIPRoot) || ((($counter - $srcIPRoot)%6)==0) ){
+                        if ( $router->amIRouterIN($token) ){
+                            $isRouterIn=true;
                         }
                     }
-                }// fine sequenza array valori csv
-            } 
-            $answer=$answer."</table>";
-
+                } elseif ($isRouterIn){ //in questo caso so che sto leggendo il destIP
+                    $isRouterIn=false;
+                    $getBw=true;
+                    $tempTokenArray['routerOut']=$router->getRouterOut($token);
+                } elseif ($getBw){ //in questo caso so che sto leggendo i valori di bps
+                    $getBw=false;
+                    // inserire quik la creazione del nuovo trafficReport
+                    //abbiamo modificato la chiamata al comando di nfdump per avere già i flussi agggregati per src e dest IP
+                    //non serve quindi mai verificare se il flusso già esiste per aggiungergli soltanto i valori di bps
+                    $tempTokenArray['bw']=$token;
+                }
+                $answer .= "<td align=\"center\">".$token."</td>";
+                if( ($counter!=0) && (($counter)%6 == 5) ){
+                    $idCounter++;
+                    $answer .= "</tr><tr><td>".$idCounter."</td>";
+                }
+                $token = strtok(",");
+                $counter++;
+            }
+            $answer .= "</table>";
+            //dump($csvArray);
             // fare il parsing dell'output - timestamp - duration - source IP - destinatin IP - bps
             // identificare per quali IP si è sourceIP
             // identificare l'IP del routerOut
@@ -186,5 +205,4 @@ class RouterController extends Controller
         //return $this->redirectToRoute('traffic_report_index');
         return new Response("<html><body>".$answer."</body></html>");
     }
-
 }
