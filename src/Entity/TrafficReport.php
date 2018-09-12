@@ -128,6 +128,13 @@ class TrafficReport
         return $this;
     }
 
+    public function setBandwidthAsString(?string $bandwidth): self
+    {
+        $this->bandwidth = $bandwidth;
+
+        return $this;
+    }
+
     public function getLastTimestamp(): ?\DateTimeInterface
     {
         return $this->lastTimestamp;

@@ -372,7 +372,8 @@ class NetworkElementController extends Controller
 
     }
 
-    public function getElementsGraphTable(){
+    public function getElementsGraphTable()
+    {
         $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findBy(
             ['dashboard' => true]
         );
@@ -381,7 +382,8 @@ class NetworkElementController extends Controller
         ]);    
     }
 
-    public function getElementsGraphTableJs(){
+    public function getElementsGraphTableJs()
+    {
         $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
         return $this->render('network_element/graph_table_js.html.twig', [
             'elements' => $networkElements
@@ -391,7 +393,8 @@ class NetworkElementController extends Controller
     /**
      * @Route("/index/updateallcsv/", name="network_element_update_all", methods="GET")
      */
-    public function updateAllCsv(Request $request){
+    public function updateAllCsv(Request $request)
+    {
         $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
         foreach ($networkElements as $networkElement) {
             $this->parseCSV($networkElement->getId());

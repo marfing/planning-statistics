@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Aggregated Traffic Flows{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{asset('/css/bootstrap-table.css')}}">
+{% endblock %}
+
+
+{% block body %}
+    
+    <h1>Aggregated Traffic Flows</h1>
+    {% set count = 0 %}
+
+    <div id="toolbar">
+        <button id="export" class="btn btn-secondary">Export CSV</button>
+    </div>
+
+     <table  id="netflows"
+            data-toggle="table"
+            data-search="true"
+            data-pagination="true"
+            data-click-to-select="true"
+            data-toolbar="#toolbar">
+        <thead>
+            <tr>
+    {% for header in extendedTableHeaders %}
+                <th data-field="{{header}}" data-filter-control="input" data-sortable="true">{{ header }}</th>
+    {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+    {% for value in extendedTableMultidimensionalArray %}
+                <td>{{ value }}</td>
+        {% set count = count+1 %}
+        {% if count == extendedTableColumns %}
+            </tr>
+            <tr>
+            {% set count = 0 %}
+        {% endif %}
+    {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{asset('/js/bootstrap-table.js')}}"></script>
+<script src="{{asset('/js/bootstrap-table-it-IT.js')}}"></script>
+<script src="{{asset('/js/bootstrap-table-export.js')}}"></script>
+<script type="text/javascript" src="{{asset('/js/tableExport.js')}}"></script>
+<script type="text/javascript" src="{{asset('/js/jquery.base64.js')}}"></script>
+
+<script>
+    $(function () {
+        var $table = $('#netflows');
+        $('#export').click(function () {
+            $table.tableExport({
+            type: 'csv',
+            escape: false
+            });
+        });
+    });
+</script>
+{% endblock %}

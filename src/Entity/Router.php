@@ -155,12 +155,36 @@ class Router
     }
 
     public function amIRouterIN(string $sourceIP){
-        //implementare qui il check sul source IP address
-        return true;
+        //dump($sourceIP);
+        //echo("<p>SourceIp passed to amIRouterIn: -".$sourceIP."-</p>");
+        if(filter_var($sourceIP,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)==false){
+            return false;
+        }
+        $command="python /home/mau/quagga/showipbgp.py -ip ".$sourceIP;
+        //echo("<p>python command: ".$command."</p><br><br>");
+        $routerHandlerIP = shell_exec($command);
+        //echo("<p>amIrouterIN Answer IP: ".$routerHandlerIP. "</p>");
+        //dump($routerHandlerIP);
+        //dump($this->ipAddress);
+        //echo("<p>Compare Ip address: ThisRouter: ".$this->ipAddress." - RouterIn: ".$routerHandlerIP."</p>");
+        if(trim($routerHandlerIP)===$this->ipAddress){
+            //echo("<p>Compare ok</p>");
+            return true;
+        }
+        return false;
     }
 
     public function getRouterOut(string $destinationIP){
         //implementare qui chiamata a sf di maurizio per avere IP address del router di terminazione per questo IP
+        //echo("<p>DestIp passed to getRouterOut: -".$destinationIP."-</p>");
+        if(filter_var($destinationIP,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)==false){
+            return "0.0.0.100";
+        }
+        $command="python /home/mau/quagga/showipbgp.py -ip ".$destinationIP;
+        //echo("<p>getRouterOut python command: ".$command."</p><br><br>");
+        $routerHandlerIP = shell_exec($command);
+        //echo("<p>getRouterOut Answer IP: ".$routerHandlerIP. "</p><br><br>");
+        //dump($routerHandlerIP);
+        return trim($routerHandlerIP);
     }
-
 }

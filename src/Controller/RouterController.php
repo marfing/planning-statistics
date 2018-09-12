@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Router;
+use App\Entity\TrafficReport;
 use App\Form\RouterType;
 use App\Repository\RouterRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -60,7 +61,7 @@ class RouterController extends Controller
      */
     public function edit(Request $request, Router $router): Response
     {
-        $form = $this->createForm(Router1Type::class, $router);
+        $form = $this->createForm(RouterType::class, $router);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -95,10 +96,12 @@ class RouterController extends Controller
      */
     public function updateTrafficFlows(RouterRepository $routerRepository)
     {
-        $answer = "<h1>Update Traffic Flows</h1>";
+        /*$answer = "<h1>Update Traffic Flows</h1>";*/
         //scandire lista router
            //per ogni router
-        foreach($routerRepository->findAll() as $router){
+           $extendedTableMultidimentionalArray = array();
+
+           foreach($routerRepository->findAll() as $router){
             //prendere la data attuale e formattare l'orario all'intero più piccolo del modulo 5 (minuti) - anticipato di altri 5 minuti
             $time = new DateTime('now');
             $mday=$time->format('d');
@@ -111,6 +114,9 @@ class RouterController extends Controller
             if($minutes < 5){
                 $file_minutes = '55';
                 $hours = $hours-1;
+                if($hours<10){//ci siamo persi lo zero
+                    $hours="0".$hours;
+                }
             } elseif($minutes < 10){
                 $file_minutes = '00';
             } elseif ($minutes < 15) {
@@ -119,90 +125,92 @@ class RouterController extends Controller
                 $file_minutes = ($minutes-($minutes%5))-5;
             }
 
-            //aprire nome file: <cartella><nome_file>
-            //<cartella> = router_path/YYYY/MM/DD/
-            //<nome_file> = nfcapd.YYYYMMDDhhmm
-            //esempio mm = 46 => (46-(46%5))-5 = 46-1 = 45
             $rootPath = $router->getFileSystemRootPath();
             $filePath = $year."/".$month."/".$mday."/";
             $fileName = "nfcapd.".$year.$month.$mday.$hours.$file_minutes;
-            $command = 'nfdump -M '.$rootPath.' -T -r '.$filePath.$fileName.' -a -A srcip,dstip -o "fmt:%ts,%td,%sa,%da,%bps,%fl," -q -n 10 -s record/bps \'bps > 100k\'';
-            //eseguire il comando di sistema:
-            //  nfdump -M /var/nfsen/profiles-data/live/peer1  -T  -r 2018/09/04/nfcapd.201809040800 -a  -A srcip,dstip -o "fmt:%ts,%td,%sa,%da,%bps" -q
+            $command = 'nfdump -M '.$rootPath.' -T -r '.$filePath.$fileName.' -A srcip,dstip -N -o "fmt:%sa,%da,%td,%bps," -q -n 50 -s record/bps \'bps > 10M\'';
             $commandOutput = shell_exec($command);
-            // non funziona, resituisce soltanto l'ultima riga dell'output.
-            //modificare il command creando un file csv con l'output, parsandolo e poi cancellandolo alla fine
-            //dump($commandOutput);
-            $token = strtok($commandOutput, ",");                
-            //$csvArray = array();
-            $answer .= "<p><h2>Router name: ".$router->getName()."</h2></p>
-            <p>Month: ".$month."</p>
-            <p>Day: ".$mday."</p>
-            <p>Year: ".$year."</p>
-            <p>Hour: ".$hours."</p>
-            <p>Minutes: ".$minutes."</p>
-            <p>File minutes: ".$file_minutes."</p>
-            <p>Root path: ".$rootPath."</p>
-            <p>File path/name: ".$filePath.$fileName."</p>
-            <p>Command: ".$command."</p>
-            <!-- <p>Command output: ".$commandOutput."</p> -->
-            <br>";
+
+            $tempTokenArray = array();
+            $isSrcIpColumn=true; //il primo token sarà sempre un src IP data la formatttazione dell'output scelta
+            $isDstIpColumn=false;
+            $isDurationColumn=false;
+            $isBwColumn=false;
+            $isRouterIn=false;
+            $hasTable=false;
 
             $counter=0;
-            $idCounter=0;
-            $answer .= "<table>
-            <tr>
-                <th>Index</th>
-                <th>Timestamp</th>
-                <th>Duration (msec)</th>
-                <th>SourceIP</th>
-                <th>DestinationIP</th>
-                <th>Bandwidth (bps)</th>
-                <th>Flussi</th>
-            </tr>
-            <tr><td>0</td>";
-            $srcIPRoot = 2; //tutti i sourceIP si trovano nella 3° colonna del csv
-            $dstIPRoot = 3; //tutti i destinationIP si trovano nella 4° colonna del csv
-            $bwRoot = 4; //tutti i valori di banda si trovano nella 4° colonna del csv
-            $tempTokenArray = array();
-            $isRouterIn=false;
-            $getBw=false;
+
+            $extendedTableHeaders=array(
+                'Source Router IP',
+                'Source Router Name',
+                'Destination Router IP',
+                'Destination Router Name',
+                'Bandwidht',
+                'Source IP',
+                'Destination IP'
+            );
+            $token = strtok($commandOutput, ",");                
+
             while ($token !== FALSE){
                 //check srcIp address
-                if($counter >= $srcIPRoot && !$isRouterIn ){
-                    if( ($counter == $srcIPRoot) || ((($counter - $srcIPRoot)%6)==0) ){
-                        if ( $router->amIRouterIN($token) ){
-                            $isRouterIn=true;
-                        }
+                //echo("<p>Token: ".$token."</p>");
+                if($isSrcIpColumn){
+                    //echo("<p>isSrcIpColumn</p>");
+                    if ($router->amIRouterIN(trim($token,"\x00..\x1F "))){
+                        //echo("<p>amIRouterOk</p>");
+                        $isRouterIn=true;
+                        $tempTokenArray['sourceIP']=trim($token,"\x00..\x1F ");
+                        $hasTable=true;
+                    } 
+                    $isDstIpColumn=true;
+                    $isSrcIpColumn=false;
+                } elseif ($isDstIpColumn){
+                    //$answer .= "<p>isDstIpColumn</p>";
+                    if($isRouterIn){
+                        $tempTokenArray['routerOut']=$router->getRouterOut(trim($token,"\x00..\x1F "));
+                        $tempTokenArray['destinationIP']=trim($token,"\x00..\x1F ");
+                    }    
+                    $isDstIpColumn=false;
+                    $isDurationColumn=true;
+                } elseif($isDurationColumn){
+                    //$answer .= "<p>isDurationColumn</p>";
+                    if($isRouterIn){
+                        $tempTokenArray['duration']=$token;
                     }
-                } elseif ($isRouterIn){ //in questo caso so che sto leggendo il destIP
+                    $isDurationColumn=false;
+                    $isBwColumn=true;
+                } elseif ($isBwColumn){
+                    if($isRouterIn){
+                        $tempTokenArray['bw']=$token;
+                        $trafficReport = new TrafficReport();
+                        $trafficReport->setLastTimestamp($time);
+                        $trafficReport->setDuration($tempTokenArray['duration']);
+                        $trafficReport->setRouterOutIP(ip2long($tempTokenArray['routerOut']));
+                        $trafficReport->setBandwidthAsString($tempTokenArray['bw']); // qui problema del formato della bw che non risulta essere un integer
+                        $router->addFlowsIN($trafficReport);
+                        $extendedTableMultidimentionalArray[]=$router->getIpAddress();
+                        $extendedTableMultidimentionalArray[]=$router->getName();
+                        $extendedTableMultidimentionalArray[]=$tempTokenArray['routerOut'];
+                        $extendedTableMultidimentionalArray[]="To be done";
+                        $extendedTableMultidimentionalArray[]=$tempTokenArray['bw'];
+                        $extendedTableMultidimentionalArray[]=$tempTokenArray['sourceIP'];
+                        $extendedTableMultidimentionalArray[]=$tempTokenArray['destinationIP'];
+                        //dump($extendedTableMultidimentionalArray);
+                    } 
                     $isRouterIn=false;
-                    $getBw=true;
-                    $tempTokenArray['routerOut']=$router->getRouterOut($token);
-                } elseif ($getBw){ //in questo caso so che sto leggendo i valori di bps
-                    $getBw=false;
-                    // inserire quik la creazione del nuovo trafficReport
-                    //abbiamo modificato la chiamata al comando di nfdump per avere già i flussi agggregati per src e dest IP
-                    //non serve quindi mai verificare se il flusso già esiste per aggiungergli soltanto i valori di bps
-                    $tempTokenArray['bw']=$token;
-                }
-                $answer .= "<td align=\"center\">".$token."</td>";
-                if( ($counter!=0) && (($counter)%6 == 5) ){
-                    $idCounter++;
-                    $answer .= "</tr><tr><td>".$idCounter."</td>";
+                    $isBwColumn=false;
+                    $isSrcIpColumn=true; //inizia una nuova riga
                 }
                 $token = strtok(",");
-                $counter++;
-            }
-            $answer .= "</table>";
-            //dump($csvArray);
-            // fare il parsing dell'output - timestamp - duration - source IP - destinatin IP - bps
-            // identificare per quali IP si è sourceIP
-            // identificare l'IP del routerOut
-            // aggiornare la tabella usando il timestamp iniziale
-        }//fine loop per router
-        // visualizzare risultato con i soli trafficFlows con il timestamp attuale */
-        //return $this->redirectToRoute('traffic_report_index');
-        return new Response("<html><body>".$answer."</body></html>");
+            } //fine while per parsing elementi restituiti da nfdump
+        }//fine loop per router (foreach)
+        //dump($extendedTableMultidimentionalArray);
+        return $this->render('router/updateTrafficFlows.html.twig', [
+            'extendedTableHeaders' => $extendedTableHeaders,
+            'extendedTableColumns' => count($extendedTableHeaders),
+            'extendedTableMultidimensionalArray' => $extendedTableMultidimentionalArray, 
+        ]);
+
     }
 }
