@@ -161,8 +161,19 @@
                         <li>
                             <a href="{{ path('traffic_report_index')}}">Flow report</a>
                         </li>
-                        <li>
-                            <a href="{{ path('router_update_flows')}}">Live flow report</a>
+                        <li class="active">
+                            <a href="#flowsSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                <i class="fas fa-server mr-2"></i>
+                                <span>Traffic Report</span>
+                            </a>
+                            <ul class="collapse list-unstyled" id="flowsSubmenu">
+                                <li>
+                                    <a href="{{ path('router_update_extended_flows')}}">Extended flow report</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('router_update_compact_flows')}}">Compact flow report</a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </li>

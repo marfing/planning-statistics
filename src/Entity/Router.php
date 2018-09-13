@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use \Datetime;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RouterRepository")
  */
@@ -186,5 +188,40 @@ class Router
         //echo("<p>getRouterOut Answer IP: ".$routerHandlerIP. "</p><br><br>");
         //dump($routerHandlerIP);
         return trim($routerHandlerIP);
+    }
+
+    public function getExistingFlowIn(DateTime $time, string $routerOutIP)
+    {
+        //echo("<p>getExistingFlowIn - RouterOutIP: ".$routerOutIP." - Time: ".$time->format('Y-m-d H:i:s')."</p>");
+        foreach($this->flowsIN as $report){
+            //echo("<p>getExistingFlowIn - Report matching check - Report out router: ".$report->getRouterOutIP()." - Report time: ".$report->getLastTimestamp()->format(('Y-m-d H:i:s'))."</p>");
+            if ($report->getRouterOutIP() === $routerOutIP 
+                && $report->getLastTimestamp() === $time){
+                //echo("getExistingFlowIn -Matching OK");
+                    return $report;
+            } 
+        }
+        //echo("<p>getExistingFlowIn -Matching NOK</p>");
+        return NULL;
+    }
+    
+    
+    public function getTableArray(DateTime $time,string $tableTime): array 
+    {
+        //echo("<p><b>Router::getTableArray - Time: ".$time->format('Y-m-d H:i:s')." - Table time: ".$tableTime."</b></p>");
+        $_localTable = array();
+        foreach($this->flowsIN as $report){
+            if ($report->getLastTimestamp() === $time){
+                echo("<p>Router::getTableArray - found valid flow</p>");
+                $_localTable[]=$tableTime;
+                $_localTable[]=$this->getIpAddress();
+                $_localTable[]=$this->getName();
+                $_localTable[]=$report->getRouterOutIP();
+                $_localTable[]=$report->getRouterOutName();;
+                $_localTable[]=$report->getBandwidth(); 
+            } 
+        }
+        //dump($_localTable);
+        return $_localTable;
     }
 }

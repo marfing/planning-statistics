@@ -24,6 +24,14 @@ class TrafficReportController extends Controller
     }
 
     /**
+     * @Route("/selected/{routerInIP}", name="traffic_report_selected_index", methods="GET")
+     */
+    public function selectedIndex(TrafficReportRepository $trafficReportRepository, string $routerInIP): Response
+    {
+        return $this->render('traffic_report/index.html.twig', ['traffic_reports' => $trafficReportRepository->findBy(['routerInIP' => $routerInIP])]);
+    }
+
+    /**
      * @Route("/new", name="traffic_report_new", methods="GET|POST")
      */
     public function new(Request $request): Response

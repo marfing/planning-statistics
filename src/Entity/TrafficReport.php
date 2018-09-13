@@ -22,7 +22,7 @@ class TrafficReport
     private $routerInName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $routerInIP;
 
@@ -32,7 +32,7 @@ class TrafficReport
     private $routerOutName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $routerOutIP;
 
@@ -80,12 +80,12 @@ class TrafficReport
         return $this;
     }
 
-    public function getRouterInIP(): ?int
+    public function getRouterInIP(): ?string
     {
         return $this->routerInIP;
     }
 
-    public function setRouterInIP(int $routerInIP): self
+    public function setRouterInIP(string $routerInIP): self
     {
         $this->routerInIP = $routerInIP;
 
@@ -104,12 +104,12 @@ class TrafficReport
         return $this;
     }
 
-    public function getRouterOutIP(): ?int
+    public function getRouterOutIP(): ?string
     {
         return $this->routerOutIP;
     }
 
-    public function setRouterOutIP(int $routerOutIP): self
+    public function setRouterOutIP(string $routerOutIP): self
     {
         $this->routerOutIP = $routerOutIP;
 
@@ -181,5 +181,11 @@ class TrafficReport
         $this->duration = $duration;
 
         return $this;
+    }
+
+    public function addBpsToBw(int $_bw){
+        echo("<p>TrafficReport::addBpsToBw - oldbw: ".$this->bandwidth." - addbw: ".$_bw."</p>");
+        $this->bandwidth = $this->bandwidth+$_bw;
+        echo("<p>TrafficReport::addBpsToBw - newbw: ".$this->bandwidth."</p>");
     }
 }

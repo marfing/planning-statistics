@@ -8,7 +8,7 @@
 
 {% block body %}
     
-    <h1>Aggregated Traffic Flows</h1>
+    <h1>Traffic Flows Report</h1>
     {% set count = 0 %}
 
     <div id="toolbar">
@@ -23,17 +23,17 @@
             data-toolbar="#toolbar">
         <thead>
             <tr>
-    {% for header in extendedTableHeaders %}
+    {% for header in TableHeaders %}
                 <th data-field="{{header}}" data-filter-control="input" data-sortable="true">{{ header }}</th>
     {% endfor %}
             </tr>
         </thead>
         <tbody>
             <tr>
-    {% for value in extendedTableMultidimensionalArray %}
+    {% for value in TableArray %}
                 <td>{{ value }}</td>
         {% set count = count+1 %}
-        {% if count == extendedTableColumns %}
+        {% if count == TableColumns %}
             </tr>
             <tr>
             {% set count = 0 %}
