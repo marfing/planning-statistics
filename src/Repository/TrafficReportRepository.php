@@ -19,22 +19,22 @@ class TrafficReportRepository extends ServiceEntityRepository
         parent::__construct($registry, TrafficReport::class);
     }
 
-//    /**
-//     * @return TrafficReport[] Returns an array of TrafficReport objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return TrafficReport[] Returns an array of TrafficReport objects
+     */
+
+    public function findByTimeInterval($startTime, $endTime)
     {
         return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('t.lastTimestamp >= :startTime')
+            ->andWhere('t.lastTimestamp <= :endTime')
+            ->setParameter('startTime', $startTime)
+            ->setParameter('endTime', $endTime)
+            ->orderBy('t.lastTimestamp', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?TrafficReport

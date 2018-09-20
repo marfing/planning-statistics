@@ -7,7 +7,8 @@
 
     {{ include('router/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('router_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('router_index') }}">back to list</a>
+    <a class="btn btn-danger" href="{{ path('router_delete_all_in_traffic_reports', {'id': router.id}) }}">Delete all routerIn trafficReport</a>
 
     {{ include('router/_delete_form.html.twig') }}
 {% endblock %}

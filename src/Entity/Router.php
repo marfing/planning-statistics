@@ -112,6 +112,7 @@ class Router
         return $this;
     }
 
+
     public function removeFlowsIN(TrafficReport $flowsIN): self
     {
         if ($this->flowsIN->contains($flowsIN)) {
@@ -156,15 +157,21 @@ class Router
         return $this;
     }
 
-    public function amIRouterIN(string $sourceIP){
+    public function amIRouterIN(string $sourceIP, &$errorsArray){
         //dump($sourceIP);
         //echo("<p>SourceIp passed to amIRouterIn: -".$sourceIP."-</p>");
         if(filter_var($sourceIP,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)==false){
             return false;
         }
-        $command="python /home/mau/quagga/showipbgp.py -ip ".$sourceIP;
+        $command="python /home/mau/quagga/showipbgp.py -ip ".$sourceIP. " 2>&1";
         //echo("<p>python command: ".$command."</p><br><br>");
-        $routerHandlerIP = shell_exec($command);
+        if(($routerHandlerIP = shell_exec($command)) == NULL){
+            $errorsArray[]="Command: .".$command." failure!!";
+            return false;
+        } elseif (filter_var(trim($routerHandlerIP), FILTER_VALIDATE_IP,FILTER_FLAG_IPV4) == false) {
+            $errorsArray[]="Command: .".$command." - returned not valid IP address: ".$routerHandlerIP;
+            return false;
+        }
         //echo("<p>amIrouterIN Answer IP: ".$routerHandlerIP. "</p>");
         //dump($routerHandlerIP);
         //dump($this->ipAddress);
@@ -176,15 +183,22 @@ class Router
         return false;
     }
 
-    public function getRouterOut(string $destinationIP){
+    public function getIPRouterHandler(string $flowIP, &$errorsArray){
         //implementare qui chiamata a sf di maurizio per avere IP address del router di terminazione per questo IP
-        //echo("<p>DestIp passed to getRouterOut: -".$destinationIP."-</p>");
-        if(filter_var($destinationIP,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)==false){
+        //echo("<p>DestIp passed to getRouterOut: -".$flowIP."-</p>");
+        if(filter_var($flowIP,FILTER_VALIDATE_IP,FILTER_FLAG_IPV4)==false){
             return "0.0.0.100";
         }
-        $command="python /home/mau/quagga/showipbgp.py -ip ".$destinationIP;
+        $command="python /home/mau/quagga/showipbgp.py -ip ".$flowIP." 2>&1";
         //echo("<p>getRouterOut python command: ".$command."</p><br><br>");
-        $routerHandlerIP = shell_exec($command);
+        if(($routerHandlerIP = shell_exec($command)) == NULL){
+            $errorsArray[]="Command: .".$command." failure!!";
+            return "0.0.0.100";
+        } elseif (filter_var(trim($routerHandlerIP), FILTER_VALIDATE_IP,FILTER_FLAG_IPV4) == false) {
+            $errorsArray[]="Command: .".$command." - returned not valid IP address: ".$routerHandlerIP;
+            return "0.0.0.100";
+        }
+        
         //echo("<p>getRouterOut Answer IP: ".$routerHandlerIP. "</p><br><br>");
         //dump($routerHandlerIP);
         return trim($routerHandlerIP);
@@ -204,15 +218,14 @@ class Router
         //echo("<p>getExistingFlowIn -Matching NOK</p>");
         return NULL;
     }
-    
-    
+        
     public function getTableArray(DateTime $time,string $tableTime): array 
     {
         //echo("<p><b>Router::getTableArray - Time: ".$time->format('Y-m-d H:i:s')." - Table time: ".$tableTime."</b></p>");
         $_localTable = array();
         foreach($this->flowsIN as $report){
             if ($report->getLastTimestamp() === $time){
-                echo("<p>Router::getTableArray - found valid flow</p>");
+                //echo("<p>Router::getTableArray - found valid flow</p>");
                 $_localTable[]=$tableTime;
                 $_localTable[]=$this->getIpAddress();
                 $_localTable[]=$this->getName();

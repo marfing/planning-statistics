@@ -29,7 +29,7 @@ class TrafficReport
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $routerOutName;
+    private $routerOutName="Missing";
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -123,8 +123,7 @@ class TrafficReport
 
     public function setBandwidth(?int $bandwidth): self
     {
-        $this->bandwidth = $bandwidth;
-
+        $this->bandwidth = $bandwidth/1000000; // saved as Mega bps
         return $this;
     }
 
@@ -167,6 +166,9 @@ class TrafficReport
     public function setRouterOut(?Router $routerOut): self
     {
         $this->routerOut = $routerOut;
+        if($routerOut != NULL){
+            $this->setRouterOutName($routerOut->getName());
+        }
 
         return $this;
     }
@@ -184,8 +186,8 @@ class TrafficReport
     }
 
     public function addBpsToBw(int $_bw){
-        echo("<p>TrafficReport::addBpsToBw - oldbw: ".$this->bandwidth." - addbw: ".$_bw."</p>");
-        $this->bandwidth = $this->bandwidth+$_bw;
-        echo("<p>TrafficReport::addBpsToBw - newbw: ".$this->bandwidth."</p>");
+        //echo("<p>TrafficReport::addBpsToBw - oldbw: ".$this->bandwidth." - addbw: ".$_bw."</p>");
+        $this->bandwidth = $this->bandwidth+($_bw/1000000); //always consider Mega bps
+        //echo("<p>TrafficReport::addBpsToBw - newbw: ".$this->bandwidth."</p>");
     }
 }

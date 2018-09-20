@@ -5,13 +5,20 @@
 {% block body %}
     <h1>Router index</h1>
 
-    <table class="table">
+    <table id="routers"
+            data-toggle="table"
+            data-search="true"
+            data-pagination="true"
+            data-page-size="50"
+            data-pagination-loop="true"
+            data-toolbar="#toolbar"
+            data-advanced-search="true">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>IpAddress</th>
-                <th>FileSystemRootPath</th>
+                <th data-field="Id" data-filter-control="input" data-sortable="true">Id</th>
+                <th data-field="Name" data-filter-control="input" data-sortable="true">Name</th>
+                <th data-field="IpAddress" data-filter-control="input" data-sortable="true">IpAddress</th>
+                <th data-field="FileSystemRootPath" data-filter-control="input" data-sortable="true">FileSystemRootPath</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -23,8 +30,8 @@
                 <td>{{ router.ipAddress }}</td>
                 <td>{{ router.fileSystemRootPath }}</td>
                 <td>
-                    <a href="{{ path('router_show', {'id': router.id}) }}">show</a>
-                    <a href="{{ path('router_edit', {'id': router.id}) }}">edit</a>
+                    <a class="btn btn-outline-primary" href="{{ path('router_show', {'id': router.id}) }}">show</a>
+                    <a class="btn btn-outline-primary" href="{{ path('router_edit', {'id': router.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

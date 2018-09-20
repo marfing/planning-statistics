@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Aggregated Traffic Flows{% endblock %}
-{% block stylesheets %}
-<link rel="stylesheet" href="{{asset('/css/bootstrap-table.css')}}">
-{% endblock %}
 
 
 {% block body %}
     
     <h1>Traffic Flows Report</h1>
     {% set count = 0 %}
+
+    {% for error in ErrorsArray %}
+    <div class="alert alert-primary" role="alert">{{ error }}</div>
+    {% endfor %}
 
     <div id="toolbar">
         <button id="export" class="btn btn-secondary">Export CSV</button>
@@ -19,6 +20,8 @@
             data-toggle="table"
             data-search="true"
             data-pagination="true"
+            data-page-size="50"
+            data-pagination-loop="true"
             data-click-to-select="true"
             data-toolbar="#toolbar">
         <thead>
@@ -48,6 +51,7 @@
 <script src="{{asset('/js/bootstrap-table.js')}}"></script>
 <script src="{{asset('/js/bootstrap-table-it-IT.js')}}"></script>
 <script src="{{asset('/js/bootstrap-table-export.js')}}"></script>
+<script src="{{asset('/js/popper.js')}}"></script>
 <script type="text/javascript" src="{{asset('/js/tableExport.js')}}"></script>
 <script type="text/javascript" src="{{asset('/js/jquery.base64.js')}}"></script>
 
