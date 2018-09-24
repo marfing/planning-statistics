@@ -7,28 +7,35 @@
 
 
 {% block body %}
-    <h1>Lista delle tue fattibilità voce B2B</h1>
+    <h3>Lista delle tue fattibilità voce B2B</h3>
+    
+    
     <div id="toolbar">
-        <button id="export" class="btn btn-secondary">Export CSV</button>
+        <select class="form-control">
+            <option value="">Export Basic</option>
+            <option value="all">Export All</option>
+            <option value="selected">Export Selected</option>
+        </select>
     </div>
 
     <table 
         id="feasibilities"
-        data-toggle="table"
-        data-search="true"
+        data-toggle="table" 
+        data-search="true" 
+        data-show-export="true"
         data-pagination="true"
         data-click-to-select="true"
         data-toolbar="#toolbar">
         <thead>
             <tr>
-                <th data-field="customerName" data-filter-control="input" data-sortable="true">Nome<br>Cliente</th>
+                <th data-field="customerName" data-filter-control="input" data-sortable="true">Cliente</th>
                 <th data-field="type" data-filter-control="input" data-sortable="true">Tipo</th>
-                <th data-field="trunkType" data-filter-control="input" data-sortable="true">Tipo<br>Trunk</th>
-                <th data-field="ipType" data-filter-control="input" data-sortable="true">Tipo<br>IP</th>
-                <th data-field="codecList" data-filter-control="input" data-sortable="true">Lista<br>Codec</th>
-                <th data-field="mobilePercentage" data-filter-control="input" data-sortable="true">Percentuale<br>traffico mobile</th>
-                <th data-field="customer2tiscalicapacity" data-filter-control="input" data-sortable="true">Customer to Tiscali<br>Capacity</th>
-                <th data-field="tiscali2customercapacity" data-filter-control="input" data-sortable="true">Tiscali to Customer<br>Capacity</th>
+                <th data-field="trunkType" data-filter-control="input" data-sortable="true">Tipo Trunk</th>
+                <th data-field="ipType" data-filter-control="input" data-sortable="true">Tipo IP</th>
+                <th data-field="codecList" data-filter-control="input" data-sortable="true">Codecs</th>
+                <th data-field="mobilePercentage" data-filter-control="input" data-sortable="true">Mobile (%)</th>
+                <th data-field="customer2tiscalicapacity" data-filter-control="input" data-sortable="true">Capacità out</th>
+                <th data-field="tiscali2customercapacity" data-filter-control="input" data-sortable="true">Capacità in</th>
                 <th data-field="status" data-filter-control="input" data-sortable="true">Status</th>
                 <th data-field="creationDate" data-filter-control="input" data-sortable="true">Creation<br> Date</th>
                 <th data-field="approveDate" data-filter-control="input" data-sortable="true">Approvation<br>Date</th>
@@ -65,7 +72,7 @@
                 <td>{{ feasibility_b2_b.user.username }}</td>
                 <td>
                     <a class="btn btn-primary btn-sm" href="{{ path('feasibility_b2b_show', {'id': feasibility_b2_b.id}) }}">show</a>
-                    <a class="btn btn-secondary btn-sm" href="{{ path('feasibility_b2b_edit', {'id': feasibility_b2_b.id}) }}">edit</a>
+                    <a class="btn mt-2 btn-secondary btn-sm" href="{{ path('feasibility_b2b_edit', {'id': feasibility_b2_b.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

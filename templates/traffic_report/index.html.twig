@@ -3,21 +3,28 @@
 {% block title %}TrafficReport index{% endblock %}
 
 {% block body %}
-{{ form_start(form) }}    <div class="container">
-        <div class="row">
-            <div class="col-sm-4 offset-4">
-                <h3>TrafficReport index</h3>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-sm-4">
-                {{ form_widget(form.startDate) }}
-            </div>
-            <div class="col-sm-4">
-                {{ form_widget(form.endDate) }}
-            </div>
-            <div class="col-sm-4">
-                {{ form_end(form) }}
+{{ form_start(form) }}
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-4 offset-4">
+                        <h3>TrafficReport index</h3>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-4">
+                        {{ form_label(form.startDate) }}
+                        {{ form_widget(form.startDate) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_label(form.endDate) }}
+                        {{ form_widget(form.endDate) }}
+                    </div>
+                    <div class="col-sm-4">
+                        {{ form_end(form) }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,7 +46,8 @@
             data-id-table="advancedTable" >
         <thead>
             <tr>
-                <th data-field="LastTimestamp" data-sortable="true">LastTimestamp</th>
+                {% if compact == false %}<th data-field="LastTimestamp" data-sortable="true">LastTimestamp</th>{% endif %}
+                {% if compact == true %}<th data-field="LastTimestamp" data-sortable="true">Samples</th>{% endif %}
                 <th data-field="RouterInName" data-sortable="true">RouterInName</th>
                 <th data-field="RouterInIP" data-sortable="true">RouterInIP</th>
                 <th data-field="RouterOutName" data-sortable="true">RouterOutName</th>
@@ -50,12 +58,13 @@
         <tbody>
         {% for traffic_report in traffic_reports %}
             <tr>
-                <td>{{ traffic_report.lastTimestamp ? traffic_report.lastTimestamp|date('Y-m-d H:i:s') : '' }}</td>
+                {% if compact == false %}<td>{{ traffic_report.lastTimestamp ? traffic_report.lastTimestamp|date('Y-m-d H:i:s') : '' }}</td>{% endif %}
+                {% if compact == true %}<td>{{ traffic_report.samples}}</td>{% endif %}
                 <td>{{ traffic_report.routerInName }}</td>
                 <td>{{ traffic_report.routerInIP }}</td>
                 <td>{{ traffic_report.routerOutName }}</td> 
                 <td>{{ traffic_report.routerOutIP }}</td>
-                <td>{{ traffic_report.bandwidth }}</td> 
+                <td>{{ (traffic_report.bandwidth / traffic_report.samples) | number_format(0,',','.')}}</td> 
             </tr>
         {% else %}
             <tr>

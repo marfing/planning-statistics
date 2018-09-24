@@ -63,6 +63,12 @@ class TrafficReport
      */
     private $duration;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $samples=1;
+
+    
     public function getId()
     {
         return $this->id;
@@ -127,6 +133,12 @@ class TrafficReport
         return $this;
     }
 
+    public function setMegaBandwidth(?int $bandwidth): self
+    {
+        $this->bandwidth = $bandwidth; // saved as Mega bps
+        return $this;
+    }
+
     public function setBandwidthAsString(?string $bandwidth): self
     {
         $this->bandwidth = $bandwidth;
@@ -187,7 +199,41 @@ class TrafficReport
 
     public function addBpsToBw(int $_bw){
         //echo("<p>TrafficReport::addBpsToBw - oldbw: ".$this->bandwidth." - addbw: ".$_bw."</p>");
-        $this->bandwidth = $this->bandwidth+($_bw/1000000); //always consider Mega bps
+        $this->bandwidth += $_bw/1000000; //always consider Mega bps
         //echo("<p>TrafficReport::addBpsToBw - newbw: ".$this->bandwidth."</p>");
+    }
+
+    public function getSamples(): ?int
+    {
+        if(!$this->samples){
+            return 1;
+        }
+        return $this->samples;
+    }
+
+    public function setSamples(?int $samples): self
+    {
+        $this->samples = $samples;
+
+        return $this;
+    }
+
+    public function addSample(int $sampleBw)
+    {
+        $this->samples++;
+        $this->bandwidth += $sampleBw; 
+        return $this;
+    }
+
+    public function getAverageBw(): ?int
+    {
+        return $this->averageBw;
+    }
+
+    public function setAverageBw(?int $averageBw): self
+    {
+        $this->averageBw = $averageBw;
+
+        return $this;
     }
 }

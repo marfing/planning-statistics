@@ -55,6 +55,7 @@ class TrafficReportController extends Controller
 
         return $this->render('traffic_report/index.html.twig', array(
             'traffic_reports' => $trafficReportRepository->findAll(),
+            'compact' => false,
             'form' => $form->createView(),
         ));
     }
@@ -64,7 +65,10 @@ class TrafficReportController extends Controller
      */
     public function selectedIndex(TrafficReportRepository $trafficReportRepository, string $routerInIP): Response
     {        
-        return $this->render('traffic_report/index.html.twig', ['traffic_reports' => $trafficReportRepository->findBy(['routerInIP' => $routerInIP])]);
+        return $this->render('traffic_report/index.html.twig', [
+            'traffic_reports' => $trafficReportRepository->findBy(['routerInIP' => $routerInIP]),
+            'compact' => false,            
+        ]);
     }
 
     /**
@@ -105,22 +109,45 @@ class TrafficReportController extends Controller
             $startTime = $dateInterval->getStartDate();
             $endTime = $dateInterval->getEndDate();
             $aggregate = $dateInterval->getAggregate();
-
+            $fullTrafficReportArray = $trafficReportRepository->findByTimeInterval($startTime, $endTime); 
+            $aggregatedTrafficReportArray = array();
             if(!$aggregate)
             {
                 return $this->render('traffic_report/index.html.twig', [
-                'traffic_reports' => $trafficReportRepository->findByTimeInterval($startTime, $endTime),
+                'traffic_reports' => $fullTrafficReportArray,
+                'compact' => false,
                 'form' => $form->createView(),
                 ]);
-            } else {
-                /*sviluppare logica di aggregazione
-                    1) raggruppa per routerIn - routerOut
-                    2) somma i valori di bw e dividi per il numero di campioni (date diverse)
-                    3) restituisci tabella aggregata (array) - da capire come passare un array di trafficReport temporanei */
+            } else { //l'ozione aggrega è stata selezionata nella check box del form
+                foreach($fullTrafficReportArray as $originalTrafficReport){
+                    $compactReportExist = false;
+                    foreach($aggregatedTrafficReportArray as $aggregatedTrafficReport){
+                        if( ($originalTrafficReport->getRouterInIP() == $aggregatedTrafficReport->getRouterInIP()) && 
+                            ($originalTrafficReport->getRouterOutIP() == $aggregatedTrafficReport->getRouterOutIP())){
+                            $aggregatedTrafficReport->addSample($originalTrafficReport->getBandwidth());
+                            $compactReportExist = true;
+                        }
+                    }
+                    if(!$compactReportExist){
+                        $newReport = new TrafficReport();
+                         $newReport->setRouterInIP($originalTrafficReport->getRouterInIP());
+                        $newReport->setRouterOutIP($originalTrafficReport->getRouterOutIP());
+                        $newReport->setRouterInName($originalTrafficReport->getRouterInName());
+                        $newReport->setRouterOutName($originalTrafficReport->getRouterOutName());
+                        $newReport->setMegaBandwidth($originalTrafficReport->getBandwidth());
+                        $aggregatedTrafficReportArray[] = $newReport;
+                    }
+                }
+                return $this->render('traffic_report/index.html.twig', [
+                    'traffic_reports' => $aggregatedTrafficReportArray,
+                    'compact' => true,
+                    'form' => $form->createView(),
+                    ]);
             }
         }
         return $this->render('traffic_report/index.html.twig', array(
             'traffic_reports' => $trafficReportRepository->findAll(),
+            'compact' => false,
             'form' => $form->createView(),
         ));
     }
