@@ -22,3 +22,7 @@ yarn-error.log
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 /statistiche/
+
+/.composer.json
+/.composer.lock
+/.composer.phar

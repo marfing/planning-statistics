@@ -23,7 +23,7 @@ class FeasibilityB2BController extends Controller
      */
     public function index(FeasibilityB2BRepository $feasibilityB2BRepository, Security $security, AuthorizationCheckerInterface $authChecker): Response
     {        
-        if($authChecker->isGranted('ROLE_ADMIN')){
+        if($authChecker->isGranted('ROLE_PLANNING')){
             return $this->render('feasibility_b2b/index.html.twig', ['feasibility_b2_bs' => $feasibilityB2BRepository->findAll()]);
         } 
         return $this->render('feasibility_b2b/index.html.twig', ['feasibility_b2_bs' => 
@@ -46,10 +46,9 @@ class FeasibilityB2BController extends Controller
             $feasibilityB2B->setStatus("new");
             $em->persist($feasibilityB2B);
             $em->flush();
-
             $message = (new \Swift_Message('New B2B Feasibility') )
                 ->setFrom('planning.rete@gmail.com')
-                ->setTo('mfigus@it.tiscali.com')
+                ->setTo('engineering@it.tiscali.com')
                 ->setBody(
                     $this->renderView(
                         'feasibility_b2b/mail.html.twig', 
@@ -103,7 +102,7 @@ class FeasibilityB2BController extends Controller
 
             $message = (new \Swift_Message('New B2B Feasibility') )
                 ->setFrom('planning.rete@gmail.com')
-                ->setTo('mfigus@it.tiscali.com')
+                ->setTo('engineering@it.tiscali.com')
                 ->setBody(
                     $this->renderView(
                         'feasibility_b2b/mail.html.twig', 

@@ -264,7 +264,6 @@ class NetworkElementController extends Controller
         }
     }
 
-
     /**
      * @Route("/uploadcsv/{id}", name="network_element_upload_csv", methods="GET")
      */
@@ -278,7 +277,6 @@ class NetworkElementController extends Controller
             return $this->redirectToRoute('network_element_index');
         }
     }
-
 
     /**
      * @Route("/admin/backupcsv/{id}", name="network_element_backup_csv", methods="GET")
@@ -391,15 +389,15 @@ class NetworkElementController extends Controller
     }
 
     /**
-     * @Route("/index/updateallcsv/", name="network_element_update_all", methods="GET")
+     * @Route("/index/updatealldesktopcsv/all", name="network_element_update_all", methods="GET")
      */
-    public function updateAllCsv(Request $request)
+    public function updateAllDashboardCsv(Request $request)
     {
-        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findAll();
+        $networkElements = $this->getDoctrine()->getRepository(NetworkElement::class)->findBy(['dashboard' => true]);
         foreach ($networkElements as $networkElement) {
             $this->parseCSV($networkElement->getId());
         }
-        $referer = $request->headers->get('referer');   
+        $referer = $request->headers->get('referer');    
         if($referer){
             return new RedirectResponse($referer);
         } else {
