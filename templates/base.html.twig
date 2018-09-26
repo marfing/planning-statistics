@@ -9,6 +9,8 @@
         <!-- Fontawesome CSS -->
         <link href="{{ asset('/fontawesome/css/all.css') }}" rel="stylesheet"> <!--load all styles -->
         <!-- Bootstrap CSS -->
+<!--        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"> -->
+<!--        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
         <link rel="stylesheet" href="{{asset('/bootstrap/css/bootstrap.min.css')}}">
         <!-- Custom sidebar CSS -->
         <link rel="stylesheet" href="{{ asset('/css/sidebar/style.css')}}">
@@ -228,7 +230,7 @@
                         </ul>
                     </div>
                 <!-- controller rendering html -->
-                <div class="mt-2" id="controllerRendering">
+                <div class="container mt-2" id="controllerRendering">
                     {% block body %}{% endblock %}
                 </div>
             </div>

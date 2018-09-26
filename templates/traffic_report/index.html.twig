@@ -3,15 +3,12 @@
 {% block title %}TrafficReport index{% endblock %}
 
 {% block body %}
-{{ form_start(form) }}
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-4 offset-4">
-                        <h3>TrafficReport index</h3>
-                    </div>
-                </div>
+
+       <h3>Traffic Flows Report</h3>
+        <div class="card panel-default mt-3">
+            <div class="card-header">Filtri</div>
+            <div class="card-body">
+                {{ form_start(form) }}
                 <div class="row mt-3">
                     <div class="col-sm-4">
                         {{ form_label(form.startDate) }}
@@ -23,11 +20,10 @@
                     </div>
                     <div class="col-sm-4">
                         {{ form_end(form) }}
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>
-    </div>
    
     
     <br><br>
