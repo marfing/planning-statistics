@@ -197,7 +197,8 @@ class TrafficReport
         return $this;
     }
 
-    public function addBpsToBw(int $_bw){
+    public function addBpsToBw(int $_bw)
+    {
         //echo("<p>TrafficReport::addBpsToBw - oldbw: ".$this->bandwidth." - addbw: ".$_bw."</p>");
         $this->bandwidth += $_bw/1000000; //always consider Mega bps
         //echo("<p>TrafficReport::addBpsToBw - newbw: ".$this->bandwidth."</p>");
