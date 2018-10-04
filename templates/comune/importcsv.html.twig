@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import CSV{% endblock %}
+
+{% block body %}
+    <h1>import CSV dei comuni</h1>
+
+    <div class="card panel-default mt-3">
+        <div class="card-header">Inserisci il nome del file in formato UTF-8 csv (;) completo di path</div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            <div class="row mt-3">
+                <div class="col-sm-4">
+                    {{ form_label(form.pathcsv) }}
+                    {{ form_widget(form.pathcsv) }}
+                </div>
+                <div class="col-sm-4">
+                    <br>
+                    {{ form_end(form) }}
+                </div> 
+            </div>
+        </div>
+    </div>
+
+    <a class="btn btn-default" href="{{ path('comune_index') }}">back to list</a>
+
+{% endblock %}

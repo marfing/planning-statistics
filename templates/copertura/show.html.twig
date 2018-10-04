@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Copertura{% endblock %}
+
+{% block body %}
+    <h1>Copertura</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ copertura.id }}</td>
+            </tr>
+            <tr>
+                <th>IdScala</th>
+                <td>{{ copertura.idScala }}</td>
+            </tr>
+            <tr>
+                <th>Regione</th>
+                <td>{{ copertura.regione }}</td>
+            </tr>
+            <tr>
+                <th>Provincia</th>
+                <td>{{ copertura.provincia }}</td>
+            </tr>
+            <tr>
+                <th>CodiceComune</th>
+                <td>{{ copertura.codiceComune }}</td>
+            </tr>
+            <tr>
+                <th>Frazione</th>
+                <td>{{ copertura.frazione }}</td>
+            </tr>
+            <tr>
+                <th>ParticellaTop</th>
+                <td>{{ copertura.particellaTop }}</td>
+            </tr>
+            <tr>
+                <th>Indirizzo</th>
+                <td>{{ copertura.indirizzo }}</td>
+            </tr>
+            <tr>
+                <th>Civico</th>
+                <td>{{ copertura.civico }}</td>
+            </tr>
+            <tr>
+                <th>ScalaPalazzina</th>
+                <td>{{ copertura.scalaPalazzina }}</td>
+            </tr>
+            <tr>
+                <th>CodiceVia</th>
+                <td>{{ copertura.codiceVia }}</td>
+            </tr>
+            <tr>
+                <th>IdBuilding</th>
+                <td>{{ copertura.idBuilding }}</td>
+            </tr>
+            <tr>
+                <th>CoordinateBuilding</th>
+                <td>{{ copertura.coordinateBuilding }}</td>
+            </tr>
+            <tr>
+                <th>Pop</th>
+                <td>{{ copertura.pop }}</td>
+            </tr>
+            <tr>
+                <th>TotaleUI</th>
+                <td>{{ copertura.totaleUI }}</td>
+            </tr>
+            <tr>
+                <th>StatoBuilding</th>
+                <td>{{ copertura.statoBuilding }}</td>
+            </tr>
+            <tr>
+                <th>StatoScalaPalazzina</th>
+                <td>{{ copertura.statoScalaPalazzina }}</td>
+            </tr>
+            <tr>
+                <th>DatatRFCIndicativa</th>
+                <td>{{ copertura.datatRFCIndicativa ? copertura.datatRFCIndicativa|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DataRFCEffettiva</th>
+                <td>{{ copertura.dataRFCEffettiva ? copertura.dataRFCEffettiva|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DataRFAIndicativa</th>
+                <td>{{ copertura.dataRFAIndicativa ? copertura.dataRFAIndicativa|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DataRFAEffettiva</th>
+                <td>{{ copertura.dataRFAEffettiva ? copertura.dataRFAEffettiva|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DataUltimaModificaRecord</th>
+                <td>{{ copertura.dataUltimaModificaRecord ? copertura.dataUltimaModificaRecord|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DataUltimaModificaStatoBuilding</th>
+                <td>{{ copertura.dataUltimaModificaStatoBuilding ? copertura.dataUltimaModificaStatoBuilding|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>DataUltimaVariazioneStatoScalaPalazzina</th>
+                <td>{{ copertura.dataUltimaVariazioneStatoScalaPalazzina ? copertura.dataUltimaVariazioneStatoScalaPalazzina|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('copertura_index') }}">back to list</a>
+
+    <a href="{{ path('copertura_edit', {'id': copertura.id}) }}">edit</a>
+
+    {{ include('copertura/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Comune{% endblock %}
+
+{% block body %}
+    <h1>Create new Comune</h1>
+
+    {{ include('comune/_form.html.twig') }}
+
+    <a href="{{ path('comune_index') }}">back to list</a>
+{% endblock %}

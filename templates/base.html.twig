@@ -207,6 +207,56 @@
                         </a>
                     </li>
                     {% endif %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="active">
+                        <a href="#eofSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            <i class="fas fa-wrench mr-2"></i>
+                            <span>EOF</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="eofSubmenu">
+                            <li class="active">
+                                <a href="#comuniSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                    <i class="fas fa-microphone-alt mr-2"></i>
+                                    <span>Comuni</span>
+                                </a>
+                                <ul class="collapse list-unstyled" id="comuniSubmenu">
+                                    <li>
+                                        <a href="{{ path('comune_index')}}">
+                                            <i class="fa fa-phone-volume mr-2"></i>
+                                            <span>Lista comuni</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('comune_new')}}">
+                                            <i class="fas fa-clock mr-2"></i>
+                                            <span>Nuovo comune</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="active">
+                                <a href="#copertureSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                    <i class="fas fa-microphone-alt mr-2"></i>
+                                    <span>Coperture</span>
+                                </a>
+                                <ul class="collapse list-unstyled" id="copertureSubmenu">
+                                    <li>
+                                        <a href="{{ path('copertura_index')}}">
+                                            <i class="fa fa-phone-volume mr-2"></i>
+                                            <span>Lista coperture</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('copertura_new')}}">
+                                            <i class="fas fa-clock mr-2"></i>
+                                            <span>Nuova copertura</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    {% endif %}
                 </ul>
             </nav>
             <!-- Page Content  -->
@@ -246,7 +296,7 @@
                         </ul>
                     </div>
                 <!-- controller rendering html -->
-                <div class="container mt-2" id="controllerRendering">
+                <div class="container-fluid mt-2" id="controllerRendering">
                     {% block body %}{% endblock %}
                 </div>
             </div>

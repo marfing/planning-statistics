@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Copertura{% endblock %}
+
+{% block body %}
+    <h1>Edit Copertura</h1>
+
+    {{ include('copertura/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('copertura_index') }}">back to list</a>
+
+    {{ include('copertura/_delete_form.html.twig') }}
+{% endblock %}

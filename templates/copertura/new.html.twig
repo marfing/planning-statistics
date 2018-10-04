@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Copertura{% endblock %}
+
+{% block body %}
+    <h1>Create new Copertura</h1>
+
+    {{ include('copertura/_form.html.twig') }}
+
+    <a href="{{ path('copertura_index') }}">back to list</a>
+{% endblock %}

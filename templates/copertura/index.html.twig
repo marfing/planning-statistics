@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista Coperture{% endblock %}
+
+{% block body %}
+    <h1>Lista coperture</h1>
+
+    {% for error in errori %}
+    <div class="alert alert-danger mb-3" role="alert">
+        <strong>{{error}}</strong>
+    </div>
+    {% endfor %}
+    
+    {% if is_granted('ROLE_ADMIN') %}
+    <a class="btn btn-primary mt-5 mb-5" href="{{ path('copertura_import_csv_eof') }}" role="button">Carica lista coperture</a>
+    <a class="btn btn-danger mt-5 mb-5" href="{{ path('copertura_delete_all') }}" role="button">Cancella tutte le coperture</a>
+    {% endif %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IdScala</th>
+                <th>Regione</th>
+                <th>Provincia</th>
+                <th>CodiceComune</th>
+                <th>Frazione</th>
+                <th>ParticellaTop</th>
+                <th>Indirizzo</th>
+                <th>Civico</th>
+                <th>ScalaPalazzina</th>
+                <th>CodiceVia</th>
+                <th>IdBuilding</th>
+                <th>CoordinateBuilding</th>
+                <th>Pop</th>
+                <th>TotaleUI</th>
+                <th>StatoBuilding</th>
+                <th>StatoScalaPalazzina</th>
+                <th>DatatRFCIndicativa</th>
+                <th>DataRFCEffettiva</th>
+                <th>DataRFAIndicativa</th>
+                <th>DataRFAEffettiva</th>
+                <th>DataUltimaModificaRecord</th>
+                <th>DataUltimaModificaStatoBuilding</th>
+                <th>DataUltimaVariazioneStatoScalaPalazzina</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for copertura in coperture %}
+            <tr>
+                <td>{{ copertura.id }}</td>
+                <td>{{ copertura.idScala }}</td>
+                <td>{{ copertura.regione }}</td>
+                <td>{{ copertura.provincia }}</td>
+                <td>{{ copertura.codiceComune }}</td>
+                <td>{{ copertura.frazione }}</td>
+                <td>{{ copertura.particellaTop }}</td>
+                <td>{{ copertura.indirizzo }}</td>
+                <td>{{ copertura.civico }}</td>
+                <td>{{ copertura.scalaPalazzina }}</td>
+                <td>{{ copertura.codiceVia }}</td>
+                <td>{{ copertura.idBuilding }}</td>
+                <td>{{ copertura.coordinateBuilding }}</td>
+                <td>{{ copertura.pop }}</td>
+                <td>{{ copertura.totaleUI }}</td>
+                <td>{{ copertura.statoBuilding }}</td>
+                <td>{{ copertura.statoScalaPalazzina }}</td>
+                <td>{{ copertura.datatRFCIndicativa ? copertura.datatRFCIndicativa|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ copertura.dataRFCEffettiva ? copertura.dataRFCEffettiva|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ copertura.dataRFAIndicativa ? copertura.dataRFAIndicativa|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ copertura.dataRFAEffettiva ? copertura.dataRFAEffettiva|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ copertura.dataUltimaModificaRecord ? copertura.dataUltimaModificaRecord|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ copertura.dataUltimaModificaStatoBuilding ? copertura.dataUltimaModificaStatoBuilding|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ copertura.dataUltimaVariazioneStatoScalaPalazzina ? copertura.dataUltimaVariazioneStatoScalaPalazzina|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('copertura_show', {'id': copertura.id}) }}">show</a>
+                    <a href="{{ path('copertura_edit', {'id': copertura.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="26">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('copertura_new') }}">Create new</a>
+{% endblock %}

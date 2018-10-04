@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lista dei comuni ISTAT{% endblock %}
+
+{% block body %}
+    <h1>Lista dei comuni ISTAT</h1>
+
+    {% for error in errors %}
+    <div class="alert alert-danger mb-3" role="alert">
+        <strong>{{error}}</strong>
+    </div>
+    {% endfor %}
+    
+    {% if is_granted('ROLE_ADMIN') %}
+    <a class="btn btn-primary mt-5 mb-5" href="{{ path('comune_import_csv') }}" role="button">Carica lista comuni</a>
+    <a class="btn btn-danger mt-5 mb-5" href="{{ path('comune_delete_all') }}" role="button">Cancella tutti i comuni</a>
+    {% endif %}
+
+    <table id="trafficflows"
+            data-toggle="table"
+            data-search="true"
+            data-pagination="true"
+            data-page-size="100"
+            data-pagination-loop="true"
+            data-advanced-search="true"
+            data-id-table="advancedTable">
+        <thead>
+            <tr>
+                <th data-field="Id" data-sortable="true">Id</th>
+                <th data-field="denominazione" data-sortable="true">Denominazione</th>
+                <th data-field="codicecomune" data-sortable="true">CodiceComune</th>
+                <th data-field="codicecittametropolitana" data-sortable="true">CodiceCittàMetropolitana</th>
+                <th data-field="denominazionecittametropolitana" data-sortable="true">DenominazioneCittàMetropolitana</th>
+                <th data-field="actions" data-sortable="true">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comune in comuni %}
+            <tr>
+                <td>{{ comune.id }}</td>
+                <td>{{ comune.denominazione }}</td>
+                <td>{{ comune.codiceComune }}</td>
+                <td>{{ comune.codiceCittaMetropolitana }}</td>
+                <td>{{ comune.denominazioneCittaMetropolitana }}</td>
+                <td>
+                    <a href="{{ path('comune_show', {'id': comune.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{ path('comune_new') }}">Create new</a>
+    {% endif %}
+{% endblock %}
